@@ -2,7 +2,8 @@
 body {
     color: #5a3323
     background-color: #ebd8d0; 
-    font-family: font-family:'Rubik', sans-serif; 
+    font-family: Arial, sans-serif; 
+
     font-size: 18px; 
     text-align: left; 
 }
@@ -10,7 +11,7 @@ body {
 <!ENCABEZADOS>
 h1, h2, h3, h4, h5, h6 {
     color: #c97b78; 
-    font-family: font-family: 'Nunito', sans-serif; 
+   font-family: Arial, sans-serif;  
     border:5px solid #c97b78;   
     text-align: center; 
     margin-top: 20px;
