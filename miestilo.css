@@ -11,7 +11,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     color: #c97b78; 
     font-family: font-family: 'Nunito', sans-serif; 
-    border:5px solid #c97b78;   
+    border:5px solid brown;   
     text-align: center; 
     margin-top: 20px;
     margin-bottom: 10px;
@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 
 <!ENLACES>
 a {
-    color: #c1d3fe
+    color: #c1d3fe;
 }
 
 
