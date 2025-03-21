@@ -1,48 +1,113 @@
-/* ESTILO DEL CUERPO */
+/* Estilo general del cuerpo */
 body {
-    background-color: #ebd8d0; 
-    color: #5a3323; 
-    font-family: Arial, sans-serif; /* 'Rubik', sans-serif */
-    font-size: 18px;
+    background-color: #c97b78; /* Fondo rosa oscuro */
+    color: #333333; /* Color de texto principal */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
     text-align: left;
+    margin: 0;
+    padding: 0;
 }
 
-/* ENCABEZADOS */
+/* Encabezados */
 h1, h2, h3, h4, h5, h6 {
-    color: #c97b78; 
-    font-family: 'Georgia', serif; /* 'Nunito', sans-serif */
-    text-align: center; 
+    color: #3d0e0e; /* Color oscuro para contraste */
+    font-family: 'Georgia', serif;
+    text-align: center;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-/* ENLACES */
+/* Contenedor principal */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco para contraste */
+    border: 2px solid #3d0e0e; /* Borde oscuro */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Párrafos */
+p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+/* Enlaces */
 a {
-    color: #c1d3fe;
+    color: #3d0e0e; /* Color de enlace oscuro */
+    text-decoration: none;
 }
 
-/* BOTONES */
+a:hover {
+    text-decoration: underline;
+}
+
+/* Botón */
 .button {
-    background-color: #c97b78; 
-    color: #eac8bb; 
-    border-radius: 5px; /* Bordes redondos */
-    font-size: 18px;
-    padding: 10px 15px;
+    background-color: #3d0e0e; /* Botón oscuro */
+    color: #ffffff;
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-/* TABLAS */
+.button:hover {
+    background-color: #5a1919;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
 th, td {
-    border: 1px solid #eac8bb; 
-    text-align: left;
+    border: 1px solid #3d0e0e;
     padding: 8px;
+    text-align: left;
 }
 
 th {
-    background-color: #eac8bb; 
-    color: #5a3323;
+    background-color: #c97b78; /* Fondo rosa oscuro para encabezados */
+    color: #ffffff;
 }
+
+/* Formularios */
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px;
+    border: 1px solid #3d0e0e;
+    border-radius: 4px;
+}
+
+/* Clases específicas */
+.text-center {
+    text-align: center;
+}
+
+.bg-primary {
+    background-color: #c97b78;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 
 
 
