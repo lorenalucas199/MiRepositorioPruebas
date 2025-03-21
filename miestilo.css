@@ -1,4 +1,4 @@
-<!ESTILO DEL CUERPO>
+/* Estilo general del cuerpo */
 body {
     background-color: #ebd8d0; 
     color: #5a3323; 
@@ -7,7 +7,7 @@ body {
     text-align: left;
 }
 
-<!ENCABEZADOS>
+/* Encabezados */
 h1, h2, h3, h4, h5, h6 {
     color: #c97b78; 
     font-family: 'Nunito', sans-serif; 
@@ -19,13 +19,13 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
-<!ENLACES>
+/* Enlaces */
 a {
     color: #c1d3fe;
 }
 
 
-<!BOTONES>
+/* Botón */
 .button {
     background-color: #c97b78; 
     color: #eac8bb; 
@@ -37,7 +37,7 @@ a {
 }
 
 
-<!TABLAS>
+/* Tablas */
 th, td {
     border: 1px solid #eac8bb; 
     text-align: left;
