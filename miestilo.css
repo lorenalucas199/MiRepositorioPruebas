@@ -10,8 +10,8 @@ body {
 <!ENCABEZADOS>
 h1, h2, h3, h4, h5, h6 {
     color: #c97b78; 
-    font-family: 'Nunito', sans-serif; 
-    border:5px solid brown;   
+    font-family: 'Georgia', serif; /* 'Nunito', sans-serif */; 
+    /* border:5px solid brown;  */  
     text-align: center; 
     margin-top: 20px;
     margin-bottom: 10px;
@@ -38,7 +38,7 @@ a {
 <!TABLAS>
 th, td {
     border: 1px solid #eac8bb; 
-    text-align: center;
+    text-align: left;
 }
 
 th {
