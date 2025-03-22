@@ -1,73 +1,11 @@
-/* Estilos generales */
-body {
-    font-family: 'Rubik', sans-serif;
-    font-size: 18px;
-    background: linear-gradient(to bottom, #FF7F50, #FFDAB9);
-    color: black;
-    text-align: left;
-    margin: 0;
-    padding: 0;
-}
+body{font-family:'Rubik', sans-serif; font-size: 18px ;background: linear-gradient(to bottom, #FF7F50, #FFDAB9);color: black; text-align: left;}
 
-/* Estilos de los títulos */
-h1 {
-    color: white;
-    border: 5px solid white;
-    text-align: center;
-    padding: 10px;
-}
+h1{color:white; border:5px solid white;text-align: center;}
 
-h3 {
-    text-align: right;
-    color: white;
-}
+h3{text-align: right;color:white;}
 
-/* Estilos de las secciones */
-.width {
-    width: 80%;
-    margin: auto;
-}
+table{width:100%; border:5px solid black; text-align: center;}
 
-/* Estilos de los cuadros de selección */
-input[type="radio"] {
-    margin-right: 10px;
-}
+.fondoClaro {background-color:#FF7F50;}
 
-div.inline-block {
-    display: inline-block;
-    margin-right: 30px;
-}
-
-/* Estilos de las tablas */
-table {
-    width: 100%;
-    border: 5px solid black;
-    text-align: center;
-    border-collapse: collapse;
-}
-
-td, th {
-    padding: 10px;
-    border: 2px solid black;
-}
-
-tr:nth-child(even) {
-    background-color: #FFDAB9;
-}
-
-tr:nth-child(odd) {
-    background-color: #FF7F50;
-}
-
-/* Estilos de los botones */
-input[type="button"] {
-    background-color: white;
-    border: 2px solid black;
-    padding: 10px;
-    cursor: pointer;
-}
-
-input[type="button"]:hover {
-    background-color: #FF7F50;
-    color: white;
-}
+.fondoOscuro{background-color:#FFDAB9}
