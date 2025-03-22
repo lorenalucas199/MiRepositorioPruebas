@@ -1,73 +1,73 @@
 /* Estilos generales */
 body {
-    background-color: #f8e8e0; /* Tono pastel claro */
-    color: #5a3e36; /* Marrón oscuro */
-    font-family: 'Nunito', 'Georgia', serif;
-    font-size: 16px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 18px;
+    background: linear-gradient(to bottom, #FF7F50, #FFDAB9);
+    color: black;
     text-align: left;
     margin: 0;
     padding: 0;
 }
 
-/* Clases de estilos */
-.background-color {
-    background-color: #faebe6;
-}
-
-.color {
-    color: #8b5e57; /* Marrón medio */
-}
-
-.font-family {
-    font-family: 'Nunito', 'Georgia', serif;
-}
-
-.font-size {
-    font-size: 20px;
-}
-
-.text-alignment {
+/* Estilos de los títulos */
+h1 {
+    color: white;
+    border: 5px solid white;
     text-align: center;
+    padding: 10px;
 }
 
+h3 {
+    text-align: right;
+    color: white;
+}
+
+/* Estilos de las secciones */
 .width {
     width: 80%;
     margin: auto;
 }
 
-.border {
-    border: 2px solid #a67b75;
-    padding: 10px;
-    border-radius: 5px;
+/* Estilos de los cuadros de selección */
+input[type="radio"] {
+    margin-right: 10px;
 }
 
-/* Estilos para títulos */
-h1, h2, h3 {
-    border: 3px solid #8b5e57;
-    background-color: #f4d6cc;
-    padding: 10px;
-    text-align: center;
-    border-radius: 10px;
-    font-family: 'Nunito', 'Georgia', serif;
+div.inline-block {
+    display: inline-block;
+    margin-right: 30px;
 }
 
-/* Estilos para tablas */
+/* Estilos de las tablas */
 table {
-    width: 90%;
-    margin: auto;
+    width: 100%;
+    border: 5px solid black;
+    text-align: center;
     border-collapse: collapse;
-    background-color: #faebe6;
-    color: #5a3e36;
 }
 
 td, th {
-    border: 1px solid #8b5e57;
-    padding: 8px;
-    text-align: center;
-    font-family: 'Nunito', 'Georgia', serif;
+    padding: 10px;
+    border: 2px solid black;
 }
 
-th {
-    background-color: #e6b8af;
-    color: #3e2723;
+tr:nth-child(even) {
+    background-color: #FFDAB9;
+}
+
+tr:nth-child(odd) {
+    background-color: #FF7F50;
+}
+
+/* Estilos de los botones */
+input[type="button"] {
+    background-color: white;
+    border: 2px solid black;
+    padding: 10px;
+    cursor: pointer;
+}
+
+input[type="button"]:hover {
+    background-color: #FF7F50;
+    color: white;
 }
