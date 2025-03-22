@@ -1,3 +1,83 @@
+/* 
+body {
+    background-color: #f8e8e0; /* Tono pastel claro */
+    color: #5a3e36; /* Marrón oscuro */
+    font-family: 'Nunito', 'Georgia', serif;
+    font-size: 16px;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+/* Clases de estilos */
+.background-color {
+    background-color: #faebe6;
+}
+
+.color {
+    color: #8b5e57; /* Marrón medio */
+}
+
+.font-family {
+    font-family: 'Nunito', 'Georgia', serif;
+}
+
+.font-size {
+    font-size: 20px;
+}
+
+.text-alignment {
+    text-align: center;
+}
+
+.width {
+    width: 80%;
+    margin: auto;
+}
+
+.border {
+    border: 2px solid #a67b75;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Estilos para títulos */
+h1, h2, h3 {
+    border: 3px solid #8b5e57;
+    background-color: #f4d6cc;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: 'Nunito', 'Georgia', serif;
+}
+
+/* Estilos para tablas */
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    background-color: #faebe6;
+    color: #5a3e36;
+}
+
+td, th {
+    border: 1px solid #8b5e57;
+    padding: 8px;
+    text-align: center;
+    font-family: 'Nunito', 'Georgia', serif;
+}
+
+th {
+    background-color: #e6b8af;
+    color: #3e2723;
+}*/
+
+
+
+
+
+
+
 /* Estilos generales */
 body {
     background-color: #f8e8e0; /* Tono pastel claro */
