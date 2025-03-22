@@ -3,99 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Estadística en 1º de Bachillerato</title>
+    <title>Resumen de Derivadas</title>
     <link rel="stylesheet" href="miestilo.css">
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        processEscapes: true
-      }
-    });
-    MathJax.Hub.Config({
-      TeX: {
-        Macros: {
-          R: "{\\mathbb R}",
-          N: "{\\mathbb N}",
-          Z: "{\\mathbb Z}",
-          bold: ["{\\bf #1}",1]
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true
+            }
+        });
+        MathJax.Hub.Config({
+            TeX: {
+                Macros: {
+                    R: "{\\mathbb R}",
+                    N: "{\\mathbb N}",
+                    Z: "{\\mathbb Z}",
+                    bold: ["{\\bf #1}",1]
+                }
+            }
+        });
+        MathJax.Hub.Config({
+            TeX: { equationNumbers: { autoNumber: "AMS" } }
+        });
+        TeX: {
+            extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
         }
-      }
-    });
-    MathJax.Hub.Config({
-      TeX: { equationNumbers: { autoNumber: "AMS" } }
-    });
-    TeX: {
-      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
-    }
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
 </head>
 <body>
     <header>
-        <h1 class="border">Estadística en 1º de Bachillerato</h1>
+        <h1 class="border">Resumen de Derivadas</h1>
     </header>
     
     <section class="width">
-        <h2 class="border">¿Qué es la Estadística?</h2>
-        <p class="color font-family font-size text-alignment">
-            La estadística es la rama de las matemáticas que se encarga de recopilar, organizar,
-            analizar e interpretar datos. Se utiliza en múltiples disciplinas como economía,
-            sociología y ciencias de la salud.
+        <h2 class="border">Definición de Derivada</h2>
+        <p class="font-family font-size text-alignment">
+            La derivada de una función mide la tasa de cambio instantánea de la función en un punto. Se define como:
         </p>
+        <p class="text-alignment">\[ f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]</p>
     </section>
     
     <section class="width">
-        <h2 class="border">Conceptos Básicos</h2>
-        <ul class="color font-family font-size">
-            <li><strong>Población:</strong> Conjunto de elementos que se estudian.</li>
-            <li><strong>Muestra:</strong> Subconjunto representativo de la población.</li>
-            <li><strong>Variable:</strong> Característica que se mide en un estudio.</li>
+        <h2 class="border">Reglas de Derivación</h2>
+        <ul class="font-family font-size">
+            <li><strong>Regla de la potencia:</strong> \( \frac{d}{dx} x^n = n x^{n-1} \)</li>
+            <li><strong>Derivada de una constante:</strong> \( \frac{d}{dx} c = 0 \)</li>
+            <li><strong>Regla del producto:</strong> \( (fg)' = f'g + fg' \)</li>
+            <li><strong>Regla del cociente:</strong> \( \left( \frac{f}{g} \right)' = \frac{f'g - fg'}{g^2} \)</li>
+            <li><strong>Regla de la cadena:</strong> \( (f(g(x)))' = f'(g(x)) g'(x) \)</li>
         </ul>
     </section>
     
     <section class="width">
-        <h2 class="border">Fórmulas Importantes</h2>
-        <p class="color font-family font-size text-alignment">
-            La media aritmética se calcula como:
-            $$ \bar{x} = \frac{\sum x_i}{n} $$
-        </p>
-        <p class="color font-family font-size text-alignment">
-            La varianza se define como:
-            $$ \sigma^2 = \frac{\sum (x_i - \bar{x})^2}{n} $$
-        </p>
+        <h2 class="border">Aplicaciones de la Derivada</h2>
+        <ul class="font-family font-size">
+            <li>Calculo de rectas tangentes.</li>
+            <li>Optimización de funciones (máximos y mínimos).</li>
+            <li>Estudio del crecimiento y decrecimiento de funciones.</li>
+            <li>Resolución de problemas de velocidad y aceleración.</li>
+        </ul>
     </section>
     
     <section class="width">
-        <h2 class="border">Ejemplo de Tabla de Frecuencias</h2>
-        <table>
-            <tr>
-                <th>Intervalo</th>
-                <th>Frecuencia</th>
-                <th>Frecuencia Acumulada</th>
-            </tr>
-            <tr>
-                <td>0 - 10</td>
-                <td>5</td>
-                <td>5</td>
-            </tr>
-            <tr>
-                <td>10 - 20</td>
-                <td>8</td>
-                <td>13</td>
-            </tr>
-            <tr>
-                <td>20 - 30</td>
-                <td>12</td>
-                <td>25</td>
-            </tr>
-        </table>
+        <h2 class="border">Ejemplo de Derivación</h2>
+        <p class="font-family font-size text-alignment">
+            Si tenemos la función \( f(x) = x^3 - 4x + 2 \), su derivada es:
+        </p>
+        <p class="text-alignment">\[ f'(x) = 3x^2 - 4 \]</p>
     </section>
     
     <footer>
-        <p class="text-alignment">&copy; 2025 Estadística para Bachillerato</p>
+        <p class="text-alignment">&copy; 2025 Resumen de Derivadas</p>
     </footer>
 </body>
 </html>
+
 
 
