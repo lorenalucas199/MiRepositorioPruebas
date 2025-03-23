@@ -1,83 +1,75 @@
 <!DOCTYPE html>
-<html lang="es-ES">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Resumen de Derivadas</title>
-    <link rel="stylesheet" href="miestilo.css">
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['$','$'], ['\\(','\\)']],
-                processEscapes: true
-            }
-        });
-        MathJax.Hub.Config({
-            TeX: {
-                Macros: {
-                    R: "{\\mathbb R}",
-                    N: "{\\mathbb N}",
-                    Z: "{\\mathbb Z}",
-                    bold: ["{\\bf #1}",1]
-                }
-            }
-        });
-        MathJax.Hub.Config({
-            TeX: { equationNumbers: { autoNumber: "AMS" } }
-        });
-        TeX: {
-            extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
-        }
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
-</head>
+ <html lang="es-ES">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>¡Derivadas!</title>
+ <link rel="stylesheet" href="miestilo.css">
+ <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    processEscapes: true
+  }
+});
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      R: "{\\mathbb R}",
+      N: "{\\mathbb N}",
+      Z: "{\\mathbb Z}",
+      bold: ["{\\bf #1}",1]
+    }
+  }
+});
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+TeX: {
+  extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
+}
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
+
+
 <body>
-    <header>
-        <h1 class="border">Resumen de Derivadas</h1>
-    </header>
-    
-    <section class="width">
-        <h2 class="border">Definición de Derivada</h2>
-        <p class="font-family font-size text-alignment">
-            La derivada de una función mide la tasa de cambio instantánea de la función en un punto. Se define como:
-        </p>
-        <p class="text-alignment">\[ f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]</p>
-    </section>
-    
-    <section class="width">
-        <h2 class="border">Reglas de Derivación</h2>
-        <ul class="font-family font-size">
-            <li><strong>Regla de la potencia:</strong> \( \frac{d}{dx} x^n = n x^{n-1} \)</li>
-            <li><strong>Derivada de una constante:</strong> \( \frac{d}{dx} c = 0 \)</li>
-            <li><strong>Regla del producto:</strong> \( (fg)' = f'g + fg' \)</li>
-            <li><strong>Regla del cociente:</strong> \( \left( \frac{f}{g} \right)' = \frac{f'g - fg'}{g^2} \)</li>
-            <li><strong>Regla de la cadena:</strong> \( (f(g(x)))' = f'(g(x)) g'(x) \)</li>
-        </ul>
-    </section>
-    
-    <section class="width">
-        <h2 class="border">Aplicaciones de la Derivada</h2>
-        <ul class="font-family font-size">
-            <li>Calculo de rectas tangentes.</li>
-            <li>Optimización de funciones (máximos y mínimos).</li>
-            <li>Estudio del crecimiento y decrecimiento de funciones.</li>
-            <li>Resolución de problemas de velocidad y aceleración.</li>
-        </ul>
-    </section>
-    
-    <section class="width">
-        <h2 class="border">Ejemplo de Derivación</h2>
-        <p class="font-family font-size text-alignment">
-            Si tenemos la función \( f(x) = x^3 - 4x + 2 \), su derivada es:
-        </p>
-        <p class="text-alignment">\[ f'(x) = 3x^2 - 4 \]</p>
-    </section>
-    
-    <footer>
-        <p class="text-alignment">&copy; 2025 Resumen de Derivadas</p>
-    </footer>
+<h1>Matemáticas Dinámicas</h1>
+<h4>de Lorena Lucas Baños</h4>
+
+<h2> Definición:</h2>
+Se llama <strong> función derivada </strong> y se denota $f'(x)$, a la función que asocia a cada abcisa $x$, la derivada en ese valor.
+<p style="text-align: center;">\[f'(x)=\lim_{h\rightarrow 0}\frac{f(x+h)-f(x)}{h} . \]</p>
+
+<h2> Derivadas de funciones conocidas:</h2>
+<img src='Deriadas.png' alt="DerivadasConocidas" style="width:33%;">
+<img src='Deriadas2.png' alt="DerivadasConocidas" style="width:33%;">
+Todas estas se pueden deducir con la definición de derivada de una función, ¡pruébalo!.
+
+
+<h2> Derivadas de operaciones con funciones:</h2>
+<ul>
+      <li> Derivada del producto de un número por una función: $(k\cdot f)'(x)=k\cdot f'(x)$, para $k \in \R$. </li>
+      <li> Derivada de la suma de dos funciones: $(f+g)'(x)=f'(x)+g'(x)$. </li>
+      <li> Derivada del producto de dos funciones: $(f\cdot g)'(x)=f'(x)\cdot g(x)+f(x)\cdot g'(x)$. </li>
+      <li> Derivada del cociente de dos funciones: $(\frac{f}{g})'(x)=\frac{f'(x)\cdot g(x)-f(x)\cdot g'(x)}{(g(x))^2}$. </li>
+   </ul>
+   
+   
+<h2> Regla de la cadena:</h2>
+La derivada de la composición de dos funciones se obtiene aplicando la regla de la cadena: 
+<p style="text-align: center;">\[(f\circ g)'(x) = f'(g(x))\cdot g'(x).\]</p>
+
+
+<h2> Recta tangente:</h2>
+Para calcular la recta tangente de una función $f(x)$ en el punto de abcisa $x=a$, sabemos que:
+<ul style="list-style-type: '- ';">
+    <li>Pasará por el punto $(a,f(a))$.</li>
+    <li>La derivada de la función en el punto es la pendiente de la recta tangente a la función en dicho punto, es decir, $m=f'(a)$.</li>
+</ul>
+Utilizaremos la ecuación punto pendiente para definir la recta tangente. Recordemos que tiene la forma: $y-y_0=m\cdot (x-x_0)$. <br><br>
+
+Por tanto, la ecuación de la recta tangente es: 
+<p style="text-align: center;">\[y-f(a)=f'(a)\cdot (x-a) . \]</p>
+
+
 </body>
 </html>
-
-
-
