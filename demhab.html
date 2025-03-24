@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicación de Dibujo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #lienzo {
+            border: 2px solid black;
+            background-color: white;
+            cursor: crosshair;
+        }
+        .panel {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>🎨 Aplicación de Dibujo Interactiva</h2>
+    <p>Usa el mouse o atajos de teclado para dibujar.</p>
+
+    <canvas id="lienzo" width="800" height="500"></canvas>
+
+    <div class="panel">
+        <label>🎨 Color:</label>
+        <input type="color" id="colorPicker" value="#ff0000">
+        
+        <label>🖌️ Grosor:</label>
+        <input type="range" id="grosor" min="1" max="20" value="3">
+
+        <button onclick="cambiarModo('pincel')">🖍️ Pincel</button>
+        <button onclick="cambiarModo('linea')">📏 Línea</button>
+        <button onclick="cambiarModo('rectangulo')">⬛ Rectángulo</button>
+        <button onclick="cambiarModo('circulo')">⚫ Círculo</button>
+        <button onclick="borrarLienzo()">🗑️ Borrar Todo</button>
+        <button onclick="guardarImagen()">💾 Guardar</button>
+    </div>
+
+    <p id="modoActual">Modo: Pincel 🖍️</p>
+    
+    <script>
+        const canvas = document.getElementById('lienzo');
+        const ctx = canvas.getContext('2d');
+
+        let dibujando = false;
+        let modo = "pincel";
+        let color = document.getElementById("colorPicker").value;
+        let grosor = document.getElementById("grosor").value;
+        let inicioX, inicioY;
+
+        document.getElementById("colorPicker").addEventListener("input", (e) => color = e.target.value);
+        document.getElementById("grosor").addEventListener("input", (e) => grosor = e.target.value);
+
+        function cambiarModo(nuevoModo) {
+            modo = nuevoModo;
+            document.getElementById("modoActual").textContent = `Modo: ${modo.charAt(0).toUpperCase() + modo.slice(1)} 🖌️`;
+        }
+
+        canvas.addEventListener("mousedown", (e) => {
+            inicioX = e.offsetX;
+            inicioY = e.offsetY;
+            dibujando = true;
+        });
+
+        canvas.addEventListener("mousemove", (e) => {
+            if (!dibujando || modo !== "pincel") return;
+            
+            ctx.strokeStyle = color;
+            ctx.lineWidth = grosor;
+            ctx.lineCap = "round";
+            
+            ctx.beginPath();
+            ctx.moveTo(inicioX, inicioY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            
+            inicioX = e.offsetX;
+            inicioY = e.offsetY;
+        });
+
+        canvas.addEventListener("mouseup", (e) => {
+            if (!dibujando) return;
+            
+            if (modo === "linea") {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = grosor;
+                ctx.beginPath();
+                ctx.moveTo(inicioX, inicioY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            } 
+            else if (modo === "rectangulo") {
+                ctx.fillStyle = color;
+                ctx.fillRect(inicioX, inicioY, e.offsetX - inicioX, e.offsetY - inicioY);
+            } 
+            else if (modo === "circulo") {
+                ctx.beginPath();
+                let radio = Math.sqrt((e.offsetX - inicioX) ** 2 + (e.offsetY - inicioY) ** 2);
+                ctx.arc(inicioX, inicioY, radio, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+
+            dibujando = false;
+        });
+
+        function borrarLienzo() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function guardarImagen() {
+            const enlace = document.createElement('a');
+            enlace.href = canvas.toDataURL("image/png");
+            enlace.download = 'dibujo.png';
+            enlace.click();
+        }
+
+        // Atajos de teclado
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "p") cambiarModo("pincel");
+            if (e.key === "l") cambiarModo("linea");
+            if (e.key === "r") cambiarModo("rectangulo");
+            if (e.key === "c") cambiarModo("circulo");
+            if (e.key === "b") borrarLienzo();
+            if (e.key === "s") guardarImagen();
+        });
+
+    </script
