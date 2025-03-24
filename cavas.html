@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Línea Poligonal Interactiva</title>
+    <style>
+        #lienzo {
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="lienzo" width="600" height="400"></canvas>
+    <div>
+        <button onclick="deshacerPunto()">Deshacer último punto</button>
+        <button onclick="reiniciarDibujo()">Reiniciar dibujo</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('lienzo');
+        const ctx = canvas.getContext('2d');
+        const puntos = [];
+
+        function obtenerCoordenadas(evento) {
+            const rect = canvas.getBoundingClientRect();
+            const x = evento.clientX - rect.left;
+            const y = evento.clientY - rect.top;
+            return { x, y };
+        }
+
+        function dibujarPoligonal() {
+            if (puntos.length < 2) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(puntos[0].x, puntos[0].y);
+            for (let i = 1; i < puntos.length; i++) {
+                ctx.lineTo(puntos[i].x, puntos[i].y);
+            }
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        canvas.addEventListener('click', (evento) => {
+            const punto = obtenerCoordenadas(evento);
+            puntos.push(punto);
+            dibujarPoligonal();
+        });
+
+        function deshacerPunto() {
+            puntos.pop();
+            dibujarPoligonal();
+        }
+
+        function reiniciarDibujo() {
+            puntos.length = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+</html>
