@@ -42,10 +42,14 @@
             ctx.clearRect(0, 0, c.width, c.height);
             puntos.pop();
             // Redibujar todas las líneas llamando a dibujarLinPol() en cada punto agregado
-            for (let i = 0; i < puntos.length; i++) {
-                let event={ x: puntos[i].x, y: puntos[i].y };
-                dibujarLinPol();
-            }
+            for (let i = 1; i < puntos.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(puntos[i - 1].x, puntos[i - 1].y);
+        ctx.lineTo(puntos[i].x, puntos[i].y);
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
         }
 
         function reiniciarDibujo() {
