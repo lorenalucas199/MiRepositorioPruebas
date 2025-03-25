@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Título de la página</title>
+<link rel="stylesheet" href="miestilo.css">
+<body>
+    <canvas id="myCanvas1" width="600" height="400" class='w3-border' onclick='muestraClick(event)'></canvas>
+    <script>
+        var c = document.getElementById("myCanvas1");
+        var ctx = c.getContext("2d");
+        var puntos = [];
+
+        function obtenerCoordenadas(event) {
+            var coordCanvas = c.getBoundingClientRect();
+            var x=event.clientX-coordCanvas.x;
+            var y=event.clientY-coordCanvas.y;
+            return {x, y};
+        }
+
+        function dibujarLinPol() {
+            if (puntos.length < 2){
+                return null;
+            }
+            //Borrar todo lo dibujado:
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            //Dibujo:
+            ctx.beginPath(); //indica que se va a dibujar un camino
+            ctx.moveTo(puntos[0].x, puntos[0].y); //se crea el punto de inicio de una línea
+            for (let i = 1; i < puntos.length; i++) {
+                ctx.lineTo(puntos[i].x, puntos[i].y); //crea el punto final de la línea
+            }
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const punto = obtenerCoordenadas(event);
+            puntos.push(punto);
+            dibujarPoligonal();
+        });
+
+        function deshacerPunto() {
+            puntos.pop();
+            dibujarPoligonal();
+        }
+
+        function reiniciarDibujo() {
+            puntos.length = 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+    <div>
+        <button onclick="deshacerPunto()">Deshacer último punto</button>
+        <button onclick="reiniciarDibujo()">Reiniciar dibujo</button>
+    </div>
+</body>
+</html>
