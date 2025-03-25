@@ -48,6 +48,10 @@
         function reiniciarDibujo() {
             puntos.length = 0;
             ctx.clearRect(0, 0, c.width, c.height);
+            // Redibujar todas las líneas llamando a dibujarLinPol() en cada punto agregado
+    for (let i = 1; i < puntos.length; i++) {
+        dibujarLinPol();
+    }
         }
     </script>
     <div>
