@@ -45,7 +45,8 @@
             dibujarLinPol();
             // Redibujar todas las líneas llamando a dibujarLinPol() en cada punto agregado
             for (let i = 1; i < puntos.length; i++) {
-                let event={puntos[i].x,puntos[i].y};
+                let event={ x: puntos[i].x, y: puntos[i].y }
+;
                 dibujarLinPol();
             }
         }
