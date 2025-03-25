@@ -41,8 +41,8 @@
         });
 
         function deshacerPunto() {
+            ctx.clearRect(0, 0, c.width, c.height);
             puntos.pop();
-            dibujarLinPol();
             // Redibujar todas las líneas llamando a dibujarLinPol() en cada punto agregado
             for (let i = 1; i < puntos.length; i++) {
                 let event={ x: puntos[i].x, y: puntos[i].y }
