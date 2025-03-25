@@ -25,9 +25,9 @@
             
             //Dibujo:
             ctx.beginPath(); //indica que se va a dibujar un camino
-            ctx.moveTo(puntos[puntos.length-1].x, puntos[puntos.length-1].y); //se crea el punto de inicio de una línea
+            ctx.moveTo(puntos[puntos.length-2].x, puntos[puntos.length-2].y); //se crea el punto de inicio de una línea (¡¡-2 porque empiezan en 0!!)
             
-            ctx.lineTo(puntos[puntos.length].x, puntos[puntos.length].y); //crea el punto final de la línea
+            ctx.lineTo(puntos[puntos.length-1].x, puntos[puntos.length-1].y); //crea el punto final de la línea
             
             ctx.strokeStyle = 'blue';
             ctx.lineWidth = 2;
@@ -47,7 +47,7 @@
 
         function reiniciarDibujo() {
             puntos.length = 0;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, c.width, c.height);
         }
     </script>
     <div>
