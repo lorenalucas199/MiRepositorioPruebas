@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dibuja tu línea de neón</title>
+<link rel="stylesheet" href="miestilo.css">
+<body style="font-family:'Rubik', sans-serif; font-size:18px; background:black; color:white; text-align:center;">
+
+    <h1 style="color:#ff00ff; text-shadow:0 0 10px #ff00ff;">Matemáticas Neón</h1>
+    <h3 style="color:#00ffff; text-shadow:0 0 10px #00ffff;">de Lorena Lucas Baños</h3>
+    <p>Dibuja líneas con efecto neón. Haz clic para cambiar el color.</p>
+
+    <canvas id="myCanvas1" width="600" height="400" class="recuadro" style="border:1px solid white; background:#222;"></canvas>
+    
+    <br>
+    <button onclick="cambiarColor()">Cambiar Color</button>
+    <button onclick="reiniciarDibujo()">Reiniciar dibujo</button>
+
+    <script>
+        var c = document.getElementById("myCanvas1");
+        var ctx = c.getContext("2d");
+        var puntos = [];
+        var colorActual = "cyan";
+
+        function obtenerCoordenadas(event) {
+            var coordCanvas = c.getBoundingClientRect();
+            return {
+                x: event.clientX - coordCanvas.x,
+                y: event.clientY - coordCanvas.y
+            };
+        }
+
+        function dibujarLinPol() {
+            if (puntos.length < 2) return;
+
+            var p1 = puntos[puntos.length - 2];
+            var p2 = puntos[puntos.length - 1];
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+
+            // Crear un degradado lineal para el efecto neón
+            var gradiente = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+            gradiente.addColorStop(0, "white");
+            gradiente.addColorStop(0.5, colorActual);
+            gradiente.addColorStop(1, "white");
+
+            ctx.strokeStyle = gradiente;
+            ctx.lineWidth = 4;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = colorActual;
+            ctx.stroke();
+        }
+
+        function cambiarColor() {
+            let colores = ["cyan", "magenta", "yellow", "lime", "blue", "red", "orange", "pink"];
+            colorActual = colores[Math.floor(Math.random() * colores.length)];
+        }
+
+        c.addEventListener('click', (event) => {
+            var punto = obtenerCoordenadas(event);
+            puntos.push(punto);
+            dibujarLinPol();
+        });
+
+        function reiniciarDibujo() {
+            puntos.length = 0;
+            ctx.clearRect(0, 0, c.width, c.height);
+        }
+    </script>
+</body>
+</html>
