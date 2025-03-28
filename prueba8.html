@@ -2,71 +2,141 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Simulador de Movimiento Armónico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Derivadas</title>
     <style>
-        body {
-            margin: 0;
-            background: black;
-            overflow: hidden;
-        }
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid black; background-color: #f8f8f8; display: block; margin: auto; cursor: grab; }
     </style>
 </head>
 <body>
-
+    <h2>Visualización de la Derivada</h2>
+    <label for="funcion">Ingrese una función f(x): </label>
+    <input type="text" id="funcion" value="Math.sin(x)">
+    <button onclick="graficar()">Graficar</button>
+    <br><br>
     <canvas id="canvas"></canvas>
-
+    
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let points = [];
-        let drawing = false;
-        let time = 0;
-
-        canvas.addEventListener("mousedown", () => {
-            drawing = true;
-            points = [];
-        });
-
-        canvas.addEventListener("mouseup", () => {
-            drawing = false;
-        });
-
-        canvas.addEventListener("mousemove", (event) => {
-            if (!drawing) return;
-            points.push({ x: event.clientX, y: event.clientY, phase: Math.random() * Math.PI * 2 });
-        });
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            time += 0.05;
-
-            for (let i = 0; i < points.length; i++) {
-                let p = points[i];
-                let oscillation = Math.sin(time + p.phase) * 20;
-                let newY = p.y + oscillation;
-
-                ctx.beginPath();
-                ctx.arc(p.x, newY, 5, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${(time * 50) % 360}, 100%, 60%)`;
-                ctx.fill();
-                ctx.closePath();
-            }
-
-            requestAnimationFrame(animate);
+        let f;
+        let xPunto = 0;
+        let zoom = 40;
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+        let startX, startY;
+        
+        function ajustarCanvas() {
+            canvas.width = window.innerWidth * 0.8;
+            canvas.height = window.innerHeight * 0.6;
         }
-
-        animate();
+        
+        function derivada(f, x, h = 0.001) {
+            return (f(x + h) - f(x)) / h;
+        }
+        
+        function transformarX(x) { return canvas.width / 2 + (x + offsetX) * zoom; }
+        function transformarY(y) { return canvas.height / 2 - (y + offsetY) * zoom; }
+        function invertirX(px) { return (px - canvas.width / 2) / zoom - offsetX; }
+        
+        function graficar() {
+            ajustarCanvas();
+            const inputFuncion = document.getElementById("funcion").value;
+            try {
+                f = new Function("x", "return " + inputFuncion);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                dibujarEjes();
+                dibujarFuncion(f, "blue");
+                dibujarFuncion(x => derivada(f, x), "red");
+                dibujarPuntoTangente();
+            } catch (e) {
+                alert("Error en la función ingresada");
+            }
+        }
+        
+        function dibujarEjes() {
+            ctx.strokeStyle = "black";
+            ctx.beginPath();
+            ctx.moveTo(0, transformarY(0));
+            ctx.lineTo(canvas.width, transformarY(0));
+            ctx.moveTo(transformarX(0), 0);
+            ctx.lineTo(transformarX(0), canvas.height);
+            ctx.stroke();
+        }
+        
+        function dibujarFuncion(f, color) {
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            for (let x = invertirX(0); x < invertirX(canvas.width); x += 0.05) {
+                let y = f(x);
+                if (isFinite(y)) {
+                    ctx.lineTo(transformarX(x), transformarY(y));
+                }
+            }
+            ctx.stroke();
+        }
+        
+        function dibujarPuntoTangente() {
+            let yPunto = f(xPunto);
+            let pendiente = derivada(f, xPunto);
+            
+            ctx.fillStyle = "green";
+            ctx.beginPath();
+            ctx.arc(transformarX(xPunto), transformarY(yPunto), 5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.strokeStyle = "orange";
+            ctx.beginPath();
+            let x1 = xPunto - 1;
+            let y1 = yPunto - pendiente;
+            let x2 = xPunto + 1;
+            let y2 = yPunto + pendiente;
+            ctx.moveTo(transformarX(x1), transformarY(y1));
+            ctx.lineTo(transformarX(x2), transformarY(y2));
+            ctx.stroke();
+        }
+        
+        canvas.addEventListener("mousemove", (event) => {
+            if (isDragging) {
+                let dx = (event.clientX - startX) / zoom;
+                let dy = (event.clientY - startY) / zoom;
+                offsetX -= dx;
+                offsetY += dy;
+                startX = event.clientX;
+                startY = event.clientY;
+                graficar();
+            } else {
+                let rect = canvas.getBoundingClientRect();
+                let x = (event.clientX - rect.left - canvas.width / 2) / zoom - offsetX;
+                xPunto = x;
+                graficar();
+            }
+        });
+        
+        canvas.addEventListener("mousedown", (event) => {
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            canvas.style.cursor = "grabbing";
+        });
+        
+        canvas.addEventListener("mouseup", () => {
+            isDragging = false;
+            canvas.style.cursor = "grab";
+        });
+        
+        canvas.addEventListener("wheel", (event) => {
+            let zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
+            zoom *= zoomFactor;
+            graficar();
+            event.preventDefault();
+        });
+        
+        window.addEventListener("resize", graficar);
+        ajustarCanvas();
+        graficar();
     </script>
-
 </body>
 </html>
+
