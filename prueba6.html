@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simulador de Fractales Interactivo</title>
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            text-align: center;
+            background: black;
+            color: white;
+        }
+        canvas {
+            border: 2px solid white;
+            background: black;
+            display: block;
+            margin: auto;
+        }
+        .controls {
+            margin: 10px;
+        }
+        input {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌿 Simulador de Fractales 🌿</h1>
+    <p>Mueve los controles para cambiar la forma del fractal.</p>
+    
+    <div class="controls">
+        <label>Profundidad: <span id="depthValue">6</span></label>
+        <input type="range" id="depth" min="1" max="10" value="6" oninput="updateDepth()">
+        <br>
+        <label>Ángulo: <span id="angleValue">25</span>°</label>
+        <input type="range" id="angle" min="10" max="60" value="25" oninput="updateAngle()">
+    </div>
+
+    <canvas id="canvas" width="600" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let profundidad = 6;
+        let angulo = 25;
+
+        function updateDepth() {
+            profundidad = parseInt(document.getElementById("depth").value);
+            document.getElementById("depthValue").textContent = profundidad;
+            dibujar();
+        }
+
+        function updateAngle() {
+            angulo = parseInt(document.getElementById("angle").value);
+            document.getElementById("angleValue").textContent = angulo;
+            dibujar();
+        }
+
+        function dibujar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "lime";
+            ctx.lineWidth = 2;
+            dibujarFractal(canvas.width / 2, canvas.height - 50, -90, profundidad);
+        }
+
+        function dibujarFractal(x, y, anguloActual, nivel) {
+            if (nivel === 0) return;
+
+            let longitud = 100 * (nivel / 10);
+            let radianes = anguloActual * (Math.PI / 180);
+            let xFinal = x + Math.cos(radianes) * longitud;
+            let yFinal = y + Math.sin(radianes) * longitud;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(xFinal, yFinal);
+            ctx.stroke();
+
+            dibujarFractal(xFinal, yFinal, anguloActual - angulo, nivel - 1);
+            dibujarFractal(xFinal, yFinal, anguloActual + angulo, nivel - 1);
+        }
+
+        dibujar();
+    </script>
+
+</body>
+</html>
