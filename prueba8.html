@@ -28,9 +28,9 @@
 <body>
 
     <h1>🎨 Calculadora de Arte Fractal 🔢</h1>
-    <p>Escribe una ecuación matemática y observa el resultado visual.</p>
+    <p>Escribe una ecuación matemática en x e y (ejemplo: `Math.sin(x) * Math.cos(y) * 50`).</p>
 
-    <input type="text" id="equation" placeholder="Ejemplo: sin(x) * cos(y) * 50" onkeyup="drawPattern()">
+    <input type="text" id="equation" value="Math.sin(x) * Math.cos(y) * 50" onkeyup="drawPattern()">
     <canvas id="canvas" width="600" height="500"></canvas>
 
     <script>
@@ -42,22 +42,31 @@
             let equation = equationInput.value;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            let func;
             try {
-                for (let x = -300; x < 300; x += 5) {
-                    for (let y = -250; y < 250; y += 5) {
-                        let newX = x + 300;
-                        let newY = y + 250;
-                        let value = eval(equation.replace(/x/g, x).replace(/y/g, y));
-
-                        ctx.beginPath();
-                        ctx.arc(newX, newY, Math.abs(value) || 1, 0, Math.PI * 2);
-                        ctx.fillStyle = `hsl(${(value * 10) % 360}, 100%, 60%)`;
-                        ctx.fill();
-                        ctx.closePath();
-                    }
-                }
+                func = new Function("x", "y", `return ${equation};`);
             } catch (error) {
                 console.log("Ecuación inválida.");
+                return;
+            }
+
+            for (let x = -300; x < 300; x += 5) {
+                for (let y = -250; y < 250; y += 5) {
+                    try {
+                        let value = func(x / 50, y / 50); // Normalizamos x e y
+                        let newX = x + 300;
+                        let newY = y + 250;
+                        let size = Math.abs(value) || 1;
+
+                        ctx.beginPath();
+                        ctx.arc(newX, newY, size, 0, Math.PI * 2);
+                        ctx.fillStyle = `hsl(${(value * 100) % 360}, 100%, 60%)`;
+                        ctx.fill();
+                        ctx.closePath();
+                    } catch (error) {
+                        console.log("Error en el cálculo.");
+                    }
+                }
             }
         }
 
