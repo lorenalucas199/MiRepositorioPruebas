@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dibuja tu línea poligonal</title>
+<link rel="stylesheet" href="miestilo.css">
+<body style="font-family:'Rubik', sans-serif; font-size:18px; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
+    
+    <h1>Matemáticas Dinámicas</h1>
+    <h3>de Lorena Lucas Baños</h3>
+    <p>En el siguiente espacio podrás dibujar una línea poligonal. Se calculará automáticamente su longitud total.</p>
+
+    <canvas id="myCanvas1" width="600" height="400" class="recuadro"></canvas>
+    <p id="longitud">Longitud total: 0 px</p>
+
+    <div>
+        <button onclick="deshacerPunto()">Deshacer último punto</button>
+        <button onclick="reiniciarDibujo()">Reiniciar dibujo</button>
+    </div>
+
+    <script>
+        var c = document.getElementById("myCanvas1");
+        var ctx = c.getContext("2d");
+        var puntos = [];  // Lista de puntos
+        var longitudTotal = 0; // Longitud de la línea
+
+        function obtenerCoordenadas(event) {
+            var coordCanvas = c.getBoundingClientRect();
+            return {
+                x: event.clientX - coordCanvas.x,
+                y: event.clientY - coordCanvas.y
+            };
+        }
+
+        function calcularDistancia(p1, p2) {
+            var dx = p2.x - p1.x;
+            var dy = p2.y - p1.y;
+            return Math.sqrt(dx * dx + dy * dy); // Teorema de Pitágoras
+        }
+
+        function dibujarLinPol() {
+            if (puntos.length < 2) return;
+
+            var p1 = puntos[puntos.length - 2];
+            var p2 = puntos[puntos.length - 1];
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            longitudTotal += calcularDistancia(p1, p2);
+            actualizarLongitud();
+        }
+
+        function actualizarLongitud() {
+            document.getElementById("longitud").innerText = "Longitud total: " + longitudTotal.toFixed(2) + " px";
+        }
+
+        c.addEventListener('click', (event) => {
+            var punto = obtenerCoordenadas(event);
+            puntos.push(punto);
+            dibujarLinPol();
+        });
+
+        function deshacerPunto() {
+            if (puntos.length < 2) return;
+
+            ctx.clearRect(0, 0, c.width, c.height);
+            longitudTotal -= calcularDistancia(puntos[puntos.length - 2], puntos[puntos.length - 1]); // Restar última línea
+            puntos.pop();
+
+            for (let i = 1; i < puntos.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(puntos[i - 1].x, puntos[i - 1].y);
+                ctx.lineTo(puntos[i].x, puntos[i].y);
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            actualizarLongitud();
+        }
+
+        function reiniciarDibujo() {
+            puntos.length = 0;
+            ctx.clearRect(0, 0, c.width, c.height);
+            longitudTotal = 0;
+            actualizarLongitud();
+        }
+    </script>
+</body>
+</html>
