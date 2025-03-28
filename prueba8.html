@@ -101,8 +101,8 @@
             if (isDragging) {
                 let dx = (event.clientX - startX) / zoom;
                 let dy = (event.clientY - startY) / zoom;
-                offsetX -= dx;
-                offsetY += dy;
+                offsetX += dx;  // Invertido para que se mueva correctamente
+                offsetY -= dy;  // Invertido para que se mueva correctamente
                 startX = event.clientX;
                 startY = event.clientY;
                 graficar();
@@ -139,3 +139,4 @@
     </script>
 </body>
 </html>
+
