@@ -3,74 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Calculadora de Arte Fractal</title>
+    <title>Simulador de Movimiento Armónico</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            margin: 0;
             background: black;
-            color: white;
+            overflow: hidden;
         }
         canvas {
-            border: 2px solid white;
-            background: black;
             display: block;
-            margin: auto;
-        }
-        input {
-            width: 80%;
-            padding: 10px;
-            font-size: 18px;
-            margin: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 <body>
 
-    <h1>🎨 Calculadora de Arte Fractal 🔢</h1>
-    <p>Escribe una ecuación matemática en x e y (ejemplo: `Math.sin(x) * Math.cos(y) * 50`).</p>
-
-    <input type="text" id="equation" value="Math.sin(x) * Math.cos(y) * 50" onkeyup="drawPattern()">
-    <canvas id="canvas" width="600" height="500"></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
-        const equationInput = document.getElementById("equation");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        function drawPattern() {
-            let equation = equationInput.value;
+        let points = [];
+        let drawing = false;
+        let time = 0;
+
+        canvas.addEventListener("mousedown", () => {
+            drawing = true;
+            points = [];
+        });
+
+        canvas.addEventListener("mouseup", () => {
+            drawing = false;
+        });
+
+        canvas.addEventListener("mousemove", (event) => {
+            if (!drawing) return;
+            points.push({ x: event.clientX, y: event.clientY, phase: Math.random() * Math.PI * 2 });
+        });
+
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 0.05;
 
-            let func;
-            try {
-                func = new Function("x", "y", `return ${equation};`);
-            } catch (error) {
-                console.log("Ecuación inválida.");
-                return;
+            for (let i = 0; i < points.length; i++) {
+                let p = points[i];
+                let oscillation = Math.sin(time + p.phase) * 20;
+                let newY = p.y + oscillation;
+
+                ctx.beginPath();
+                ctx.arc(p.x, newY, 5, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${(time * 50) % 360}, 100%, 60%)`;
+                ctx.fill();
+                ctx.closePath();
             }
 
-            for (let x = -300; x < 300; x += 5) {
-                for (let y = -250; y < 250; y += 5) {
-                    try {
-                        let value = func(x / 50, y / 50); // Normalizamos x e y
-                        let newX = x + 300;
-                        let newY = y + 250;
-                        let size = Math.abs(value) || 1;
-
-                        ctx.beginPath();
-                        ctx.arc(newX, newY, size, 0, Math.PI * 2);
-                        ctx.fillStyle = `hsl(${(value * 100) % 360}, 100%, 60%)`;
-                        ctx.fill();
-                        ctx.closePath();
-                    } catch (error) {
-                        console.log("Error en el cálculo.");
-                    }
-                }
-            }
+            requestAnimationFrame(animate);
         }
 
-        drawPattern();
+        animate();
     </script>
 
 </body>
