@@ -45,6 +45,7 @@
     <button onclick="zoomOut()">-</button>
     <br><br>
     <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)' onmousedown='sostener(event)' onmouseup='soltar(event)'></canvas>
+    <!cuando el ratón está en movimiento sobre el canvas, se ejecuta la función tangente; cuando se sostiene el click la función sostener y y al soltarlo, soltar>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
         // Obtener referencia al canvas y su contexto de dibujo
@@ -52,16 +53,16 @@
         var ctx = c.getContext("2d");
 
         // Variables globales
-        let f;  //Función inrtroducida por el usuario
-        let zoom = 40;  //Factor de zoom
-        let desX = 0, desY = 0; // Desplazamiento de la vista en X e Y
+        let f;  //Función introducida por el usuario
+        let zoom = 40;  //Zoom inicial: 40 para que se vea relativamente cerca
+        let desX = 0, desY = 0; // Desplazamiento de la vista inicial en X e Y es 0
         let arrastrar = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return c.width / 2 + (x + desX) * zoom; }
-        function transformarY(y) { return c.height / 2 - (y + desY) * zoom; }
+        function transformarX(x) { return  (x + desX) * zoom; }
+        function transformarY(y) { return (y + desY) * zoom; }
         function invertirX(px) { return (px - c.width / 2) / zoom - desX; }
 
         
@@ -129,11 +130,18 @@
 
         // Dibujar la tangente con el movimmiento del raton
         function tangente(event){
-            
+            if (arrastrar) {
+                desX += (event.clientX - startX) / zoom;
+                desY -= (event.clientY - startY) / zoom;
+                startX = event.clientX;
+                startY = event.clientY;
+                graficar();
+            } else {
                 // Si no se está arrastrando, actualizar el punto donde se evalúa la tangente
                 let rect = c.getBoundingClientRect();
-                xPunto = (event.clientX - rect.left - c.width / 2) / zoom - desX;
+                xPunto = (event.clientX - rect.left ) / zoom - desX;
                 graficar();
+            }
             
         }
 
