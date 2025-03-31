@@ -1,48 +1,60 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización de Derivadas</title>
-    <style>
-        /* Estilos básicos para centrar el contenido */
-        body { text-align: center; font-family: Arial, sans-serif; }
-        /* Estilo del canvas (área de dibujo) */
-        canvas { 
-            border: 1px solid black; /* Borde negro alrededor del canvas */
-            background-color: #f8f8f8; /* Color de fondo gris claro */
-            display: block;
-            margin: auto; /* Centra el canvas */
-            cursor: grab; /* Cursor de "mano" cuando no está arrastrando */
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recta tangente</title>
+<link rel="stylesheet" href="miestilo.css">
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          R: "{\\mathbb R}",
+          N: "{\\mathbb N}",
+          Z: "{\\mathbb Z}",
+          bold: ["{\\bf #1}",1]
         }
-    </style>
-</head>
-<body>
-    <h2>Visualización de la Derivada</h2>
-    <label for="funcion">Ingrese una función f(x): </label>
-    <input type="text" id="funcion" value="Math.sin(x)">
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
+    }
+</script>
+    
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
+
+    
+<body style="height:100vh; text-align:center;">
+    <h1>Recta tangente</h1>
+    <h3>de Lorena Lucas Baños</h3>
+    <label for="funcion">Ingresa una función f(x) (en JavaScript): </label>
+    <input type="text" name="campoTexto" value="Math.sin(x)" id="funcion"> <!value es el valor predeterminado que aparece>
     <button onclick="graficar()">Graficar</button>
     <br><br>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" width="600" height="400" class="recuadro"></canvas>
     
-    <script>
+    <script> <!Vamos a definir las funciones que utilizaremos>
         // Obtener referencia al canvas y su contexto de dibujo
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
+        var c = document.getElementById("canvas");
+        var ctx = c.getContext("2d");
 
         // Variables globales
-        let f;  // Función ingresada por el usuario
-        let xPunto = 0;  // Punto donde se evalúa la derivada
-        let zoom = 40;  // Factor de zoom
+        let f;  //Función ingresada por el usuario
+        let xPunto = 0;  //Punto donde se evalúa la derivada
+        let zoom = 40;  //Factor de zoom
         let offsetX = 0, offsetY = 0; // Desplazamiento de la vista en X e Y
         let isDragging = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
-        // Ajusta el tamaño del canvas al 80% del ancho y 60% del alto de la pantalla
-        function ajustarCanvas() {
-            canvas.width = window.innerWidth * 0.8;
-            canvas.height = window.innerHeight * 0.6;
-        }
 
         // Aproximación numérica de la derivada mediante el método de diferencia finita
         function derivada(f, x, h = 0.001) {
@@ -56,7 +68,6 @@
 
         // Función principal para dibujar la gráfica
         function graficar() {
-            ajustarCanvas(); // Ajustar tamaño del canvas
             const inputFuncion = document.getElementById("funcion").value;
             try {
                 // Crear la función a partir del input del usuario
@@ -163,7 +174,6 @@
         window.addEventListener("resize", graficar);
 
         // Inicializa el canvas al cargar la página
-        ajustarCanvas();
         graficar();
     </script>
 </body>
