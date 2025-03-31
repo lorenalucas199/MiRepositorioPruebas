@@ -52,17 +52,17 @@
         var ctx = c.getContext("2d");
 
         // Variables globales
-        let f;  //Función ingresada por el usuario
+        let f;  //Función inrtroducida por el usuario
         let zoom = 40;  //Factor de zoom
-        let offsetX = 0, offsetY = 0; // Desplazamiento de la vista en X e Y
+        let desX = 0, desY = 0; // Desplazamiento de la vista en X e Y
         let arrastrar = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return c.width / 2 + (x + offsetX) * zoom; }
-        function transformarY(y) { return c.height / 2 - (y + offsetY) * zoom; }
-        function invertirX(px) { return (px - c.width / 2) / zoom - offsetX; }
+        function transformarX(x) { return c.width / 2 + (x + desX) * zoom; }
+        function transformarY(y) { return c.height / 2 - (y + desY) * zoom; }
+        function invertirX(px) { return (px - c.width / 2) / zoom - desX; }
 
         
         // Aproximación de la derivada con diferencia finita
@@ -104,18 +104,18 @@
             ctx.stroke();
         }
 
-        // Dibuja el punto verde sobre la función y su recta tangente en naranja
+        // Dibuja el punto sobre la función y su recta tangente 
         function dibujarPuntoTangente() {
             let yPunto = f(xPunto);
             let pendiente = derivada(f, xPunto);
             
-            // Dibuja el punto en verde
+            // Dibuja el punto 
             ctx.fillStyle = "red";
             ctx.beginPath();
             ctx.arc(transformarX(xPunto), transformarY(yPunto), 5, 0, 2 * Math.PI);
             ctx.fill();
             
-            // Dibuja la recta tangente en naranja
+            // Dibuja la recta tangente 
             ctx.strokeStyle = "red";
             ctx.beginPath();
             let x1 = xPunto - 1;
@@ -129,18 +129,12 @@
 
         // Dibujar la tangente con el movimmiento del raton
         function tangente(event){
-            if (arrastrar) {
-                offsetX += (event.clientX - startX) / zoom;
-                offsetY -= (event.clientY - startY) / zoom;
-                startX = event.clientX;
-                startY = event.clientY;
-                graficar();
-            } else {
+            
                 // Si no se está arrastrando, actualizar el punto donde se evalúa la tangente
                 let rect = c.getBoundingClientRect();
-                xPunto = (event.clientX - rect.left - c.width / 2) / zoom - offsetX;
+                xPunto = (event.clientX - rect.left - c.width / 2) / zoom - desX;
                 graficar();
-            }
+            
         }
 
         // Inicia el arrastre al hacer clic en el canvas
