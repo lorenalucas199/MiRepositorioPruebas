@@ -61,8 +61,8 @@
 
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return  (x + desX) * zoom; }
-        function transformarY(y) { return (y + desY) * zoom; }
+        function transformarX(x) { return c.width / 2 + (x + desX) * zoom; }
+        function transformarY(y) { return c.height / 2 - (y + desY) * zoom; }
         function invertirX(px) { return (px - c.width / 2) / zoom - desX; }
 
         
@@ -139,7 +139,7 @@
             } else {
                 // Si no se está arrastrando, actualizar el punto donde se evalúa la tangente
                 let rect = c.getBoundingClientRect();
-                xPunto = (event.clientX - rect.left ) / zoom - desX;
+                xPunto = (event.clientX - rect.left - c.width / 2) / zoom - desX;
                 graficar();
             }
             
