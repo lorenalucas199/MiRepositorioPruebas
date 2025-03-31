@@ -44,7 +44,7 @@
     <button onclick="zoomIn()">+</button>
     <button onclick="zoomOut()">-</button>
     <br><br>
-    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)'></canvas>
+    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)' onmouseup='sostener(event)' onmousedown='soltar(event)'></canvas>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
         // Obtener referencia al canvas y su contexto de dibujo
@@ -144,16 +144,16 @@
         }
 
         // Inicia el arrastre al hacer clic en el canvas
-        c.addEventListener("mousedown", (event) => {
+        function sostener(event){
             arrastrar = true;
             startX = event.clientX;
             startY = event.clientY;
-        });
+        }
 
         // Termina el arrastre cuando se suelta el mouse
-        c.addEventListener("mouseup", () => {
+        function soltar(event){
             arrastrar = false;
-        });
+        }
 
         // Funciones de zoom con los botones
         function zoomIn() { zoom =zoom*1.2; graficar(); }
