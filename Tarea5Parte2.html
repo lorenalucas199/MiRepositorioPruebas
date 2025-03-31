@@ -44,7 +44,7 @@
     <button onclick="zoomIn()">+</button>
     <button onclick="zoomOut()">-</button>
     <br><br>
-    <canvas id="canvas" width="600" height="400" class="recuadro"></canvas>
+    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)'></canvas>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
         // Obtener referencia al canvas y su contexto de dibujo
@@ -55,7 +55,7 @@
         let f;  //Función ingresada por el usuario
         let zoom = 40;  //Factor de zoom
         let offsetX = 0, offsetY = 0; // Desplazamiento de la vista en X e Y
-        let isDragging = false; // Estado de arrastre
+        let arrastrar = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
 
@@ -110,13 +110,13 @@
             let pendiente = derivada(f, xPunto);
             
             // Dibuja el punto en verde
-            ctx.fillStyle = "green";
+            ctx.fillStyle = "red";
             ctx.beginPath();
             ctx.arc(transformarX(xPunto), transformarY(yPunto), 5, 0, 2 * Math.PI);
             ctx.fill();
             
             // Dibuja la recta tangente en naranja
-            ctx.strokeStyle = "orange";
+            ctx.strokeStyle = "red";
             ctx.beginPath();
             let x1 = xPunto - 1;
             let y1 = yPunto - pendiente;
@@ -127,9 +127,9 @@
             ctx.stroke();
         }
 
-        // Mueve el gráfico con el arrastre del mouse
-        c.addEventListener("mousemove", (event) => {
-            if (isDragging) {
+        // Dibujar la tangente con el movimmiento del raton
+        function tangente(event){
+            if (arrastrar) {
                 offsetX += (event.clientX - startX) / zoom;
                 offsetY -= (event.clientY - startY) / zoom;
                 startX = event.clientX;
@@ -141,23 +141,23 @@
                 xPunto = (event.clientX - rect.left - c.width / 2) / zoom - offsetX;
                 graficar();
             }
-        });
+        }
 
         // Inicia el arrastre al hacer clic en el canvas
         c.addEventListener("mousedown", (event) => {
-            isDragging = true;
+            arrastrar = true;
             startX = event.clientX;
             startY = event.clientY;
         });
 
         // Termina el arrastre cuando se suelta el mouse
         c.addEventListener("mouseup", () => {
-            isDragging = false;
+            arrastrar = false;
         });
 
         // Funciones de zoom con los botones
-        function zoomIn() { zoom *= 1.2; graficar(); }
-        function zoomOut() { zoom /= 1.2; graficar(); }
+        function zoomIn() { zoom =zoom*1.2; graficar(); }
+        function zoomOut() { zoom= zoom/1.2; graficar(); }
     
     </script>
 </body>
