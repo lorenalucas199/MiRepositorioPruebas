@@ -60,20 +60,20 @@
         function transformarY(y) { return c.height / 2 - (y + offsetY) * zoom; }
         function invertirX(px) { return (px - c.width / 2) / zoom - offsetX; }
 
+        
+        // Aproximación de la derivada con diferencia finita
+        function derivada(f, x, h = 0.001) {
+            return (f(x + h) - f(x)) / h;
+        }
+
         // Función principal para dibujar la gráfica
         function graficar() {
-            const inputFuncion = document.getElementById("funcion").value;
-            try {
                 // Crear la función a partir del input del usuario
-                f = new Function("x", "return " + inputFuncion);
+                f = new Function("x", "return " + document.getElementById("funcion").value);
                 ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
                 dibujarFuncion(f, "blue"); // Dibujar la función en azul
-                dibujarFuncion(x => derivada(f, x), "red"); // Dibujar la derivada en rojo
                 dibujarPuntoTangente(); // Dibujar el punto y su recta tangente
-            } catch (e) {
-                alert("Error en la función ingresada");
-            }
         }
 
         // Dibuja los ejes X e Y en negro
@@ -126,18 +126,15 @@
         // Mueve el gráfico con el arrastre del mouse
         c.addEventListener("mousemove", (event) => {
             if (isDragging) {
-                let dx = (event.clientX - startX) / zoom;
-                let dy = (event.clientY - startY) / zoom;
-                offsetX += dx;  // Invertido para que se mueva correctamente
-                offsetY -= dy;  // Invertido para que se mueva correctamente
+                offsetX += (event.clientX - startX) / zoom;
+                offsetY -= (event.clientY - startY) / zoom;
                 startX = event.clientX;
                 startY = event.clientY;
                 graficar();
             } else {
                 // Si no se está arrastrando, actualizar el punto donde se evalúa la tangente
                 let rect = c.getBoundingClientRect();
-                let x = (event.clientX - rect.left - c.width / 2) / zoom - offsetX;
-                xPunto = x;
+                xPunto = (event.clientX - rect.left - c.width / 2) / zoom - offsetX;
                 graficar();
             }
         });
@@ -147,13 +144,11 @@
             isDragging = true;
             startX = event.clientX;
             startY = event.clientY;
-            c.style.cursor = "grabbing";
         });
 
         // Termina el arrastre cuando se suelta el mouse
         c.addEventListener("mouseup", () => {
             isDragging = false;
-            c.style.cursor = "grab";
         });
 
     
