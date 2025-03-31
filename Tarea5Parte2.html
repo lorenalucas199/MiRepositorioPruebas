@@ -42,24 +42,18 @@
     <br><br>
     <canvas id="canvas" width="600" height="400" class="recuadro"></canvas>
     
-    <script> //Vamos a definir las funciones que utilizaremos
+    <script> //Vamos a definir lo que se realiza en el interior del canvas:
         // Obtener referencia al canvas y su contexto de dibujo
         var c = document.getElementById("canvas");
         var ctx = c.getContext("2d");
 
         // Variables globales
         let f;  //Función ingresada por el usuario
-        let xPunto = 0;  //Punto donde se evalúa la derivada
         let zoom = 40;  //Factor de zoom
         let offsetX = 0, offsetY = 0; // Desplazamiento de la vista en X e Y
         let isDragging = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
-
-        // Aproximación numérica de la derivada mediante el método de diferencia finita
-        function derivada(f, x, h = 0.001) {
-            return (f(x + h) - f(x)) / h;
-        }
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
         function transformarX(x) { return c.width / 2 + (x + offsetX) * zoom; }
@@ -162,19 +156,7 @@
             c.style.cursor = "grab";
         });
 
-        // Maneja el zoom con la rueda del mouse
-        c.addEventListener("wheel", (event) => {
-            let zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
-            zoom *= zoomFactor;
-            graficar();
-            event.preventDefault();
-        });
-
-        // Ajusta el tamaño del canvas si la ventana cambia de tamaño
-        window.addEventListener("resize", graficar);
-
-        // Inicializa el canvas al cargar la página
-        graficar();
+    
     </script>
 </body>
 </html>
