@@ -40,6 +40,10 @@
     <input type="text" name="campoTexto" value="Math.sin(x)" id="funcion"> <!value es el valor predeterminado que aparece>
     <button onclick="graficar()">Graficar</button>
     <br><br>
+    <!-- Botones de zoom -->
+    <button onclick="zoomIn()">+</button>
+    <button onclick="zoomOut()">-</button>
+    <br><br>
     <canvas id="canvas" width="600" height="400" class="recuadro"></canvas>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
@@ -151,6 +155,9 @@
             isDragging = false;
         });
 
+        // Funciones de zoom con los botones
+        function zoomIn() { zoom *= 1.2; graficar(); }
+        function zoomOut() { zoom /= 1.2; graficar(); }
     
     </script>
 </body>
