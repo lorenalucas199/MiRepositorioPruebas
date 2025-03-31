@@ -44,7 +44,7 @@
     <button onclick="zoomIn()">+</button>
     <button onclick="zoomOut()">-</button>
     <br><br>
-    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)' onmousedown='sostener(event)' onmouseleave='soltar(event)'></canvas>
+    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)' onmousedown='sostener(event)' onmouseup='soltar(event)'></canvas>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
         // Obtener referencia al canvas y su contexto de dibujo
