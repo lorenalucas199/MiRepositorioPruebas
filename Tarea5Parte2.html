@@ -62,9 +62,9 @@
         }
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return canvas.width / 2 + (x + offsetX) * zoom; }
-        function transformarY(y) { return canvas.height / 2 - (y + offsetY) * zoom; }
-        function invertirX(px) { return (px - canvas.width / 2) / zoom - offsetX; }
+        function transformarX(x) { return c.width / 2 + (x + offsetX) * zoom; }
+        function transformarY(y) { return c.height / 2 - (y + offsetY) * zoom; }
+        function invertirX(px) { return (px - c.width / 2) / zoom - offsetX; }
 
         // Función principal para dibujar la gráfica
         function graficar() {
@@ -72,7 +72,7 @@
             try {
                 // Crear la función a partir del input del usuario
                 f = new Function("x", "return " + inputFuncion);
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+                ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
                 dibujarFuncion(f, "blue"); // Dibujar la función en azul
                 dibujarFuncion(x => derivada(f, x), "red"); // Dibujar la derivada en rojo
@@ -87,9 +87,9 @@
             ctx.strokeStyle = "black";
             ctx.beginPath();
             ctx.moveTo(0, transformarY(0));
-            ctx.lineTo(canvas.width, transformarY(0)); // Eje X
+            ctx.lineTo(c.width, transformarY(0)); // Eje X
             ctx.moveTo(transformarX(0), 0);
-            ctx.lineTo(transformarX(0), canvas.height); // Eje Y
+            ctx.lineTo(transformarX(0), c.height); // Eje Y
             ctx.stroke();
         }
 
@@ -97,7 +97,7 @@
         function dibujarFuncion(f, color) {
             ctx.strokeStyle = color;
             ctx.beginPath();
-            for (let x = invertirX(0); x < invertirX(canvas.width); x += 0.05) {
+            for (let x = invertirX(0); x < invertirX(c.width); x += 0.05) {
                 let y = f(x);
                 if (isFinite(y)) {
                     ctx.lineTo(transformarX(x), transformarY(y));
@@ -130,7 +130,7 @@
         }
 
         // Mueve el gráfico con el arrastre del mouse
-        canvas.addEventListener("mousemove", (event) => {
+        c.addEventListener("mousemove", (event) => {
             if (isDragging) {
                 let dx = (event.clientX - startX) / zoom;
                 let dy = (event.clientY - startY) / zoom;
@@ -141,29 +141,29 @@
                 graficar();
             } else {
                 // Si no se está arrastrando, actualizar el punto donde se evalúa la tangente
-                let rect = canvas.getBoundingClientRect();
-                let x = (event.clientX - rect.left - canvas.width / 2) / zoom - offsetX;
+                let rect = c.getBoundingClientRect();
+                let x = (event.clientX - rect.left - c.width / 2) / zoom - offsetX;
                 xPunto = x;
                 graficar();
             }
         });
 
         // Inicia el arrastre al hacer clic en el canvas
-        canvas.addEventListener("mousedown", (event) => {
+        c.addEventListener("mousedown", (event) => {
             isDragging = true;
             startX = event.clientX;
             startY = event.clientY;
-            canvas.style.cursor = "grabbing";
+            c.style.cursor = "grabbing";
         });
 
         // Termina el arrastre cuando se suelta el mouse
-        canvas.addEventListener("mouseup", () => {
+        c.addEventListener("mouseup", () => {
             isDragging = false;
-            canvas.style.cursor = "grab";
+            c.style.cursor = "grab";
         });
 
         // Maneja el zoom con la rueda del mouse
-        canvas.addEventListener("wheel", (event) => {
+        c.addEventListener("wheel", (event) => {
             let zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
             zoom *= zoomFactor;
             graficar();
