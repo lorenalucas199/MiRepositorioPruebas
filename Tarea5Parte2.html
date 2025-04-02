@@ -36,12 +36,12 @@
 <body style="font-family:'Rubik', sans-serif; font-size:18px; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Recta tangente</h1>
     <h3>de Lorena Lucas Baños</h3>
-    Ingresa una función $f(x)$ (en JavaScript):
-    <input type="text" name="campoTexto" value="Math.sin(x)" id="fintro"> <!value es el valor predeterminado que aparece>
+    <label for="funcion">Ingresa una función $f(x)$ (en JavaScript): </label>
+    <input type="text" name="campoTexto" value="Math.sin(x)" id="funcionintro"> <!value es el valor predeterminado que aparece>
     <button onclick="graficar()">Graficar</button>
     <br><br>
     <!-- Botones de zoom -->
-    <button onclick="zoomIn()"> + </button> $\qquad \qquad$
+    <button onclick="zoomIn()"> + </button> $\quad$
     <button onclick="zoomOut()"> - </button>
     <br><br>
     <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='tangente(event)' onmousedown='sostener(event)' onmouseup='soltar(event)'></canvas>
@@ -53,9 +53,9 @@
         var ctx = c.getContext("2d");
 
         // Variables globales
+        let f;  //Función introducida por el usuario
         let zoom = 40;  //Zoom inicial: 40 para que se vea relativamente cerca
         let desX = 0, desY = 0; // Desplazamiento de la vista inicial en X e Y es 0
-        let f;
         let arrastrar = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
@@ -74,9 +74,7 @@
         // Función principal para dibujar la gráfica
         function graficar() {
                 // Crear la función a partir del input del usuario
-                function f(x){
-                    return document.getElementById("fintro").value;
-                }
+                f = new Function("x", "return " + document.getElementById("funcionintro").value);
                 ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
                 dibujarFuncion(f, "blue"); // Dibujar la función en azul
