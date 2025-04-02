@@ -74,7 +74,9 @@
         // Función principal para dibujar la gráfica
         function graficar() {
                 // Crear la función a partir del input del usuario
-                f = new Function("x", "return " + document.getElementById("funcionintro").value);
+                function f(x){
+                    return document.getElementById("funcionintro").value
+                };
                 ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
                 dibujarFuncion(f, "blue"); // Dibujar la función en azul
