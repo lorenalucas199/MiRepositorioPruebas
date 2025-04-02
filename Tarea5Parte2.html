@@ -37,7 +37,7 @@
     <h1>Recta tangente</h1>
     <h3>de Lorena Lucas Baños</h3>
     Ingresa una función $f(x)$ (en JavaScript):
-    <input type="text" name="campoTexto" value="Math.sin(x)" id="f"> <!value es el valor predeterminado que aparece>
+    <input type="text" name="campoTexto" value="Math.sin(x)" id="fintro"> <!value es el valor predeterminado que aparece>
     <button onclick="graficar()">Graficar</button>
     <br><br>
     <!-- Botones de zoom -->
@@ -55,7 +55,7 @@
         // Variables globales
         let zoom = 40;  //Zoom inicial: 40 para que se vea relativamente cerca
         let desX = 0, desY = 0; // Desplazamiento de la vista inicial en X e Y es 0
-        let funcion;
+        let f;
         let arrastrar = false; // Estado de arrastre
         let startX, startY; // Posición inicial del mouse al hacer click
 
@@ -74,8 +74,8 @@
         // Función principal para dibujar la gráfica
         function graficar() {
                 // Crear la función a partir del input del usuario
-                function funcion(x){
-                    return document.getElementById("f").value;
+                function f(x){
+                    return document.getElementById("fintro").value;
                 }
                 ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
