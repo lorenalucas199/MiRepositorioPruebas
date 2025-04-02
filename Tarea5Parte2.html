@@ -33,7 +33,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
 
     
-<body style="font-family:'Rubik', sans-serif; font-size:18px; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
+<body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Recta tangente</h1>
     <h3>de Lorena Lucas Baños</h3>
     Ingresa una función $f(x)$ (en JavaScript):
@@ -63,7 +63,7 @@
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
         function transformarX(x) { return c.width / 2 + (x + desX) * zoom; }
         function transformarY(y) { return c.height / 2 - (y + desY) * zoom; }
-        function invertirX(px) { return (px - c.width / 2) / zoom - desX; }
+        function convertirX(pixeles) { return (pixeles - c.width / 2) / zoom - desX; } //Cada zoom es una unidad de la gráfica. Ej: pixeles=500 a zoom, lo centra segun los ejes del canvas, se divide entre el zoom para saber la unidad y se quita el desplazamiento que se haga
 
         
         // Aproximación de la derivada con diferencia finita
@@ -73,12 +73,11 @@
 
         // Función principal para dibujar la gráfica
         function graficar() {
-                // Crear la función a partir del input del usuario
-                //f = new Function("x", "return " + document.getElementById("funcionintro").value);
-                const f=x=>document.getElementById("funcionintro").value;
+                // Rescatar la función introducida por el usuario
+                f = new Function("x", "return " + document.getElementById("funcionintro").value);
                 ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
                 dibujarEjes(); // Dibujar los ejes cartesianos
-                dibujarFuncion(f, "blue"); // Dibujar la función en azul
+                dibujarFuncion(f); // Dibujar la función en azul
                 dibujarPuntoTangente(); // Dibujar el punto y su recta tangente
         }
 
@@ -94,10 +93,10 @@
         }
 
         // Dibuja la función en el color especificado
-        function dibujarFuncion(f, color) {
-            ctx.strokeStyle = color;
+        function dibujarFuncion(f) {
+            ctx.strokeStyle = blue;
             ctx.beginPath();
-            for (let x = invertirX(0); x < invertirX(c.width); x += 0.05) {
+            for (let x = convertirX(0); x < convertirX(c.width); x += 0.05) {
                 let y = f(x);
                 if (isFinite(y)) {
                     ctx.lineTo(transformarX(x), transformarY(y));
