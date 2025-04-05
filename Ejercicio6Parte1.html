@@ -123,8 +123,8 @@
             //expr1 = expr1.multiply(r1.m);
             //expr1 = expr1.add(r1.b);
 
-            let m1 = new Fraction(r1.m);
-            let b1 = new Fraction(r1.b);
+            let m1 = new Fraction(r1.m,1);
+            let b1 = new Fraction(r1.b,1);
             console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
