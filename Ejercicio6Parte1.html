@@ -123,6 +123,13 @@
             //expr1 = expr1.multiply(r1.m);
             //expr1 = expr1.add(r1.b);
 
+            let m1 = new Expression("r1.m");
+            let b1 = new Expression("r1.b");
+            console.log(typeof m1);
+            var expr1 = new Expression("x");
+            expr1= expr1.multiply(m1);
+            expr1 = expr1.add(b1);
+            
             let m2 = new Expression("r2.m");
             let b2 = new Expression("r2.b");
             console.log(typeof m2);
