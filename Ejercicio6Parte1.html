@@ -116,15 +116,13 @@
             
             let m1 = new Fraction(r1.m);
             let b1 = new Fraction(r1.b);
-            var expr1 = new Expression("x");
-            expr1 = expr1.multiply(m1);
-            expr1 = expr1.add(b1);
+            let expr1 = new Expression("x");
+            expr1 = expr1.multiply(m1).add(b1);
 
             let m2 = new Fraction(r2.m);
             let b2 = new Fraction(r2.b);
             var expr2 = new Expression("x");
-            expr2= expr2.multiply(m2);
-            expr2 = expr2.add(b2);
+            expr2= expr2.multiply(m2).add(b2);
             
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
             
