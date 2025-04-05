@@ -67,13 +67,7 @@
                 dibujarRecta(puntos[2], puntos[3]);
 
                 let intersec = Interseccion(puntos[0], puntos[1], puntos[2], puntos[3]);
-                if (intersec) {
                     dibujarInterseccion(intersec);
-                } else {
-                    ctx.beginPath();
-                    ctx.font = "15px Rubik";
-                    ctx.fillText("Las rectas son paralelas.", 10, 50);
-                }
 
                 puntos = [];
             }
