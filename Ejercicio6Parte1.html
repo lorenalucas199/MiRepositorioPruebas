@@ -32,6 +32,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
 <script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fraction.js/4.0.0/fraction.min.js"></script>
     
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Recta tangente</h1>
@@ -43,7 +44,7 @@
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
         var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
-        var Fraction = algebra.Fraction;
+        //var Fraction = algebra.Fraction;
         var Expression = algebra.Expression;
         var Equation = algebra.Equation;
         
@@ -123,16 +124,16 @@
             expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x));
             expr1 = expr1.add(p1.y - m * p1.x);
 
-            let m1 = new Expression("r1.m");
-            let b1 = new Expression("r1.b");
+            let m1 = new Fraction(r1.m);
+            let b1 = new Fraction(r1.b);
             console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
             expr1 = expr1.add(b1);
             console.log(m1,b1,expr1);
             
-            let m2 = new Expression("r2.m");
-            let b2 = new Expression("r2.b");
+            let m2 = new Fraction(r2.m);
+            let b2 = new Fraction(r2.b);
             console.log(typeof m2);
             var expr2 = new Expression("x");
             expr2= expr2.multiply(m2);
