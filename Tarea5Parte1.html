@@ -29,6 +29,8 @@
 
     //Definir la función para dibujar las líneas entre los dos últimos puntos seleccionados:
     function dibujarLinPol(){
+        var punto = obtenerCoordenadas(event); //con la función definida anteriormente, guardamos en punto las coordenadas del click
+        puntos.push(punto); //lo añade a puntos
         if(puntos.length<2){
         return null; //si no hay al menos dos puntos, no se dibuja nada
         }
@@ -42,12 +44,7 @@
         ctx.stroke(); //dibujar la línea
     }
 
-    //Evento que detecta los clicks en el canvas y almacenas las coordenadas en puntos:
-    c.addEventListener('click', (event)=>{
-        var punto = obtenerCoordenadas(event); //con la función definida anteriormente, guardamos en punto las coordenadas del click
-        puntos.push(punto); //lo añade a puntos
-        dibujarLinPol(); //dibuja la línea de este punto y el anterior
-    });
+    
 
     //Función para deshacer el último punto agregado: borrará todo y volverá a repetir lo que hemos hecho en la función dibujarLinPol() con los puntos restantes
     function deshacerPunto(){
