@@ -113,27 +113,40 @@
 
             //var expr1=algebra.parse("r1.m*x-r1.b); //algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
             //var expr2=algebra.parse("r2.m*x-r2.b); 
-            
+
+
+
+
             let m1 = new Fraction(r1.m);
-            let b1 = new Fraction(r1.b);
-            let expr1 = new Expression("x");
-            expr1 = expr1.multiply(m1).add(b1);
+        let b1 = new Fraction(r1.b);
+        let m2 = new Fraction(r2.m);
+        let b2 = new Fraction(r2.b);
 
-            let m2 = new Fraction(r2.m);
-            let b2 = new Fraction(r2.b);
-            var expr2 = new Expression("x");
-            expr2= expr2.multiply(m2).add(b2);
-            
-            var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
-            
-            var valorx = eq1.solveFor("x"); // Resolvemos la ecuacion.
-            var numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
+        // Crear las expresiones
+        let expr1 = new Expression("x");
+        expr1 = expr1.multiply(m1).add(b1);
 
-            var numy=r1.m * numx + r1.b;
+        let expr2 = new Expression("x");
+        expr2 = expr2.multiply(m2).add(b2);
+
+        // Crear la ecuación
+        let eq1 = new Equation(expr1, expr2);
+
+        // Intentar resolver la ecuación
+        try {
+            let valorx = eq1.solveFor("x"); // Resolvemos la ecuación.
+            let numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
+
+            let numy = r1.m * numx + r1.b;
+            return { numx, numy };
+        } catch (error) {
+            // Si las rectas son paralelas o no se pueden resolver
+            return null;
+        }
             
-            return {numx,numy};
       
     }
+        }
     </script>
 </body>
 </html>
