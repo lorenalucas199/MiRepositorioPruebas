@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorema de Pitágoras Interactivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        #info {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Demostración Interactiva del Teorema de Pitágoras</h1>
+    <p>Arrastra los puntos para cambiar las longitudes de los lados del triángulo rectángulo.</p>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="info">
+        <p><strong>Teorema de Pitágoras:</strong></p>
+        <p>En un triángulo rectángulo, el cuadrado de la hipotenusa (el lado más largo) es igual a la suma de los cuadrados de los otros dos lados.</p>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let a = 100, b = 100, c = Math.sqrt(a * a + b * b);
+        let dragging = null;
+        let offsetX, offsetY;
+
+        // Puntos del triángulo
+        let p1 = { x: 50, y: 450 }; // punto A
+        let p2 = { x: p1.x + a, y: p1.y }; // punto B
+        let p3 = { x: p1.x, y: p1.y - b }; // punto C
+
+        function drawTriangle() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibuja el triángulo rectángulo
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Dibuja las longitudes de los lados
+            ctx.fillText(`a = ${a.toFixed(2)}`, (p1.x + p2.x) / 2 - 10, (p1.y + p2.y) / 2 - 10);
+            ctx.fillText(`b = ${b.toFixed(2)}`, (p1.x + p3.x) / 2 - 10, (p1.y + p3.y) / 2 + 10);
+            ctx.fillText(`c = ${c.toFixed(2)}`, (p2.x + p3.x) / 2 + 10, (p2.y + p3.y) / 2 - 10);
+
+            // Dibuja los puntos de los vértices
+            ctx.beginPath();
+            ctx.arc(p1.x, p1.y, 5, 0, Math.PI * 2);
+            ctx.arc(p2.x, p2.y, 5, 0, Math.PI * 2);
+            ctx.arc(p3.x, p3.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function updateInfo() {
+            c = Math.sqrt(a * a + b * b);
+            document.getElementById('resultado').innerText = `c² = a² + b²: ${c * c.toFixed(2)} = ${(a * a + b * b).toFixed(2)}`;
+        }
+
+        function checkDrag(event) {
+            let x = event.offsetX;
+            let y = event.offsetY;
+
+            // Verifica si el punto A, B o C está siendo arrastrado
+            if (Math.abs(x - p2.x) < 10 && Math.abs(y - p2.y) < 10) {
+                dragging = 'B';
+                offsetX = x - p2.x;
+                offsetY = y - p2.y;
+            } else if (Math.abs(x - p3.x) < 10 && Math.abs(y - p3.y) < 10) {
+                dragging = 'C';
+                offsetX = x - p3.x;
+                offsetY = y - p3.y;
+            }
+        }
+
+        function movePoint(event) {
+            if (dragging === 'B') {
+                p2.x = event.offsetX - offsetX;
+                p2.y = event.offsetY - offsetY;
+                a = p2.x - p1.x;
+                b = p1.y - p3.y;
+            } else if (dragging === 'C') {
+                p3.x = event.offsetX - offsetX;
+                p3.y = event.offsetY - offsetY;
+                b = p1.y - p3.y;
+                a = p2.x - p1.x;
+            }
+            updateInfo();
+            drawTriangle();
+        }
+
+        function stopDrag() {
+            dragging = null;
+        }
+
+        // Eventos
+        canvas.addEventListener('mousedown', checkDrag);
+        canvas.addEventListener('mousemove', movePoint);
+        canvas.addEventListener('mouseup', stopDrag);
+        canvas.addEventListener('mouseout', stopDrag);
+
+        // Dibuja el triángulo inicial
+        updateInfo();
+        drawTriangle();
+    </script>
+</body>
+</html>
