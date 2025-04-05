@@ -45,6 +45,7 @@
         var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
         var Fraction = math.fraction;
+        var Fraction2 = algebra.fraction;
         var Expression = algebra.Expression;
         var Equation = algebra.Equation;
         
@@ -124,8 +125,10 @@
             //expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x));
             //expr1 = expr1.add(p1.y - m * p1.x);
 
-            let m1 = new Fraction(r1.m);
-            let b1 = new Fraction(r1.b);
+            let rm1 = new Fraction(r1.m);
+            let m1 =new Fraction2(rm1);
+            let rb1 = new Fraction(r1.b);
+            let b1 =new Fraction2(rb1);
             console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
