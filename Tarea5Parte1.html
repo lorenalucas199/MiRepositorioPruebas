@@ -29,7 +29,6 @@
 
     //Definir la función para dibujar las líneas entre los dos últimos puntos seleccionados:
     function dibujarLinPol(){
-        var punto = obtenerCoordenadas(event); //con la función definida anteriormente, guardamos en punto las coordenadas del click
         puntos.push(punto); //lo añade a puntos
         if(puntos.length<2){
         return null; //si no hay al menos dos puntos, no se dibuja nada
