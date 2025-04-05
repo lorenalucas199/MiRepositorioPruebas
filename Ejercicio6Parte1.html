@@ -137,8 +137,12 @@
             expr1 = expr1.add(b1);
             console.log(m1,b1,expr1);
             
-            let m2 = new Fraction(r2.m);
-            let b2 = new Fraction(r2.b);
+            let rm2 = new Fraction(r2.m);
+            console.log(typeof rm2);
+            console.log(rm2);
+            let m2 =new Fraction2(rm2.n,rm2.d);
+            let rb2 = new Fraction(r2.b);
+            let b2 =new Fraction2(rb2.n,rb2.d);
             console.log(typeof m2);
             var expr2 = new Expression("x");
             expr2= expr2.multiply(m2);
