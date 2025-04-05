@@ -153,12 +153,12 @@
             console.log(eq1);
             
             var valorx = eq1.solveFor("x"); // Resolvemos la ecuacion.
-            //var numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
+            var numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
 
             var valory=r1.m * valorx + r1.b;
             
-            console.log(valorx,valory);
-            return {valorx,valory};
+            console.log(numx,valory);
+            return {numx,valory};
       
     }
         
