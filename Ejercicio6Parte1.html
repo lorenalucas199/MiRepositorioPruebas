@@ -46,7 +46,7 @@
 
         //Definir la función para obtener las coordenadas de cada click dentro del canvas:
         let puntos=[]; //definir la variable puntos para almacenarlos
-        function obtenerCoordenadas(event) {
+        function coordenadas(event) {
             let coordCanvas=c.getBoundingClientRect(); //posición del canvas en la pantalla          
             let x=event.clientX-coordCanvas.x; //coordenada X en el canvas
             let y=event.clientY-coordCanvas.y; //coordenada Y en el canvas
@@ -94,7 +94,7 @@
             ctx.fillStyle = 'black'; //se vuelve a cambiar a negro para que el resto se siga dibujando negro
         }
 
-        funcion ecuacionRecta(p1,p2){
+        function ecuacionRecta(p1,p2){
             let m=(p2.y - p1.y) / (p2.x - p1.x);
             let b = p1.y - m * p1.x;
             return { m, b }; // devuelve y = mx + b
