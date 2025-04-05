@@ -58,8 +58,8 @@
 
 
         // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return c.width / 2 + x * zoom; }
-        function transformarY(y) { return c.height / 2 - y * zoom; }
+        function transformarX(x) { return (c.width / 2 + x) * zoom; }
+        function transformarY(y) { return (c.height / 2 - y) * zoom; }
         function convertirX(pixeles) { return (pixeles - c.width / 2) / zoom; } //Cada zoom es una unidad de la gráfica. Ej: pixeles=500 a zoom, lo centra segun los ejes del canvas, se divide entre el zoom para saber la unidad y se quita el desplazamiento que se haga
 
         
