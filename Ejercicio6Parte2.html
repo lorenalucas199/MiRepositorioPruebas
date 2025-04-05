@@ -3,117 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teorema de Pitágoras Interactivo</title>
+    <title>Teorema de Pitágoras - Desafío Divertido</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
         }
         canvas {
-            border: 1px solid black;
+            border: 2px solid black;
+            background-color: #f0f0f0;
         }
         #info {
-            margin-top: 10px;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #status {
+            font-weight: bold;
+            font-size: 20px;
+            color: green;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Demostración Interactiva del Teorema de Pitágoras</h1>
-    <p>Arrastra los puntos para cambiar las longitudes de los lados del triángulo rectángulo.</p>
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <h1>¡Desafío Interactivo del Teorema de Pitágoras!</h1>
+    <p>Arrastra los bloques para formar un triángulo rectángulo válido según el Teorema de Pitágoras. ¡Que comience el desafío!</p>
+    <canvas id="canvas" width="600" height="400"></canvas>
     <div id="info">
-        <p><strong>Teorema de Pitágoras:</strong></p>
-        <p>En un triángulo rectángulo, el cuadrado de la hipotenusa (el lado más largo) es igual a la suma de los cuadrados de los otros dos lados.</p>
-        <p id="resultado"></p>
+        <p><strong>Teorema de Pitágoras:</strong> \(a^2 + b^2 = c^2\)</p>
+        <p id="status">¡Buena suerte!</p>
+        <button class="button" onclick="resetGame()">Reiniciar</button>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
-        let a = 100, b = 100, c = Math.sqrt(a * a + b * b);
+        let a = 100, b = 150, c = Math.sqrt(a * a + b * b);
         let dragging = null;
         let offsetX, offsetY;
 
-        // Puntos del triángulo
-        let p1 = { x: 50, y: 450 }; // punto A
-        let p2 = { x: p1.x + a, y: p1.y }; // punto B
-        let p3 = { x: p1.x, y: p1.y - b }; // punto C
+        const blockA = { x: 50, y: 300, width: a, height: 20, color: 'red' }; // lado A
+        const blockB = { x: 50, y: 100, width: 20, height: b, color: 'blue' }; // lado B
+        const blockC = { x: 200, y: 200, width: c, height: 20, color: 'green' }; // hipotenusa (lado C)
 
-        function drawTriangle() {
+        // Dibuja los bloques
+        function drawBlocks() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Dibuja el triángulo rectángulo
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.lineTo(p3.x, p3.y);
-            ctx.closePath();
-            ctx.stroke();
+            ctx.fillStyle = blockA.color;
+            ctx.fillRect(blockA.x, blockA.y, blockA.width, blockA.height);
 
-            // Dibuja las longitudes de los lados
-            ctx.fillText(`a = ${a.toFixed(2)}`, (p1.x + p2.x) / 2 - 10, (p1.y + p2.y) / 2 - 10);
-            ctx.fillText(`b = ${b.toFixed(2)}`, (p1.x + p3.x) / 2 - 10, (p1.y + p3.y) / 2 + 10);
-            ctx.fillText(`c = ${c.toFixed(2)}`, (p2.x + p3.x) / 2 + 10, (p2.y + p3.y) / 2 - 10);
+            ctx.fillStyle = blockB.color;
+            ctx.fillRect(blockB.x, blockB.y, blockB.width, blockB.height);
 
-            // Dibuja los puntos de los vértices
-            ctx.beginPath();
-            ctx.arc(p1.x, p1.y, 5, 0, Math.PI * 2);
-            ctx.arc(p2.x, p2.y, 5, 0, Math.PI * 2);
-            ctx.arc(p3.x, p3.y, 5, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillStyle = blockC.color;
+            ctx.fillRect(blockC.x, blockC.y, blockC.width, blockC.height);
+
+            ctx.fillStyle = 'black';
+            ctx.fillText(`a = ${a.toFixed(2)}`, blockA.x + blockA.width / 2 - 10, blockA.y + 30);
+            ctx.fillText(`b = ${b.toFixed(2)}`, blockB.x + 30, blockB.y + blockB.height / 2);
+            ctx.fillText(`c = ${c.toFixed(2)}`, blockC.x + blockC.width / 2 - 10, blockC.y + 30);
         }
 
-        function updateInfo() {
-            c = Math.sqrt(a * a + b * b);
-            document.getElementById('resultado').innerText = `c² = a² + b²: ${c * c.toFixed(2)} = ${(a * a + b * b).toFixed(2)}`;
+        // Verifica si la ecuación es correcta
+        function checkEquation() {
+            let result = (Math.abs((a * a + b * b) - (c * c)) < 0.1);
+            const status = document.getElementById('status');
+            if (result) {
+                status.innerHTML = "¡Correcto! El Teorema de Pitágoras se cumple.";
+                status.style.color = "green";
+            } else {
+                status.innerHTML = "¡Intenta de nuevo! Ajusta los bloques.";
+                status.style.color = "red";
+            }
         }
 
+        // Función para comenzar a arrastrar
         function checkDrag(event) {
             let x = event.offsetX;
             let y = event.offsetY;
 
-            // Verifica si el punto A, B o C está siendo arrastrado
-            if (Math.abs(x - p2.x) < 10 && Math.abs(y - p2.y) < 10) {
+            // Verifica si el bloque A, B o C está siendo arrastrado
+            if (x > blockA.x && x < blockA.x + blockA.width && y > blockA.y && y < blockA.y + blockA.height) {
+                dragging = 'A';
+                offsetX = x - blockA.x;
+                offsetY = y - blockA.y;
+            } else if (x > blockB.x && x < blockB.x + blockB.width && y > blockB.y && y < blockB.y + blockB.height) {
                 dragging = 'B';
-                offsetX = x - p2.x;
-                offsetY = y - p2.y;
-            } else if (Math.abs(x - p3.x) < 10 && Math.abs(y - p3.y) < 10) {
+                offsetX = x - blockB.x;
+                offsetY = y - blockB.y;
+            } else if (x > blockC.x && x < blockC.x + blockC.width && y > blockC.y && y < blockC.y + blockC.height) {
                 dragging = 'C';
-                offsetX = x - p3.x;
-                offsetY = y - p3.y;
+                offsetX = x - blockC.x;
+                offsetY = y - blockC.y;
             }
         }
 
-        function movePoint(event) {
-            if (dragging === 'B') {
-                p2.x = event.offsetX - offsetX;
-                p2.y = event.offsetY - offsetY;
-                a = p2.x - p1.x;
-                b = p1.y - p3.y;
+        function moveBlock(event) {
+            if (dragging === 'A') {
+                blockA.x = event.offsetX - offsetX;
+                blockA.y = event.offsetY - offsetY;
+                a = blockA.width;
+                b = Math.sqrt(c * c - a * a);
+            } else if (dragging === 'B') {
+                blockB.x = event.offsetX - offsetX;
+                blockB.y = event.offsetY - offsetY;
+                b = blockB.height;
+                c = Math.sqrt(a * a + b * b);
             } else if (dragging === 'C') {
-                p3.x = event.offsetX - offsetX;
-                p3.y = event.offsetY - offsetY;
-                b = p1.y - p3.y;
-                a = p2.x - p1.x;
+                blockC.x = event.offsetX - offsetX;
+                blockC.y = event.offsetY - offsetY;
+                c = blockC.width;
+                a = Math.sqrt(c * c - b * b);
             }
-            updateInfo();
-            drawTriangle();
+            drawBlocks();
+            checkEquation();
         }
 
         function stopDrag() {
             dragging = null;
         }
 
+        // Reinicia el juego
+        function resetGame() {
+            a = 100;
+            b = 150;
+            c = Math.sqrt(a * a + b * b);
+            blockA.x = 50;
+            blockA.y = 300;
+            blockB.x = 50;
+            blockB.y = 100;
+            blockC.x = 200;
+            blockC.y = 200;
+            document.getElementById('status').innerHTML = "¡Buena suerte!";
+            drawBlocks();
+        }
+
         // Eventos
         canvas.addEventListener('mousedown', checkDrag);
-        canvas.addEventListener('mousemove', movePoint);
+        canvas.addEventListener('mousemove', moveBlock);
         canvas.addEventListener('mouseup', stopDrag);
         canvas.addEventListener('mouseout', stopDrag);
 
-        // Dibuja el triángulo inicial
-        updateInfo();
-        drawTriangle();
+        // Dibuja los bloques inicialmente
+        drawBlocks();
+        checkEquation();
     </script>
 </body>
 </html>
