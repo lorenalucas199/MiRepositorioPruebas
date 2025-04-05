@@ -123,12 +123,13 @@
             //expr1 = expr1.multiply(r1.m);
             //expr1 = expr1.add(r1.b);
 
-            let m1 = new Fraction(r1.m,1);
-            let b1 = new Fraction(r1.b,1);
+            let m1 = new Expression(r1.m,1);
+            let b1 = new Expression(r1.b,1);
             console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
             expr1 = expr1.add(b1);
+            console.log(m1,b1,expr1);
             
             let m2 = new Expression("r2.m");
             let b2 = new Expression("r2.b");
@@ -136,8 +137,10 @@
             var expr2 = new Expression("x");
             expr2= expr2.multiply(m2);
             expr2 = expr2.add(b2);
+            console.log(m2,b2,expr2);
             
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
+            console.log(eq1);
             
             var valorx = eq1.solveFor("x"); // Resolvemos la ecuacion.
             //var numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
