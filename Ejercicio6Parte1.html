@@ -67,7 +67,7 @@
                 dibujarRecta(puntos[2], puntos[3]);
 
                 let intersec = Interseccion(puntos[0], puntos[1], puntos[2], puntos[3]);
-                    dibujarInterseccion(intersec);
+                    dibujarInterseccion(intersec.x,intersec.y);
 
                 puntos = [];
             }
@@ -86,13 +86,11 @@
             ctx.stroke();
         }
 
-        function dibujarInterseccion(p) {
-            ctx.fillStyle = 'red';
+        function dibujarInterseccion(x,y) {
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+            ctx.arc(x, y, 6, 0, 2 * Math.PI);
             ctx.fill();
-            ctx.fillStyle = 'black'; //se vuelve a cambiar a negro para que el resto se siga dibujando negro
-        }
+            }
 
         function ecuacionRecta(p1,p2){
             let m=(p2.y - p1.y) / (p2.x - p1.x);
