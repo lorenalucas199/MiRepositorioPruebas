@@ -56,7 +56,7 @@
             dibujarPunto(x,y); //dibuja ese punto
 
             if (puntos.length == 2) { //cuando haya 2 puntos dibujar las una rectas
-                recta(puntos[0], puntos[1]);
+                dibujarRecta(puntos[0], puntos[1]);
             }
             if(puntos.length == 4) { //cuando haya 4 puntos dibujar la otra recta, la interseccion
                 dibujarRecta(puntos[2], puntos[3]);
@@ -69,7 +69,7 @@
                     ctx.fillText("Las rectas son paralelas.", 10, 50);
                 }
 
-                points = [];
+                puntos = [];
             }
         }
 
@@ -110,8 +110,13 @@
 
             //var expr1=algebra.parse("r1.m*x-r1.b); //algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
             //var expr2=algebra.parse("r2.m*x-r2.b);  
-            var expr1 = new algebra.Expression(r1.m).multiply(x).add(r1.b);
-            var expr2 = new algebra.Expression(r2.m).multiply(x).add(r2.b);
+
+            var expr1 = new Expression("x");
+            expr1 = expr1.multiply(r1.m);
+            expr1 = expr1.add(r1.b);
+            var expr2 = new Expression("x");
+            expr2= expr2.multiply(r2.m);
+            expr2 = expr2.add(r2.b);
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
             
             var valorx = eq1.solveFor("x"); // Resolvemos la ecuacion.
