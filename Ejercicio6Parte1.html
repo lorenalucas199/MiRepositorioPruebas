@@ -160,7 +160,7 @@ console.log(typeof solx); //COMPROBACIÓN
 console.log(solx); //COMPROBACIÓN
             var valorx=solx.numer/solx.denom; //lo convertimos a número para poder obtener y
 
-            var valory=m1*valorx+b1;
+            var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
             
             return {x:valorx,y:valory};
       
