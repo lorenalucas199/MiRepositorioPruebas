@@ -150,7 +150,7 @@ console.log(m1); //COMPROBACIÓN
             var solx = eq1.solveFor("x"); // Resolvemos la ecuacion.
 console.log(typeof solx); //COMPROBACIÓN
 console.log(solx); //COMPROBACIÓN
-            var valorx = parseFloat(solx.toString()); // lo convertimos a número para poder obtener y
+            var valorx = solx.numer/solx.denom; // lo convertimos a número para poder obtener y
 
             var valory=r1.m * valorx + r1.b;
             
