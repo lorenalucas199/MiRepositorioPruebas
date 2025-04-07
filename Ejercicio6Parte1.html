@@ -114,45 +114,53 @@ console.log(typeof intersec.y); //COMPROBACIÓN
             /*var expr1=algebra.parse("r1.m*x-r1.b"); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
             var expr2=algebra.parse("r2.m*x-r2.b");*/ 
 
-            /*var expr1 = new Expression("x");
-            expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x)); //da error al multiplicar (argumento must be of type String, Expression, Term, Fraction or Integer)
-            expr1 = expr1.add(p1.y - m * p1.x);*/
+            /*var expr1=new Expression("x");
+            expr1=expr1.multiply((p2.y-p1.y) / (p2.x-p1.x)); //da error al multiplicar (argumento must be of type String, Expression, Term, Fraction or Integer)
+            expr1=expr1.add(p1.y - m*p1.x);*/
 
-            /*let rm1 = new Fraction(r1.m);
-            let rb1 = new Fraction(r1.b);
-            var expr1 = new Expression("x");
-            expr1= expr1.multiply(rm1); //da error al multiplicar (igual que antes) (supongo que porque son distintas librerias)
-            expr1 = expr1.add(rb1);*/
-            
-
-            let rm1 = new Fraction(r1.m);
+            let rm1=new Fraction2(r1.m);
+            let rb1=new Fraction2(r1.b);
 console.log(typeof rm1); //COMPROBACIÓN
 console.log(rm1); //COMPROBACIÓN
-            let m1 =new Fraction2(rm1.n,rm1.d);
+            var expr1=new Expression("x");
+            expr1=expr1.multiply(rm1); //da error al multiplicar (igual que antes) (supongo que porque son distintas librerias)
+            expr1=expr1.add(rb1);
+            
+            /*let rm1=new Fraction(r1.m);
+            let rb1=new Fraction(r1.b);
+            var expr1=new Expression("x");
+            expr1=expr1.multiply(rm1); //da error al multiplicar (igual que antes) (supongo que porque son distintas librerias)
+            expr1=expr1.add(rb1);*/
+            
+            //Vamos a usar primero la librería math para obtener 
+            let rm1=new Fraction(r1.m);
+console.log(typeof rm1); //COMPROBACIÓN
+console.log(rm1); //COMPROBACIÓN
+            let m1=new Fraction2(rm1.n,rm1.d);
 console.log(typeof m1); //COMPROBACIÓN
 console.log(m1); //COMPROBACIÓN
-            let rb1 = new Fraction(r1.b);
-            let b1 =new Fraction2(rb1.n,rb1.d);
-            var expr1 = new Expression("x");
-            expr1= expr1.multiply(m1);
-            expr1 = expr1.add(b1);
+            let rb1=new Fraction(r1.b);
+            let b1=new Fraction2(rb1.n,rb1.d);
+            var expr1=new Expression("x");
+            expr1=expr1.multiply(m1);
+            expr1=expr1.add(b1);
             
-            let rm2 = new Fraction(r2.m);
-            let m2 =new Fraction2(rm2.n,rm2.d);
-            let rb2 = new Fraction(r2.b);
-            let b2 =new Fraction2(rb2.n,rb2.d);
-            var expr2 = new Expression("x");
-            expr2= expr2.multiply(m2);
-            expr2 = expr2.add(b2);
+            let rm2=new Fraction(r2.m);
+            let m2=new Fraction2(rm2.n,rm2.d);
+            let rb2=new Fraction(r2.b);
+            let b2=new Fraction2(rb2.n,rb2.d);
+            var expr2=new Expression("x");
+            expr2=expr2.multiply(m2);
+            expr2=expr2.add(b2);
            
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
             
-            var solx = eq1.solveFor("x"); // Resolvemos la ecuacion.
+            var solx= eq1.solveFor("x"); // Resolvemos la ecuacion.
 console.log(typeof solx); //COMPROBACIÓN
 console.log(solx); //COMPROBACIÓN
-            var valorx = solx.numer/solx.denom; // lo convertimos a número para poder obtener y
+            var valorx=solx.numer/solx.denom; // lo convertimos a número para poder obtener y
 
-            var valory=m1 * valorx + b1;
+            var valory=m1*valorx+b1;
             
             return {x:valorx,y:valory};
       
