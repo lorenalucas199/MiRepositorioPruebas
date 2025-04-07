@@ -36,101 +36,119 @@
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Recta tangente</h1>
     <h3>de Lorena Lucas Baños</h3>
+    
     Ingresa una función $f(x)$ (en JavaScript):
     <input type="text" name="campoTexto" value="Math.sin(x)" id="funcionintro"> <!value es el valor predeterminado que aparece>
+    
+    <!Botón de graficar>
     <button onclick="graficar()">Graficar</button>
     <br><br>
-    <!-- Botones de zoom -->
+    
+    <!Botones de zoom>
     <button onclick="zoomIn()"> + </button> $\quad$
     <button onclick="zoomOut()"> - </button>
     <br><br>
+
+    <!Inicializar el canvas:>
     <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove='graficar(event)'></canvas>
-    <!cuando el ratón está en movimiento sobre el canvas, se ejecuta la función tangente; cuando se sostiene el click la función sostener y y al soltarlo, soltar>
+    <!cuando el ratón está en movimiento sobre el canvas, se ejecuta la función graficar>
     
     <script> //Vamos a definir lo que se realiza en el interior del canvas:
-        // Obtener referencia al canvas y su contexto de dibujo
+        //Obtener la referencia al canvas y que se dibuja en 2 dimensiones
         var c = document.getElementById("canvas");
         var ctx = c.getContext("2d");
 
-        // Variables globales
+        //Inicializamos algunas variables necesarias
         let f;  //Función introducida por el usuario
-        let zoom = 40;  //Zoom inicial: 40 para que se vea relativamente cerca
+        let zoom=40;  //Zoom inicial: 40 para que se vea relativamente cerca
 
 
-        // Funciones para transformar coordenadas entre el espacio del canvas y el matemático
-        function transformarX(x) { return c.width / 2 + x * zoom; }
-        function transformarY(y) { return c.height / 2 - y * zoom; }
-        function convertirX(pixeles) { return (pixeles - c.width / 2) / zoom; } //Cada zoom es una unidad de la gráfica. Ej: pixeles=500 a zoom, lo centra segun los ejes del canvas, se divide entre el zoom para saber la unidad y se quita el desplazamiento que se haga
+        //Funciones para transformar los pares de datos entre los píxeles del canva y un eje de coordenadas centrado en el medio del canvas (la coordenada (c.width/2,c.height/2)):
+        function transformarX(x){ 
+            return c.width/2 + x*zoom; //el centro del canvas MÁS la coordenada x ("agrandada"), porque la x crece hacia la DERECHA
+        }
+        function transformarY(y){ 
+            return c.height/2 - y*zoom;  //el centro MENOS la coordenada y ("agrandada"), porque la y crece hacia ABAJO (aumentan los pixeles cuando la y disminuye)
+        }
+        function convertirX(pixeles){ 
+            return (pixeles-c.width/2)/zoom; //cada zoom es una unidad de la gráfica. Ej: pixeles=500 a zoom, lo centra segun los ejes del canvas, se divide entre el zoom para saber la unidad y se quita el desplazamiento que se haga
+        } 
 
         
-        // Aproximación de la derivada con diferencia finita
-        function derivada(f, x, h = 0.001) {
-            return (f(x + h) - f(x)) / h;
+        //Aproximación de la derivada con la definición:
+        function derivada(f,x,h=0.001){
+            return (f(x+h)-f(x))/h;
         }
 
-        // Función principal para dibujar la gráfica
-        function graficar() {
-                // Rescatar la función introducida por el usuario
-                f = new Function("x", "return " + document.getElementById("funcionintro").value);
-                ctx.clearRect(0, 0, c.width, c.height); // Limpiar el canvas
-                dibujarEjes(); // Dibujar los ejes cartesianos
-                dibujarFuncion(f); // Dibujar la función en azul
-                dibujarPuntoTangente(); // Dibujar el punto y su recta tangente
+        //Función principal para dibujar la gráfica
+        function graficar(){
+                function f(x){ 
+                    return document.getElementById("funcionintro").value //función introducida por el usuario
+                }
+                ctx.clearRect(0,0,c.width,c.height); //limpiar el canvas
+                dibujarEjes(); //dibujar los ejes cartesianos
+                dibujarFuncion(f); //dibujar la función
+                dibujarPuntoTangente(); //dibujar el punto y su recta tangente
         }
 
-        // Dibuja los ejes X e Y en negro
-        function dibujarEjes() {
-            ctx.strokeStyle = "black";
+        //Dibujar los ejes X e Y en negro
+        function dibujarEjes(){
+            ctx.strokeStyle="black";
             ctx.beginPath();
-            ctx.moveTo(0, transformarY(0));
-            ctx.lineTo(c.width, transformarY(0)); // Eje X
-            ctx.moveTo(transformarX(0), 0);
-            ctx.lineTo(transformarX(0), c.height); // Eje Y
+            ctx.moveTo(0,transformarY(0));
+            ctx.lineTo(c.width,transformarY(0)); //eje X
+            ctx.moveTo(transformarX(0),0);
+            ctx.lineTo(transformarX(0),c.height); // eje Y
             ctx.stroke();
         }
 
-        // Dibuja la función en el color especificado
-        function dibujarFuncion(f) {
-            ctx.strokeStyle = "blue";
+        //Dibujar la función en azul
+        function dibujarFuncion(f){
+            ctx.strokeStyle="blue";
             ctx.beginPath();
-            for (let x = convertirX(0); x < convertirX(c.width); x += 0.05) {
-                let y = f(x);
-                if (isFinite(y)) {
-                    ctx.lineTo(transformarX(x), transformarY(y));
-                }
+            let x=convertirX(0);
+            for(x; x<convertirX(c.width); x+=0.05){
+                let y=f(x);
+                ctx.lineTo(transformarX(x),transformarY(y));
             }
             ctx.stroke();
         }
 
-        // Dibuja el punto sobre la función y su recta tangente 
-        function dibujarPuntoTangente() {
+        //Dibujar el punto sobre la función y su recta tangente 
+        function dibujarPuntoTangente(){
             let coordCanvas=c.getBoundingClientRect();
-            xPunto = (event.clientX - coordCanvas.x - c.width / 2) / zoom ;
-            let yPunto = f(xPunto);
-            let pendiente = derivada(f, xPunto);
+            xPunto=(event.clientX - coordCanvas.x - c.width/2)/zoom ;
+            let yPunto=f(xPunto);
+            let pendiente=derivada(f, xPunto);
             
-            // Dibuja el punto 
-            ctx.fillStyle = "red";
+            //se dibuja el punto 
+            ctx.fillStyle="red";
             ctx.beginPath();
-            ctx.arc(transformarX(xPunto), transformarY(yPunto), 5, 0, 2 * Math.PI);
+            ctx.arc(transformarX(xPunto),transformarY(yPunto), 5, 0, 2*Math.PI);
             ctx.fill();
             
-            // Dibuja la recta tangente 
-            ctx.strokeStyle = "red";
+            //se dibuja la recta tangente 
+            ctx.strokeStyle="red";
             ctx.beginPath();
-            let x1 = xPunto - 1;
-            let y1 = yPunto - pendiente;
-            let x2 = xPunto + 1;
-            let y2 = yPunto + pendiente;
-            ctx.moveTo(transformarX(x1), transformarY(y1));
-            ctx.lineTo(transformarX(x2), transformarY(y2));
+            let x1=xPunto-1;
+            let y1=yPunto-pendiente;
+            let x2=xPunto+1;
+            let y2=yPunto+pendiente;
+            ctx.moveTo(transformarX(x1),transformarY(y1));
+            ctx.lineTo(transformarX(x2),transformarY(y2));
             ctx.stroke();
         }
 
 
-        // Funciones de zoom con los botones
-        function zoomIn() { zoom =zoom*1.2; graficar(); }
-        function zoomOut() { zoom= zoom/1.2; graficar(); }
+        //Funciones de zoom con los botones
+        function zoomIn(){
+            zoom=zoom*1.2; 
+            graficar(); 
+        }
+        function zoomOut(){ 
+            zoom=zoom/1.2; 
+            graficar(); 
+        }
     
     </script>
 </body>
