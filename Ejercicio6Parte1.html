@@ -118,24 +118,24 @@ console.log(typeof intersec.y); //COMPROBACIÓN
             expr1=expr1.multiply((p2.y-p1.y) / (p2.x-p1.x)); //da error al multiplicar (argumento must be of type String, Expression, Term, Fraction or Integer)
             expr1=expr1.add(p1.y - m*p1.x);*/
 
-            let rm1=new Fraction2(r1.m);
+            /*let rm1=new Fraction2(r1.m); //da error porque necesita dos argumentos, el denominador y el numerador
             let rb1=new Fraction2(r1.b);
-console.log(typeof rm1); //COMPROBACIÓN
-console.log(rm1); //COMPROBACIÓN
             var expr1=new Expression("x");
-            expr1=expr1.multiply(rm1); //da error al multiplicar (igual que antes) (supongo que porque son distintas librerias)
-            expr1=expr1.add(rb1);
+            expr1=expr1.multiply(rm1); 
+            expr1=expr1.add(rb1);*/
             
             /*let rm1=new Fraction(r1.m);
             let rb1=new Fraction(r1.b);
             var expr1=new Expression("x");
             expr1=expr1.multiply(rm1); //da error al multiplicar (igual que antes) (supongo que porque son distintas librerias)
             expr1=expr1.add(rb1);*/
+
             
-            //Vamos a usar primero la librería math para obtener 
-            /*let rm1=new Fraction(r1.m);
+            //Vamos a usar primero la librería math para obtener el numerador y el denominador del número decimal
+            let rm1=new Fraction(r1.m);
 console.log(typeof rm1); //COMPROBACIÓN
 console.log(rm1); //COMPROBACIÓN
+            //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
             let m1=new Fraction2(rm1.n,rm1.d);
 console.log(typeof m1); //COMPROBACIÓN
 console.log(m1); //COMPROBACIÓN
@@ -152,13 +152,13 @@ console.log(m1); //COMPROBACIÓN
             var expr2=new Expression("x");
             expr2=expr2.multiply(m2);
             expr2=expr2.add(b2);
-           */
-            var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
+           
+            var eq1=new Equation(expr1,expr2); //definimos la ecuación expr1=expr2
             
-            var solx= eq1.solveFor("x"); // Resolvemos la ecuacion.
+            var solx= eq1.solveFor("x"); //resolvemos la ecuacion
 console.log(typeof solx); //COMPROBACIÓN
 console.log(solx); //COMPROBACIÓN
-            var valorx=solx.numer/solx.denom; // lo convertimos a número para poder obtener y
+            var valorx=solx.numer/solx.denom; //lo convertimos a número para poder obtener y
 
             var valory=m1*valorx+b1;
             
