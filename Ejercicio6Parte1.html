@@ -2,7 +2,7 @@
 <html lang="es-ES">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recta tangente</title>
+<title>Matemáticas Dinámicas</title>
 <link rel="stylesheet" href="miestilo.css">
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -35,7 +35,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.js"></script>
     
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
-    <h1>Intersección</h1>
+    <h1>Intersección de dos rectas</h1>
     <h3>de Lorena Lucas Baños</h3>
     Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
     <br>
@@ -111,21 +111,32 @@ console.log(intersec.x,intersec.y); //COMPROBACIÓN
 
 console.log(r1.m,r1.b); //COMPROBACIÓN
 console.log(typeof r1.m); //COMPROBACIÓN
-            var x = new Expression("x");
-            var expr1=algebra.parse(r1.m*x-r1.b); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
-            var expr2=algebra.parse(r2.m*x-r2.b); 
+            
+            /*var expr1=algebra.parse("r1.m*x-r1.b"); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
+            var expr2=algebra.parse("r2.m*x-r2.b");*/ 
 
-            //var expr1 = new Expression("x");
-            //expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x)); //da error al multiplicar (argumento must be of type String, Expression, Term, Fraction or Integer)
-            //expr1 = expr1.add(p1.y - m * p1.x);
-/*
+            /*var expr1 = new Expression("x");
+            expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x)); //da error al multiplicar (argumento must be of type String, Expression, Term, Fraction or Integer)
+            expr1 = expr1.add(p1.y - m * p1.x);*/
+
             let rm1 = new Fraction(r1.m);
-            console.log(typeof rm1);
-            console.log(rm1);
+            let rb1 = new Fraction(r1.b);
+console.log(typeof rm1);
+console.log(rm1);
+            var expr1 = new Expression("x");
+            expr1= expr1.multiply(m1);
+            expr1 = expr1.add(b1);
+            
+
+            let rm1 = new Fraction(r1.m);
+console.log(typeof rm1);
+console.log(rm1);
             let m1 =new Fraction2(rm1.n,rm1.d);
+console.log(typeof m1);
+console.log(m1);
             let rb1 = new Fraction(r1.b);
             let b1 =new Fraction2(rb1.n,rb1.d);
-            console.log(typeof m1);
+console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
             expr1 = expr1.add(b1);
@@ -142,7 +153,7 @@ console.log(typeof r1.m); //COMPROBACIÓN
             expr2= expr2.multiply(m2);
             expr2 = expr2.add(b2);
             console.log(m2,b2,expr2);
-            */
+           
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
             console.log(eq1);
             
