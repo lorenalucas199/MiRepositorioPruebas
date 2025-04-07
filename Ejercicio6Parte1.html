@@ -69,8 +69,8 @@
 
                 let intersec=Interseccion(puntos[0],puntos[1],puntos[2],puntos[3]);
 console.log(intersec.x,intersec.y); //COMPROBACIÓN
-console.log(typeof intersec.x);
- console.log(typeof intersec.y);               
+console.log(typeof intersec.x);//COMPROBACIÓN
+console.log(typeof intersec.y); //COMPROBACIÓN           
                 dibujarInterseccion(intersec.x,intersec.y);
             }
             
@@ -110,9 +110,6 @@ console.log(typeof intersec.x);
         function Interseccion(p1, p2, p3, p4) {
             let r1=ecuacionRecta(p1,p2);
             let r2=ecuacionRecta(p3,p4);
-
-console.log(r1.m,r1.b); //COMPROBACIÓN
-console.log(typeof r1.m); //COMPROBACIÓN
             
             /*var expr1=algebra.parse("r1.m*x-r1.b"); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
             var expr2=algebra.parse("r2.m*x-r2.b");*/ 
@@ -129,41 +126,35 @@ console.log(typeof r1.m); //COMPROBACIÓN
             
 
             let rm1 = new Fraction(r1.m);
-console.log(typeof rm1);
-console.log(rm1);
+console.log(typeof rm1); //COMPROBACIÓN
+console.log(rm1); //COMPROBACIÓN
             let m1 =new Fraction2(rm1.n,rm1.d);
-console.log(typeof m1);
-console.log(m1);
+console.log(typeof m1); //COMPROBACIÓN
+console.log(m1); //COMPROBACIÓN
             let rb1 = new Fraction(r1.b);
             let b1 =new Fraction2(rb1.n,rb1.d);
-console.log(typeof m1);
             var expr1 = new Expression("x");
             expr1= expr1.multiply(m1);
             expr1 = expr1.add(b1);
-console.log(m1,b1,expr1);
             
             let rm2 = new Fraction(r2.m);
-console.log(typeof rm2);
-console.log(rm2);
             let m2 =new Fraction2(rm2.n,rm2.d);
             let rb2 = new Fraction(r2.b);
             let b2 =new Fraction2(rb2.n,rb2.d);
-console.log(typeof m2);
             var expr2 = new Expression("x");
             expr2= expr2.multiply(m2);
             expr2 = expr2.add(b2);
-console.log(m2,b2,expr2);
            
             var eq1=new Equation(expr1,expr2); // Definimos la ecuación expr1 = expr2.
-            console.log(eq1);
             
-            var valorx = eq1.solveFor("x"); // Resolvemos la ecuacion.
-            var numx = parseFloat(valorx.toString()); // lo convertimos a número para poder obtener y
+            var solx = eq1.solveFor("x"); // Resolvemos la ecuacion.
+console.log(typeof solx); //COMPROBACIÓN
+console.log(solx); //COMPROBACIÓN
+            var valorx = parseFloat(solx.toString()); // lo convertimos a número para poder obtener y
 
             var valory=r1.m * valorx + r1.b;
             
-            console.log(numx,valory);
-            return {x:numx,y:valory};
+            return {x:valorx,y:valory};
       
     }
         
