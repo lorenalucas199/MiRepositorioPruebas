@@ -69,7 +69,9 @@
 
                 let intersec=Interseccion(puntos[0],puntos[1],puntos[2],puntos[3]);
 console.log(intersec.x,intersec.y); //COMPROBACIÓN
-                dibujarPunto(intersec);
+console.log(typeof intersec.x);
+ console.log(typeof intersec.y);               
+                dibujarInterseccion(intersec.x,intersec.y);
             }
             
             if(puntos.length==5){ //cuando haya cinco, comenzar con una nueva intersección de rectas
@@ -161,7 +163,7 @@ console.log(m2,b2,expr2);
             var valory=r1.m * valorx + r1.b;
             
             console.log(numx,valory);
-            return {x:numx,y:valory};
+            return {numx,valory};
       
     }
         
