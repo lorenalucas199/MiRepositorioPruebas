@@ -50,73 +50,74 @@
         var Equation = algebra.Equation;
         
         //Definir la función para obtener las coordenadas de cada click dentro del canvas:
-        let puntos=[]; //definir la variable puntos para almacenarlos
+        let puntos=[]; //para almacenarlos
         function coordenadas(event) {
             let coordCanvas=c.getBoundingClientRect(); //posición del canvas en la pantalla          
             let x=event.clientX-coordCanvas.x; //coordenada X en el canvas
             let y=event.clientY-coordCanvas.y; //coordenada Y en el canvas
-            puntos.push({x,y})
+            puntos.push({x,y}) //añadir nuevo punto a la lista
             var punto={x, y};
             
             dibujarPunto(x,y); //dibuja ese punto
 
-            if (puntos.length == 2) { //cuando haya 2 puntos dibujar las una rectas
-                dibujarRecta(puntos[0], puntos[1]);
+            if(puntos.length==2){ //cuando haya 2 puntos, dibujar una recta
+                dibujarRecta(puntos[0],puntos[1]);
             }
-            if(puntos.length == 4) { //cuando haya 4 puntos dibujar la otra recta, la interseccion
+            
+            if(puntos.length==4) { //cuando haya 4 puntos dibujar la otra recta y la interseccion
                 dibujarRecta(puntos[2], puntos[3]);
 
-                let intersec = Interseccion(puntos[0], puntos[1], puntos[2], puntos[3]);
-                console.log(intersec.x,intersec.y);
+                let intersec=Interseccion(puntos[0],puntos[1],puntos[2],puntos[3]);
+console.log(intersec.x,intersec.y); //COMPROBACIÓN
                 dibujarPunto(intersec.x,intersec.y);
-
-                puntos = [];
+            }
+            
+            if(puntos.length==5){ //cuando haya cinco, comenzar con una nueva intersección de rectas
+                puntos=[puntos[4]]; //vaciar la lista y dejar solo este último punto
+                ctx.clearRect(0,0,c.width,c.height); //borrar todo el dibujo
             }
         }
 
-        function dibujarPunto(x, y) {
+        
+        function dibujarPunto(x,y){
             ctx.beginPath();
-            ctx.arc(x, y, 4, 0, 2 * Math.PI);
+            ctx.arc(x,y, 4, 0, 2*Math.PI);
             ctx.fill();
         }
 
-        function dibujarRecta(p1, p2) {
+        function dibujarRecta(p1,p2) {
             ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
+            ctx.moveTo(p1.x,p1.y);
+            ctx.lineTo(p2.x,p2.y);
             ctx.stroke();
         }
 
         function dibujarInterseccion(x,y) {
+            ctx.fillStyle="red"
             ctx.beginPath();
-            ctx.arc(x, y, 6, 0, 2 * Math.PI);
+            ctx.arc(x,y, 6, 0, 2*Math.PI);
             ctx.fill();
             }
 
         function ecuacionRecta(p1,p2){
-            let m=(p2.y - p1.y) / (p2.x - p1.x);
-            let b = p1.y - m * p1.x;
-            return { m, b }; // devuelve y = mx + b
+            let m=(p2.y-p1.y)/(p2.x-p1.x);
+            let b=p1.y-m*p1.x;
+            return {m,b}; 
         }
 
         function Interseccion(p1, p2, p3, p4) {
             let r1=ecuacionRecta(p1,p2);
             let r2=ecuacionRecta(p3,p4);
 
-    console.log("Ecuación 1: m1:", r1.m, "b1:", r1.b);
-    console.log("Ecuación 2: m2:", r2.m, "b2:", r2.b);
-    console.log(typeof r1.m);
-
-            // y = m1*x + b1
-            // y = m2*x + b2
-            // => m1*x + b1 = m2*x + b2
+console.log(r1.m,r1.b); //COMPROBACIÓN
+console.log(typeof r1.m); //COMPROBACIÓN
 
             //var expr1=algebra.parse("r1.m*x-r1.b); //algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
             //var expr2=algebra.parse("r2.m*x-r2.b); 
 
-            //var expr1 = new Expression("x");
-            //expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x));
-            //expr1 = expr1.add(p1.y - m * p1.x);
+            var expr1 = new Expression("x");
+            expr1 = expr1.multiply((p2.y - p1.y) / (p2.x - p1.x)); //da error al multiplicar y sumar, el argumento tiene que ser String o Expression
+            expr1 = expr1.add(p1.y - m * p1.x);
 
             let rm1 = new Fraction(r1.m);
             console.log(typeof rm1);
