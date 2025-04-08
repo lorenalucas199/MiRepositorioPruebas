@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Teorema de la Altura</title>
+  <title>Teorema de Euclides - Catetos</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.5.0/algebrite.min.js"></script>
   <style>
     body { margin: 0; font-family: sans-serif; }
@@ -26,9 +26,9 @@
   const ctx = canvas.getContext("2d");
   const info = document.getElementById("info");
 
-  let A = { x: 100, y: 300 }; // vértice del ángulo recto
-  let B = { x: 500, y: 300 }; // extremo sobre base
-  let C = { x: 100, y: 100 }; // punto móvil
+  let A = { x: 100, y: 300 }; // ángulo recto
+  let B = { x: 500, y: 300 };
+  let C = { x: 100, y: 100 };
 
   let dragging = null;
 
@@ -36,11 +36,10 @@
     return Math.hypot(p1.x - p2.x, p1.y - p2.y);
   }
 
-  function projectionPoint(A, B, C) {
-    // Proyección del punto C sobre la línea AB
+  function projectionPoint(A, B, P) {
     const ABx = B.x - A.x;
     const ABy = B.y - A.y;
-    const t = ((C.x - A.x) * ABx + (C.y - A.y) * ABy) / (ABx * ABx + ABy * ABy);
+    const t = ((P.x - A.x) * ABx + (P.y - A.y) * ABy) / (ABx * ABx + ABy * ABy);
     return {
       x: A.x + t * ABx,
       y: A.y + t * ABy
@@ -50,26 +49,19 @@
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Línea base AB
-    ctx.beginPath();
-    ctx.moveTo(A.x, A.y);
-    ctx.lineTo(B.x, B.y);
-    ctx.strokeStyle = "#000";
-    ctx.stroke();
-
     // Triángulo
     ctx.beginPath();
     ctx.moveTo(A.x, A.y);
-    ctx.lineTo(C.x, C.y);
     ctx.lineTo(B.x, B.y);
+    ctx.lineTo(C.x, C.y);
     ctx.closePath();
     ctx.fillStyle = "#ddd";
     ctx.fill();
+    ctx.strokeStyle = "#000";
     ctx.stroke();
 
-    // Altura desde C hacia AB
+    // Altura desde C a hipotenusa AB
     const H = projectionPoint(A, B, C);
-
     ctx.beginPath();
     ctx.moveTo(C.x, C.y);
     ctx.lineTo(H.x, H.y);
@@ -78,38 +70,44 @@
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Dibujar puntos
-    [A, B, C, H].forEach(p => {
+    // Proyecciones
+    const D = projectionPoint(A, B, C); // pie de la altura
+    const m = dist(A, D); // proyección de cateto b
+    const n = dist(B, D); // proyección de cateto a
+    const c = dist(A, B);
+    const a = dist(C, B); // cateto a
+    const b = dist(C, A); // cateto b
+
+    const a2 = a * a;
+    const b2 = b * b;
+    const cm = c * m;
+    const cn = c * n;
+
+    const simb1 = Algebrite.run(`simplify(${a2} - (${c} * ${n}))`);
+    const simb2 = Algebrite.run(`simplify(${b2} - (${c} * ${m}))`);
+
+    // Puntos
+    [A, B, C, D].forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI);
       ctx.fillStyle = "#333";
       ctx.fill();
     });
 
-    // Etiquetas
-    ctx.fillStyle = "black";
     ctx.fillText("A", A.x - 15, A.y + 5);
     ctx.fillText("B", B.x + 5, B.y + 5);
     ctx.fillText("C", C.x - 10, C.y - 10);
-    ctx.fillText("H", H.x + 5, H.y - 5);
-
-    // Cálculos
-    const h = dist(C, H);
-    const p = dist(A, H);
-    const q = dist(B, H);
-
-    const h2 = h ** 2;
-    const pq = p * q;
-
-    const simb = Algebrite.run(`simplify(${h2} - (${p}*${q}))`);
+    ctx.fillText("D", D.x + 5, D.y - 5);
 
     info.innerHTML = `
-      <strong>Teorema de la altura:</strong><br>
-      h² = ${h.toFixed(2)}² = ${h2.toFixed(2)}<br>
-      p = ${p.toFixed(2)}, q = ${q.toFixed(2)} → p · q = ${pq.toFixed(2)}<br><br>
-      <strong>Verificación:</strong><br>
-      h² ${Math.abs(h2 - pq) < 0.1 ? "≈" : "≠"} p · q<br>
-      Resultado simbólico: ${simb}
+      <strong>Teorema de Euclides para los catetos:</strong><br>
+      Cateto a = ${a.toFixed(2)} → a² = ${a2.toFixed(2)}<br>
+      Proyección n = ${n.toFixed(2)} → c · n = ${cn.toFixed(2)}<br>
+      <strong>Verificación:</strong> a² ${Math.abs(a2 - cn) < 0.1 ? "≈" : "≠"} c · n → ${simb1}<br><br>
+
+      Cateto b = ${b.toFixed(2)} → b² = ${b2.toFixed(2)}<br>
+      Proyección m = ${m.toFixed(2)} → c · m = ${cm.toFixed(2)}<br>
+      <strong>Verificación:</strong> b² ${Math.abs(b2 - cm) < 0.1 ? "≈" : "≠"} c · m → ${simb2}
     `;
   }
 
@@ -128,8 +126,7 @@
 
   canvas.addEventListener("mousemove", e => {
     if (dragging === "C") {
-      const pos = getMousePos(e);
-      C = pos;
+      C = getMousePos(e);
       draw();
     }
   });
