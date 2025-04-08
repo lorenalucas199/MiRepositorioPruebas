@@ -30,9 +30,7 @@
 </script>
     
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
-<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.js"></script>
+<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>    
     
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Intersección de dos rectas</h1>
@@ -44,60 +42,65 @@
   <script>
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    const res = document.getElementById("resultado");
+    const areaDiv = document.getElementById("areas");
 
     let A = {x: 150, y: 400};
     let B = {x: 500, y: 400};
-    let C = {x: 500, y: 150}; // mantiene el ángulo recto
-
+    let C = {x: 500, y: 150}; // Calculado automáticamente
     let dragPoint = null;
 
     function distance(p1, p2) {
-      return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
-    }
-
-    function drawSquareOnSide(p1, p2, color) {
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
-      const p3 = {x: p2.x + dx, y: p2.y - dy};
-      const p4 = {x: p1.x + dx, y: p1.y -dy};
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function drawSquare(p1, p2, color) {
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const perpX = -dy / len;
+      const perpY = dx / len;
+
+      const p3 = {x: p2.x + perpX * len, y: p2.y + perpY * len};
+      const p4 = {x: p1.x + perpX * len, y: p1.y + perpY * len};
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
       ctx.lineTo(p2.x, p2.y);
       ctx.lineTo(p3.x, p3.y);
       ctx.lineTo(p4.x, p4.y);
-      ctx.moveTo(p1.x, p1.y);
       ctx.closePath();
       ctx.fillStyle = color;
       ctx.fill();
       ctx.stroke();
+
+      return len * len; // área del cuadrado
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Mantener ángulo recto en B
+      // Calcular C para que sea un triángulo rectángulo
       C.x = B.x;
       C.y = A.y;
 
-      // Triángulo
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dibujar triángulo
       ctx.beginPath();
       ctx.moveTo(A.x, A.y);
       ctx.lineTo(B.x, B.y);
       ctx.lineTo(C.x, C.y);
       ctx.closePath();
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
-      ctx.fillStyle = "#f0f8ff";
+      ctx.fillStyle = "#e0f7fa";
       ctx.fill();
+      ctx.stroke();
 
-      // Dibujar cuadrados
-      drawSquareOnSide(A, B, "#ffccbc"); // cateto 1
-      drawSquareOnSide(B, C, "#dcedc8"); // cateto 2
-      drawSquareOnSide(A, C, "#b3e5fc"); // hipotenusa
+      // Dibujar cuadrados y calcular áreas
+      const area1 = drawSquare(A, B, "#ffccbc"); // cateto 1
+      const area2 = drawSquare(B, C, "#c8e6c9"); // cateto 2
+      const area3 = drawSquare(A, C, "#b3e5fc"); // hipotenusa
 
-      // Puntos
+      // Dibujar puntos
       [A, B].forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
@@ -105,26 +108,12 @@
         ctx.fill();
       });
 
-      // Etiquetas
-      ctx.fillStyle = "black";
-      ctx.font = "16px Arial";
-      ctx.fillText("A", A.x - 20, A.y + 10);
-      ctx.fillText("B", B.x + 10, B.y + 10);
-      ctx.fillText("C", C.x + 10, C.y - 10);
-
-      // Algebra simbólica
-      const a = distance(B, C);
-      const b = distance(A, B);
-      const c = distance(A, C);
-
-      const expr1 = new algebra.Expression("a").pow(2);
-      const expr2 = new algebra.Expression("b").pow(2);
-      const expr3 = new algebra.Expression("c").pow(2);
-
-      res.innerHTML = `
-        <strong>Expresión simbólica:</strong><br>
-        ${expr1.toString()} + ${expr2.toString()} = ${expr3.toString()}<br>
-        <strong>Visualmente cumple:</strong> ${Math.abs((a*a + b*b) - c*c) < 1 ? "✅" : "❌"}
+      // Mostrar áreas
+      areaDiv.innerHTML = `
+        <strong>Área cuadrado sobre cateto AB:</strong> ${area1.toFixed(2)} <br>
+        <strong>Área cuadrado sobre cateto BC:</strong> ${area2.toFixed(2)} <br>
+        <strong>Área cuadrado sobre hipotenusa AC:</strong> ${area3.toFixed(2)} <br>
+        <strong>¿Cumple a² + b² = c²?</strong> ${Math.abs((area1 + area2) - area3) < 1 ? '✅' : '❌'}
       `;
     }
 
