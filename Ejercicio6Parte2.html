@@ -46,7 +46,7 @@
 
     let A = {x: 150, y: 400};
     let B = {x: 500, y: 400};
-    let C = {x: 500, y: 150}; // Calculado automáticamente
+    let C = {x: 500, y: 150};
     let dragPoint = null;
 
     function distance(p1, p2) {
@@ -59,11 +59,23 @@
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
       const len = Math.sqrt(dx * dx + dy * dy);
-      const perpX = -dy / len;
-      const perpY = dx / len;
 
-      const p3 = {x: p2.x + perpX * len, y: p2.y + perpY * len};
-      const p4 = {x: p1.x + perpX * len, y: p1.y + perpY * len};
+      // Unit vector along the side
+      const ux = dx / len;
+      const uy = dy / len;
+
+      // Perpendicular unit vector
+      const px = -uy;
+      const py = ux;
+
+      const p3 = {
+        x: p2.x + px * len,
+        y: p2.y + py * len
+      };
+      const p4 = {
+        x: p1.x + px * len,
+        y: p1.y + py * len
+      };
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -75,11 +87,11 @@
       ctx.fill();
       ctx.stroke();
 
-      return len * len; // área del cuadrado
+      return len * len; // Área del cuadrado
     }
 
     function draw() {
-      // Calcular C para que sea un triángulo rectángulo
+      // C ajustado para que el ángulo sea recto (en B)
       C.x = B.x;
       C.y = A.y;
 
@@ -96,9 +108,9 @@
       ctx.stroke();
 
       // Dibujar cuadrados y calcular áreas
-      const area1 = drawSquare(A, B, "#ffccbc"); // cateto 1
-      const area2 = drawSquare(B, C, "#c8e6c9"); // cateto 2
-      const area3 = drawSquare(A, C, "#b3e5fc"); // hipotenusa
+      const area1 = drawSquare(A, B, "#ffccbc"); // cateto AB
+      const area2 = drawSquare(B, C, "#c8e6c9"); // cateto BC
+      const area3 = drawSquare(A, C, "#b3e5fc"); // hipotenusa AC
 
       // Dibujar puntos
       [A, B].forEach(p => {
@@ -110,10 +122,12 @@
 
       // Mostrar áreas
       areaDiv.innerHTML = `
-        <strong>Área cuadrado sobre cateto AB:</strong> ${area1.toFixed(2)} <br>
-        <strong>Área cuadrado sobre cateto BC:</strong> ${area2.toFixed(2)} <br>
-        <strong>Área cuadrado sobre hipotenusa AC:</strong> ${area3.toFixed(2)} <br>
-        <strong>¿Cumple a² + b² = c²?</strong> ${Math.abs((area1 + area2) - area3) < 1 ? '✅' : '❌'}
+        <strong>Área cuadrado AB:</strong> ${area1.toFixed(2)}<br>
+        <strong>Área cuadrado BC:</strong> ${area2.toFixed(2)}<br>
+        <strong>Área cuadrado AC:</strong> ${area3.toFixed(2)}<br>
+        <strong>¿Cumple a² + b² = c²?</strong> ${
+          Math.abs((area1 + area2) - area3) < 1 ? '✅ Sí' : '❌ No'
+        }
       `;
     }
 
