@@ -40,120 +40,119 @@
     <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
 
   <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const info = document.getElementById("info");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const info = document.getElementById("info");
 
-    let A = { x: 200, y: 400 };
-    let B = { x: 600, y: 400 };
-    let C = { x: 600, y: 200 };
+  let A = { x: 100, y: 300 }; // fijo (ángulo recto)
+  let B = { x: 500, y: 300 };
+  let C = { x: 100, y: 100 };
 
-    let dragging = null;
+  let dragging = null;
 
-    function dist(p1, p2) {
-      return Math.hypot(p1.x - p2.x, p1.y - p2.y);
-    }
+  function dist(p1, p2) {
+    return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+  }
 
-    function drawSquareOnSide(p1, p2) {
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
-      const len = Math.hypot(dx, dy);
-      const norm = { x: dx / len, y: dy / len };
-      const perp = { x: -norm.y, y: norm.x };
+  function drawSquareOnSide(p1, p2, color = "rgba(0, 150, 255, 0.2)") {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const len = Math.hypot(dx, dy);
+    const norm = { x: dx / len, y: dy / len };
+    const perp = { x: -norm.y, y: norm.x };
 
-      const p3 = { x: p2.x + perp.x * len, y: p2.y + perp.y * len };
-      const p4 = { x: p1.x + perp.x * len, y: p1.y + perp.y * len };
+    const p3 = { x: p2.x + perp.x * len, y: p2.y + perp.y * len };
+    const p4 = { x: p1.x + perp.x * len, y: p1.y + perp.y * len };
 
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.lineTo(p3.x, p3.y);
+    ctx.lineTo(p4.x, p4.y);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = "#0096FF";
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Triángulo
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(B.x, B.y);
+    ctx.lineTo(C.x, C.y);
+    ctx.closePath();
+    ctx.fillStyle = "#ddd";
+    ctx.fill();
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+
+    // Cuadrados en los lados
+    drawSquareOnSide(A, B);
+    drawSquareOnSide(B, C);
+    drawSquareOnSide(C, A);
+
+    // Vértices
+    [A, B, C].forEach(p => {
       ctx.beginPath();
-      ctx.moveTo(p1.x, p1.y);
-      ctx.lineTo(p2.x, p2.y);
-      ctx.lineTo(p3.x, p3.y);
-      ctx.lineTo(p4.x, p4.y);
-      ctx.closePath();
-      ctx.fillStyle = "rgba(0, 150, 255, 0.2)";
+      ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+      ctx.fillStyle = "#333";
       ctx.fill();
-      ctx.strokeStyle = "#0096FF";
-      ctx.stroke();
-    }
+    });
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Cálculo de áreas
+    const ab = dist(A, B);
+    const bc = dist(B, C);
+    const ca = dist(C, A);
 
-      // Triángulo
-      ctx.beginPath();
-      ctx.moveTo(A.x, A.y);
-      ctx.lineTo(B.x, B.y);
-      ctx.lineTo(C.x, C.y);
-      ctx.closePath();
-      ctx.fillStyle = "#e0e0e0";
-      ctx.fill();
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
+    const area1 = ab ** 2;
+    const area2 = bc ** 2;
+    const area3 = ca ** 2;
 
-      // Cuadrados en los lados
-      drawSquareOnSide(A, B);
-      drawSquareOnSide(B, C);
-      drawSquareOnSide(C, A);
+    const resultado = Algebrite.run(`simplify(${area1} + ${area2} - ${area3})`);
 
-      // Vértices
-      [A, B, C].forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
-        ctx.fillStyle = "#333";
-        ctx.fill();
-      });
+    info.innerHTML = `
+      <strong>Áreas de los cuadrados:</strong><br>
+      AB² = ${area1.toFixed(2)}<br>
+      BC² = ${area2.toFixed(2)}<br>
+      CA² = ${area3.toFixed(2)}<br><br>
+      <strong>Verificación:</strong><br>
+      AB² + BC² ${Math.abs(area1 + area2 - area3) < 0.1 ? "≈" : "≠"} CA²<br>
+      Resultado simbólico: ${resultado}
+    `;
+  }
 
-      // Cálculo de áreas
-      const ab = dist(A, B);
-      const bc = dist(B, C);
-      const ca = dist(C, A);
+  function getMousePos(evt) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
 
-      const area1 = ab ** 2;
-      const area2 = bc ** 2;
-      const area3 = ca ** 2;
+  function coordenadas(evt) {
+    const pos = getMousePos(evt);
+    [B, C].forEach((p, i) => {
+      if (dist(pos, p) < 10) dragging = i === 0 ? "B" : "C";
+    });
+  }
 
-      const eq = `Simplify(${area1} + ${area2} - ${area3})`;
-      const check = Algebrite.run(eq);
-
-      info.innerHTML = `
-        <strong>Áreas de los cuadrados:</strong><br>
-        AB² = ${area1.toFixed(2)}<br>
-        BC² = ${area2.toFixed(2)}<br>
-        CA² = ${area3.toFixed(2)}<br><br>
-        <strong>Verificación:</strong><br>
-        AB² + BC² ${Math.abs(area1 + area2 - area3) < 0.1 ? "≈" : "≠"} CA²<br>
-        Resultado: ${check}
-      `;
-    }
-
-    function getMousePos(evt) {
-      const rect = canvas.getBoundingClientRect();
-      return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-      };
-    }
-
-    canvas.addEventListener("mousedown", e => {
+  canvas.addEventListener("mousemove", e => {
+    if (dragging) {
       const pos = getMousePos(e);
-      [B, C].forEach((p, i) => {
-        if (dist(pos, p) < 10) dragging = i === 0 ? "B" : "C";
-      });
-    });
+      if (dragging === "B") B = pos;
+      if (dragging === "C") C = pos;
+      draw();
+    }
+  });
 
-    canvas.addEventListener("mousemove", e => {
-      if (dragging) {
-        const pos = getMousePos(e);
-        if (dragging === "B") B = pos;
-        if (dragging === "C") C = pos;
-        draw();
-      }
-    });
+  canvas.addEventListener("mouseup", () => dragging = null);
+  canvas.addEventListener("mouseleave", () => dragging = null);
 
-    canvas.addEventListener("mouseup", () => dragging = null);
-    canvas.addEventListener("mouseleave", () => dragging = null);
-
-    draw();
-  </script>
+  draw();
+</script>
 </body>
 </html>
