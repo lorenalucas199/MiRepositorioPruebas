@@ -50,25 +50,23 @@
 
   let dragging = null;
 
-  function dist(p1, p2) {
+  /*function dist(p1, p2) {
     return Math.hypot(p1.x - p2.x, p1.y - p2.y);
-  }
+  }*/
 
   function drawSquareOnSide(p1, p2, color = "rgba(0, 150, 255, 0.2)") {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
-    const len = Math.hypot(dx, dy);
-    const norm = { x: dx / len, y: dy / len };
-    const perp = { x: -norm.y, y: norm.x };
 
-    const p3 = { x: p2.x + perp.x * len, y: p2.y + perp.y * len };
-    const p4 = { x: p1.x + perp.x * len, y: p1.y + perp.y * len };
+    const p3 = { x: p2.x -dy, y: p2.y + dx };
+    const p4 = { x: p1.x-dy, y: p1.y + dx };
 
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
     ctx.lineTo(p3.x, p3.y);
     ctx.lineTo(p4.x, p4.y);
+     ctx.lineTo(p1.x, p1.y); 
     ctx.closePath();
     ctx.fillStyle = color;
     ctx.fill();
