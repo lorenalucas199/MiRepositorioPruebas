@@ -42,40 +42,27 @@
   <script>
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    const areaDiv = document.getElementById("areas");
+    const info = document.getElementById("info");
 
-    let A = {x: 150, y: 400};
-    let B = {x: 500, y: 400};
-    let C = {x: 500, y: 150};
-    let dragPoint = null;
+    let A = { x: 200, y: 400 };
+    let B = { x: 600, y: 400 };
+    let C = { x: 600, y: 200 };
 
-    function distance(p1, p2) {
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
-      return Math.sqrt(dx * dx + dy * dy);
+    let dragging = null;
+
+    function dist(p1, p2) {
+      return Math.hypot(p1.x - p2.x, p1.y - p2.y);
     }
 
-    function drawSquare(p1, p2, color) {
+    function drawSquareOnSide(p1, p2) {
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
-      const len = Math.sqrt(dx * dx + dy * dy);
+      const len = Math.hypot(dx, dy);
+      const norm = { x: dx / len, y: dy / len };
+      const perp = { x: -norm.y, y: norm.x };
 
-      // Unit vector along the side
-      const ux = dx / len;
-      const uy = dy / len;
-
-      // Perpendicular unit vector
-      const px = -uy;
-      const py = ux;
-
-      const p3 = {
-        x: p2.x + px * len,
-        y: p2.y + py * len
-      };
-      const p4 = {
-        x: p1.x + px * len,
-        y: p1.y + py * len
-      };
+      const p3 = { x: p2.x + perp.x * len, y: p2.y + perp.y * len };
+      const p4 = { x: p1.x + perp.x * len, y: p1.y + perp.y * len };
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -83,74 +70,88 @@
       ctx.lineTo(p3.x, p3.y);
       ctx.lineTo(p4.x, p4.y);
       ctx.closePath();
-      ctx.fillStyle = color;
+      ctx.fillStyle = "rgba(0, 150, 255, 0.2)";
       ctx.fill();
+      ctx.strokeStyle = "#0096FF";
       ctx.stroke();
-
-      return len * len; // Área del cuadrado
     }
 
     function draw() {
-      // C ajustado para que el ángulo sea recto (en B)
-      C.x = B.x;
-      C.y = A.y;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Dibujar triángulo
+      // Triángulo
       ctx.beginPath();
       ctx.moveTo(A.x, A.y);
       ctx.lineTo(B.x, B.y);
       ctx.lineTo(C.x, C.y);
       ctx.closePath();
-      ctx.fillStyle = "#e0f7fa";
+      ctx.fillStyle = "#e0e0e0";
       ctx.fill();
+      ctx.strokeStyle = "#000";
       ctx.stroke();
 
-      // Dibujar cuadrados y calcular áreas
-      const area1 = drawSquare(A, B, "#ffccbc"); // cateto AB
-      const area2 = drawSquare(B, C, "#c8e6c9"); // cateto BC
-      const area3 = drawSquare(A, C, "#b3e5fc"); // hipotenusa AC
+      // Cuadrados en los lados
+      drawSquareOnSide(A, B);
+      drawSquareOnSide(B, C);
+      drawSquareOnSide(C, A);
 
-      // Dibujar puntos
-      [A, B].forEach(p => {
+      // Vértices
+      [A, B, C].forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#333";
         ctx.fill();
       });
 
-      // Mostrar áreas
-      areaDiv.innerHTML = `
-        <strong>Área cuadrado AB:</strong> ${area1.toFixed(2)}<br>
-        <strong>Área cuadrado BC:</strong> ${area2.toFixed(2)}<br>
-        <strong>Área cuadrado AC:</strong> ${area3.toFixed(2)}<br>
-        <strong>¿Cumple a² + b² = c²?</strong> ${
-          Math.abs((area1 + area2) - area3) < 1 ? '✅ Sí' : '❌ No'
-        }
+      // Cálculo de áreas
+      const ab = dist(A, B);
+      const bc = dist(B, C);
+      const ca = dist(C, A);
+
+      const area1 = ab ** 2;
+      const area2 = bc ** 2;
+      const area3 = ca ** 2;
+
+      const eq = `Simplify(${area1} + ${area2} - ${area3})`;
+      const check = Algebrite.run(eq);
+
+      info.innerHTML = `
+        <strong>Áreas de los cuadrados:</strong><br>
+        AB² = ${area1.toFixed(2)}<br>
+        BC² = ${area2.toFixed(2)}<br>
+        CA² = ${area3.toFixed(2)}<br><br>
+        <strong>Verificación:</strong><br>
+        AB² + BC² ${Math.abs(area1 + area2 - area3) < 0.1 ? "≈" : "≠"} CA²<br>
+        Resultado: ${check}
       `;
     }
 
-    canvas.addEventListener("mousedown", (e) => {
+    function getMousePos(evt) {
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      if (Math.hypot(x - A.x, y - A.y) < 10) dragPoint = A;
-      else if (Math.hypot(x - B.x, y - B.y) < 10) dragPoint = B;
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    canvas.addEventListener("mousedown", e => {
+      const pos = getMousePos(e);
+      [B, C].forEach((p, i) => {
+        if (dist(pos, p) < 10) dragging = i === 0 ? "B" : "C";
+      });
     });
 
-    canvas.addEventListener("mousemove", (e) => {
-      if (dragPoint) {
-        const rect = canvas.getBoundingClientRect();
-        dragPoint.x = e.clientX - rect.left;
-        dragPoint.y = e.clientY - rect.top;
+    canvas.addEventListener("mousemove", e => {
+      if (dragging) {
+        const pos = getMousePos(e);
+        if (dragging === "B") B = pos;
+        if (dragging === "C") C = pos;
         draw();
       }
     });
 
-    canvas.addEventListener("mouseup", () => {
-      dragPoint = null;
-    });
+    canvas.addEventListener("mouseup", () => dragging = null);
+    canvas.addEventListener("mouseleave", () => dragging = null);
 
     draw();
   </script>
