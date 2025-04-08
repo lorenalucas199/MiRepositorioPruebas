@@ -39,14 +39,14 @@
     <br>
     <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
 
-  <script>
+<script>
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const info = document.getElementById("info");
 
   let A = { x: 100, y: 300 }; // fijo (ángulo recto)
-  let B = { x: 500, y: 300 };
-  let C = { x: 100, y: 100 };
+  let B = { x: 500, y: 300 }; // Inicialmente en la horizontal
+  let C = { x: 100, y: 100 }; // Inicialmente en la vertical
 
   let dragging = null;
 
@@ -135,16 +135,33 @@
 
   function coordenadas(evt) {
     const pos = getMousePos(evt);
-    [B, C].forEach((p, i) => {
-      if (dist(pos, p) < 10) dragging = i === 0 ? "B" : "C";
-    });
+    // Verificamos si el clic está cerca de B o C
+    if (dist(pos, B) < 10) {
+      dragging = "B";
+    } else if (dist(pos, C) < 10) {
+      dragging = "C";
+    }
+  }
+
+  function keepRightAngle() {
+    // Ajustar C para que el ángulo sea 90° entre AB y AC
+    const deltaX = B.x - A.x;
+    const deltaY = B.y - A.y;
+    C.x = A.x - deltaY; // Vertical
+    C.y = A.y + deltaX; // Horizontal
   }
 
   canvas.addEventListener("mousemove", e => {
     if (dragging) {
       const pos = getMousePos(e);
-      if (dragging === "B") B = pos;
-      if (dragging === "C") C = pos;
+      if (dragging === "B") {
+        B = pos;
+        keepRightAngle(); // Mantener el ángulo recto
+      }
+      if (dragging === "C") {
+        C = pos;
+        keepRightAngle(); // Mantener el ángulo recto
+      }
       draw();
     }
   });
