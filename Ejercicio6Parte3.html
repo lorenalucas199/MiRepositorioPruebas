@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Teorema de la Altura</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.5.0/algebrite.min.js"></script>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    canvas { border: 1px solid #ccc; background: #fff; display: block; margin: 20px auto; }
+    #info {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas" width="600" height="400"></canvas>
+<div id="info"></div>
+
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const info = document.getElementById("info");
+
+  let A = { x: 100, y: 300 }; // vértice del ángulo recto
+  let B = { x: 500, y: 300 }; // extremo sobre base
+  let C = { x: 100, y: 100 }; // punto móvil
+
+  let dragging = null;
+
+  function dist(p1, p2) {
+    return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+  }
+
+  function projectionPoint(A, B, C) {
+    // Proyección del punto C sobre la línea AB
+    const ABx = B.x - A.x;
+    const ABy = B.y - A.y;
+    const t = ((C.x - A.x) * ABx + (C.y - A.y) * ABy) / (ABx * ABx + ABy * ABy);
+    return {
+      x: A.x + t * ABx,
+      y: A.y + t * ABy
+    };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Línea base AB
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(B.x, B.y);
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+
+    // Triángulo
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(C.x, C.y);
+    ctx.lineTo(B.x, B.y);
+    ctx.closePath();
+    ctx.fillStyle = "#ddd";
+    ctx.fill();
+    ctx.stroke();
+
+    // Altura desde C hacia AB
+    const H = projectionPoint(A, B, C);
+
+    ctx.beginPath();
+    ctx.moveTo(C.x, C.y);
+    ctx.lineTo(H.x, H.y);
+    ctx.strokeStyle = "red";
+    ctx.setLineDash([5, 5]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Dibujar puntos
+    [A, B, C, H].forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "#333";
+      ctx.fill();
+    });
+
+    // Etiquetas
+    ctx.fillStyle = "black";
+    ctx.fillText("A", A.x - 15, A.y + 5);
+    ctx.fillText("B", B.x + 5, B.y + 5);
+    ctx.fillText("C", C.x - 10, C.y - 10);
+    ctx.fillText("H", H.x + 5, H.y - 5);
+
+    // Cálculos
+    const h = dist(C, H);
+    const p = dist(A, H);
+    const q = dist(B, H);
+
+    const h2 = h ** 2;
+    const pq = p * q;
+
+    const simb = Algebrite.run(`simplify(${h2} - (${p}*${q}))`);
+
+    info.innerHTML = `
+      <strong>Teorema de la altura:</strong><br>
+      h² = ${h.toFixed(2)}² = ${h2.toFixed(2)}<br>
+      p = ${p.toFixed(2)}, q = ${q.toFixed(2)} → p · q = ${pq.toFixed(2)}<br><br>
+      <strong>Verificación:</strong><br>
+      h² ${Math.abs(h2 - pq) < 0.1 ? "≈" : "≠"} p · q<br>
+      Resultado simbólico: ${simb}
+    `;
+  }
+
+  function getMousePos(evt) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+
+  canvas.addEventListener("mousedown", e => {
+    const pos = getMousePos(e);
+    if (dist(pos, C) < 10) dragging = "C";
+  });
+
+  canvas.addEventListener("mousemove", e => {
+    if (dragging === "C") {
+      const pos = getMousePos(e);
+      C = pos;
+      draw();
+    }
+  });
+
+  canvas.addEventListener("mouseup", () => dragging = null);
+  canvas.addEventListener("mouseleave", () => dragging = null);
+
+  draw();
+</script>
+
+</body>
+</html>
