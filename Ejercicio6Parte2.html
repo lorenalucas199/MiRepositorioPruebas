@@ -1,164 +1,154 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teorema de Pitágoras - Desafío Divertido</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matemáticas Dinámicas</title>
+<link rel="stylesheet" href="miestilo.css">
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          R: "{\\mathbb R}",
+          N: "{\\mathbb N}",
+          Z: "{\\mathbb Z}",
+          bold: ["{\\bf #1}",1]
         }
-        canvas {
-            border: 2px solid black;
-            background-color: #f0f0f0;
-        }
-        #info {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        #status {
-            font-weight: bold;
-            font-size: 20px;
-            color: green;
-        }
-        .button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <h1>¡Desafío Interactivo del Teorema de Pitágoras!</h1>
-    <p>Arrastra los bloques para formar un triángulo rectángulo válido según el Teorema de Pitágoras. ¡Que comience el desafío!</p>
-    <canvas id="canvas" width="600" height="400"></canvas>
-    <div id="info">
-        <p><strong>Teorema de Pitágoras:</strong> \(a^2 + b^2 = c^2\)</p>
-        <p id="status">¡Buena suerte!</p>
-        <button class="button" onclick="resetGame()">Reiniciar</button>
-    </div>
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
+    }
+</script>
+    
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
+<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.js"></script>
+    
+<body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
+    <h1>Intersección de dos rectas</h1>
+    <h3>de Lorena Lucas Baños</h3>
+    Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
+    <br>
+    <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
 
-        let a = 100, b = 150, c = Math.sqrt(a * a + b * b);
-        let dragging = null;
-        let offsetX, offsetY;
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const res = document.getElementById("resultado");
 
-        const blockA = { x: 50, y: 300, width: a, height: 20, color: 'red' }; // lado A
-        const blockB = { x: 50, y: 100, width: 20, height: b, color: 'blue' }; // lado B
-        const blockC = { x: 200, y: 200, width: c, height: 20, color: 'green' }; // hipotenusa (lado C)
+    let A = {x: 150, y: 400};
+    let B = {x: 500, y: 400};
+    let C = {x: 500, y: 150}; // mantiene el ángulo recto
 
-        // Dibuja los bloques
-        function drawBlocks() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let dragPoint = null;
 
-            ctx.fillStyle = blockA.color;
-            ctx.fillRect(blockA.x, blockA.y, blockA.width, blockA.height);
+    function distance(p1, p2) {
+      return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+    }
 
-            ctx.fillStyle = blockB.color;
-            ctx.fillRect(blockB.x, blockB.y, blockB.width, blockB.height);
+    function drawSquareOnSide(p1, p2, color) {
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const p3 = {x: p2.x + dx, y: p2.y - dy};
+      const p4 = {x: p1.x + dx, y: p1.y -dy};
 
-            ctx.fillStyle = blockC.color;
-            ctx.fillRect(blockC.x, blockC.y, blockC.width, blockC.height);
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.lineTo(p4.x, p4.y);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.stroke();
+    }
 
-            ctx.fillStyle = 'black';
-            ctx.fillText(`a = ${a.toFixed(2)}`, blockA.x + blockA.width / 2 - 10, blockA.y + 30);
-            ctx.fillText(`b = ${b.toFixed(2)}`, blockB.x + 30, blockB.y + blockB.height / 2);
-            ctx.fillText(`c = ${c.toFixed(2)}`, blockC.x + blockC.width / 2 - 10, blockC.y + 30);
-        }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Verifica si la ecuación es correcta
-        function checkEquation() {
-            let result = (Math.abs((a * a + b * b) - (c * c)) < 0.1);
-            const status = document.getElementById('status');
-            if (result) {
-                status.innerHTML = "¡Correcto! El Teorema de Pitágoras se cumple.";
-                status.style.color = "green";
-            } else {
-                status.innerHTML = "¡Intenta de nuevo! Ajusta los bloques.";
-                status.style.color = "red";
-            }
-        }
+      // Mantener ángulo recto en B
+      C.x = B.x;
+      C.y = A.y;
 
-        // Función para comenzar a arrastrar
-        function checkDrag(event) {
-            let x = event.offsetX;
-            let y = event.offsetY;
+      // Triángulo
+      ctx.beginPath();
+      ctx.moveTo(A.x, A.y);
+      ctx.lineTo(B.x, B.y);
+      ctx.lineTo(C.x, C.y);
+      ctx.closePath();
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+      ctx.fillStyle = "#f0f8ff";
+      ctx.fill();
 
-            // Verifica si el bloque A, B o C está siendo arrastrado
-            if (x > blockA.x && x < blockA.x + blockA.width && y > blockA.y && y < blockA.y + blockA.height) {
-                dragging = 'A';
-                offsetX = x - blockA.x;
-                offsetY = y - blockA.y;
-            } else if (x > blockB.x && x < blockB.x + blockB.width && y > blockB.y && y < blockB.y + blockB.height) {
-                dragging = 'B';
-                offsetX = x - blockB.x;
-                offsetY = y - blockB.y;
-            } else if (x > blockC.x && x < blockC.x + blockC.width && y > blockC.y && y < blockC.y + blockC.height) {
-                dragging = 'C';
-                offsetX = x - blockC.x;
-                offsetY = y - blockC.y;
-            }
-        }
+      // Dibujar cuadrados
+      drawSquareOnSide(A, B, "#ffccbc"); // cateto 1
+      drawSquareOnSide(B, C, "#dcedc8"); // cateto 2
+      drawSquareOnSide(A, C, "#b3e5fc"); // hipotenusa
 
-        function moveBlock(event) {
-            if (dragging === 'A') {
-                blockA.x = event.offsetX - offsetX;
-                blockA.y = event.offsetY - offsetY;
-                a = blockA.width;
-                b = Math.sqrt(c * c - a * a);
-            } else if (dragging === 'B') {
-                blockB.x = event.offsetX - offsetX;
-                blockB.y = event.offsetY - offsetY;
-                b = blockB.height;
-                c = Math.sqrt(a * a + b * b);
-            } else if (dragging === 'C') {
-                blockC.x = event.offsetX - offsetX;
-                blockC.y = event.offsetY - offsetY;
-                c = blockC.width;
-                a = Math.sqrt(c * c - b * b);
-            }
-            drawBlocks();
-            checkEquation();
-        }
+      // Puntos
+      [A, B].forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = "red";
+        ctx.fill();
+      });
 
-        function stopDrag() {
-            dragging = null;
-        }
+      // Etiquetas
+      ctx.fillStyle = "black";
+      ctx.font = "16px Arial";
+      ctx.fillText("A", A.x - 20, A.y + 10);
+      ctx.fillText("B", B.x + 10, B.y + 10);
+      ctx.fillText("C", C.x + 10, C.y - 10);
 
-        // Reinicia el juego
-        function resetGame() {
-            a = 100;
-            b = 150;
-            c = Math.sqrt(a * a + b * b);
-            blockA.x = 50;
-            blockA.y = 300;
-            blockB.x = 50;
-            blockB.y = 100;
-            blockC.x = 200;
-            blockC.y = 200;
-            document.getElementById('status').innerHTML = "¡Buena suerte!";
-            drawBlocks();
-        }
+      // Algebra simbólica
+      const a = distance(B, C);
+      const b = distance(A, B);
+      const c = distance(A, C);
 
-        // Eventos
-        canvas.addEventListener('mousedown', checkDrag);
-        canvas.addEventListener('mousemove', moveBlock);
-        canvas.addEventListener('mouseup', stopDrag);
-        canvas.addEventListener('mouseout', stopDrag);
+      const expr1 = new algebra.Expression("a").pow(2);
+      const expr2 = new algebra.Expression("b").pow(2);
+      const expr3 = new algebra.Expression("c").pow(2);
 
-        // Dibuja los bloques inicialmente
-        drawBlocks();
-        checkEquation();
-    </script>
+      res.innerHTML = `
+        <strong>Expresión simbólica:</strong><br>
+        ${expr1.toString()} + ${expr2.toString()} = ${expr3.toString()}<br>
+        <strong>Visualmente cumple:</strong> ${Math.abs((a*a + b*b) - c*c) < 1 ? "✅" : "❌"}
+      `;
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (Math.hypot(x - A.x, y - A.y) < 10) dragPoint = A;
+      else if (Math.hypot(x - B.x, y - B.y) < 10) dragPoint = B;
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      if (dragPoint) {
+        const rect = canvas.getBoundingClientRect();
+        dragPoint.x = e.clientX - rect.left;
+        dragPoint.y = e.clientY - rect.top;
+        draw();
+      }
+    });
+
+    canvas.addEventListener("mouseup", () => {
+      dragPoint = null;
+    });
+
+    draw();
+  </script>
 </body>
 </html>
