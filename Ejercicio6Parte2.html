@@ -1,77 +1,66 @@
 <!DOCTYPE html>
-<html lang="es-ES">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Matemáticas Dinámicas</title>
-<link rel="stylesheet" href="miestilo.css">
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        processEscapes: true
-      }
-    });
-    MathJax.Hub.Config({
-      TeX: {
-        Macros: {
-          R: "{\\mathbb R}",
-          N: "{\\mathbb N}",
-          Z: "{\\mathbb Z}",
-          bold: ["{\\bf #1}",1]
-        }
-      }
-    });
-    MathJax.Hub.Config({
-      TeX: { equationNumbers: { autoNumber: "AMS" } }
-    });
-    TeX: {
-      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Teorema de Pitágoras Interactivo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.5.0/algebrite.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; text-align: center; }
+    canvas { border: 1px solid #ccc; background: #fff; display: block; margin: 20px auto; }
+    #info {
+      max-width: 600px;
+      margin: 10px auto;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      font-size: 16px;
     }
-</script>
-    
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
-<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>    
-    
-<body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
-    <h1>Intersección de dos rectas</h1>
-    <h3>de Lorena Lucas Baños</h3>
-    Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
-    <br>
-    <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
+    .blue { color: blue; font-weight: bold; }
+    .green { color: green; font-weight: bold; }
+    .red { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas" width="600" height="400"></canvas>
+<div id="info"></div>
 
 <script>
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const info = document.getElementById("info");
 
-  let A = { x: 100, y: 300 }; // fijo (ángulo recto)
-  let B = { x: 500, y: 300 }; // Inicialmente en la horizontal
-  let C = { x: 100, y: 100 }; // Inicialmente en la vertical
+  // Puntos iniciales: más a la izquierda
+  let A = { x: 100, y: 300 }; // Ángulo recto
+  let B = { x: 300, y: 300 };
+  let C = { x: 100, y: 150 };
 
   let dragging = null;
 
-  /*function dist(p1, p2) {
+  function dist(p1, p2) {
     return Math.hypot(p1.x - p2.x, p1.y - p2.y);
-  }*/
+  }
 
-  function drawSquareOnSide(p1, p2, color = "rgba(0, 150, 255, 0.2)") {
+  function drawSquare(p1, p2, color) {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
-
-    const p3 = { x: p2.x -dy, y: p2.y + dx };
-    const p4 = { x: p1.x-dy, y: p1.y + dx };
+    const length = Math.hypot(dx, dy);
+    const nx = -dy / length;
+    const ny = dx / length;
+    const p3 = { x: p2.x + nx * length, y: p2.y + ny * length };
+    const p4 = { x: p1.x + nx * length, y: p1.y + ny * length };
 
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
     ctx.lineTo(p3.x, p3.y);
     ctx.lineTo(p4.x, p4.y);
-     ctx.lineTo(p1.x, p1.y); 
     ctx.closePath();
     ctx.fillStyle = color;
+    ctx.globalAlpha = 0.3;
     ctx.fill();
-    ctx.strokeStyle = "#0096FF";
-    ctx.stroke();
+    ctx.globalAlpha = 1;
+    return length * length;
   }
 
   function draw() {
@@ -83,43 +72,42 @@
     ctx.lineTo(B.x, B.y);
     ctx.lineTo(C.x, C.y);
     ctx.closePath();
-    ctx.fillStyle = "#ddd";
+    ctx.fillStyle = "#eee";
     ctx.fill();
-    ctx.strokeStyle = "#000";
     ctx.stroke();
 
-    // Cuadrados en los lados
-    drawSquareOnSide(A, B);
-    drawSquareOnSide(B, C);
-    drawSquareOnSide(C, A);
+    // Lados
+    const a = dist(C, B); // rojo
+    const b = dist(C, A); // verde
+    const c = dist(A, B); // azul
 
-    // Vértices
+    const areaRojo = drawSquare(C, B, "red");
+    const areaVerde = drawSquare(C, A, "green");
+    const areaAzul = drawSquare(A, B, "blue");
+
+    // Puntos
     [A, B, C].forEach(p => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
-      ctx.fillStyle = "#333";
+      ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "#000";
       ctx.fill();
     });
 
-    // Cálculo de áreas
-    const ab = dist(A, B);
-    const bc = dist(B, C);
-    const ca = dist(C, A);
+    ctx.fillStyle = "#000";
+    ctx.fillText("A", A.x - 15, A.y + 5);
+    ctx.fillText("B", B.x + 5, B.y + 5);
+    ctx.fillText("C", C.x - 10, C.y - 10);
 
-    const area1 = ab ** 2;
-    const area2 = bc ** 2;
-    const area3 = ca ** 2;
-
-    const resultado = Algebrite.run(`simplify(${area1} + ${area2} - ${area3})`);
+    const simb = Algebrite.run(`simplify(${areaAzul} - (${areaRojo} + ${areaVerde}))`);
 
     info.innerHTML = `
-      <strong>Áreas de los cuadrados:</strong><br>
-      AB² = ${area1.toFixed(2)}<br>
-      BC² = ${area2.toFixed(2)}<br>
-      CA² = ${area3.toFixed(2)}<br><br>
+      <span class="blue">Área cuadrado azul</span> = ${areaAzul.toFixed(2)}<br>
+      <span class="green">Área cuadrado verde</span> = ${areaVerde.toFixed(2)}<br>
+      <span class="red">Área cuadrado rojo</span> = ${areaRojo.toFixed(2)}<br><br>
       <strong>Verificación:</strong><br>
-      AB² + BC² ${Math.abs(area1 + area2 - area3) < 0.1 ? "≈" : "≠"} CA²<br>
-      Resultado simbólico: ${resultado}
+      <span class="blue">Azul</span> = <span class="green">Verde</span> + <span class="red">Rojo</span><br>
+      ${areaAzul.toFixed(2)} ${Math.abs(areaAzul - (areaRojo + areaVerde)) < 0.1 ? "≈" : "≠"} ${areaVerde.toFixed(2)} + ${areaRojo.toFixed(2)}<br>
+      <strong>Resultado simbólico:</strong> ${simb}
     `;
   }
 
@@ -131,35 +119,17 @@
     };
   }
 
-  function coordenadas(evt) {
-    const pos = getMousePos(evt);
-    // Verificamos si el clic está cerca de B o C
-    if (dist(pos, B) < 10) {
-      dragging = "B";
-    } else if (dist(pos, C) < 10) {
-      dragging = "C";
-    }
-  }
-
-  function keepRightAngle() {
-    // Ajustar C para que el ángulo sea 90° entre AB y AC
-    const deltaX = B.x - A.x;
-    const deltaY = B.y - A.y;
-    C.x = A.x - deltaY; // Vertical
-    C.y = A.y + deltaX; // Horizontal
-  }
+  canvas.addEventListener("mousedown", e => {
+    const pos = getMousePos(e);
+    if (dist(pos, C) < 10) dragging = "C";
+    else if (dist(pos, B) < 10) dragging = "B";
+  });
 
   canvas.addEventListener("mousemove", e => {
     if (dragging) {
       const pos = getMousePos(e);
-      if (dragging === "B") {
-        B = pos;
-        keepRightAngle(); // Mantener el ángulo recto
-      }
-      if (dragging === "C") {
-        C = pos;
-        keepRightAngle(); // Mantener el ángulo recto
-      }
+      if (dragging === "C") C = pos;
+      if (dragging === "B") B = pos;
       draw();
     }
   });
@@ -169,5 +139,7 @@
 
   draw();
 </script>
+
 </body>
 </html>
+
