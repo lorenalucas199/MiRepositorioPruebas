@@ -102,57 +102,10 @@
       drawSquare(B, C, false, "purple");
 
 var dd=document.getElementById('areacuadrado');
-dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y)
-        dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x)
-        dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2))
-        
-
-/*
-// Crear las coordenadas de los puntos usando Algebra.js
-var AAlgebraX = new algebra.Fraction(A.x);  // Componente x de A
-var AAlgebraY = new algebra.Fraction(A.y);  // Componente y de A
-
-var BAlgebraX = new algebra.Fraction(B.x);  // Componente x de B
-var BAlgebraY = new algebra.Fraction(B.y);  // Componente y de B
-
-var CAlgebraX = new algebra.Fraction(C.x);  // Componente x de C
-var CAlgebraY = new algebra.Fraction(C.y);  // Componente y de C
-
-// Calcular las diferencias entre las coordenadas de los puntos
-var ABx = BAlgebraX.subtract(AAlgebraX);  // Diferencia en x entre A y B
-var ABy = BAlgebraY.subtract(AAlgebraY);  // Diferencia en y entre A y B
-
-var ACx = CAlgebraX.subtract(AAlgebraX);  // Diferencia en x entre A y C
-var ACy = CAlgebraY.subtract(AAlgebraY);  // Diferencia en y entre A y C
-
-var BCx = CAlgebraX.subtract(BAlgebraX);  // Diferencia en x entre B y C
-var BCy = CAlgebraY.subtract(BAlgebraY);  // Diferencia en y entre B y C
-
-// Calcular las magnitudes (distancias) de los vectores AB, AC y BC
-var ladoAB = new algebra.Fraction(Math.sqrt(ABx.valueOf() * ABx.valueOf() + ABy.valueOf() * ABy.valueOf()));  // Magnitud de AB
-var ladoAC = new algebra.Fraction(Math.sqrt(ACx.valueOf() * ACx.valueOf() + ACy.valueOf() * ACy.valueOf()));  // Magnitud de AC
-var ladoBC = new algebra.Fraction(Math.sqrt(BCx.valueOf() * BCx.valueOf() + BCy.valueOf() * BCy.valueOf()));  // Magnitud de BC
-
-// Calcular áreas (cuadrados de las longitudes)
-var areaRojo = ladoAB.mul(ladoAB);  // Cuadrado de AB
-var areaVerde = ladoAC.mul(ladoAC);  // Cuadrado de AC
-var areaMorado = ladoBC.mul(ladoBC);  // Cuadrado de BC
-
-// Mostrar resultados en fracciones o decimales
-document.getElementById("areas").innerHTML = `
-    Área cuadrado rojo (AB²): ${areaRojo.toString()} <br>
-    Área cuadrado verde (AC²): ${areaVerde.toString()} <br>
-    Área cuadrado morado (BC²): ${areaMorado.toString()} <br><br>
-    ${Math.abs(areaRojo.valueOf() + areaVerde.valueOf() - areaMorado.valueOf()) < 0.01 
-        ? "<span style='color:green;'>¡Se cumple el teorema de Pitágoras!</span>" 
-        : "<span style='color:red;'>No se cumple exactamente.</span>"
-    }
-`;*/
-
-
-
-
-        
+dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y);<br>
+        dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x);<br>
+        dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2));<br>
+                
     }
 
         function areacuadrado(lado){
