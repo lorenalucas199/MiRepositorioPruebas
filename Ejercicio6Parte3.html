@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemáticas con Canvas y Algebra.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrapi/1.0.3/algebra.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Explorando una Parabólica con Canvas y Algebra.js</h1>
+    <p>Esta página muestra cómo dibujar una parábola usando un canvas y calcular sus intersecciones con el eje \(x\) utilizando Algebra.js.</p>
+
+    <canvas id="mathCanvas" width="600" height="400"></canvas>
+
+    <script>
+        // Crear el objeto de canvas
+        const canvas = document.getElementById('mathCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Definir la ecuación de la parábola: y = x^2 - 4
+        const parabola = new Algebra.Expression("x^2 - 4");
+
+        // Función para dibujar la parábola en el canvas
+        function drawParabola() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - parabola.eval({x: 0}) * 20);
+
+            for (let x = -canvas.width / 2; x < canvas.width / 2; x++) {
+                let y = parabola.eval({x: x / 20});
+                ctx.lineTo(x + canvas.width / 2, canvas.height - y * 20);
+            }
+
+            ctx.strokeStyle = 'blue';
+            ctx.stroke();
+        }
+
+        // Calcular las intersecciones con el eje X
+        function calculateIntersections() {
+            const roots = parabola.solve("x");
+            return roots;
+        }
+
+        // Dibujar las intersecciones
+        function drawIntersections() {
+            const roots = calculateIntersections();
+            ctx.fillStyle = 'red';
+            roots.forEach(root => {
+                let x = root.eval({});
+                ctx.beginPath();
+                ctx.arc(x * 20 + canvas.width / 2, canvas.height, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+
+        // Dibujar la parábola y sus intersecciones
+        function render() {
+            drawParabola();
+            drawIntersections();
+        }
+
+        render();
+    </script>
+
+</body>
+</html>
