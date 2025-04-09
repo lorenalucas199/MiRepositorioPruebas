@@ -52,10 +52,14 @@
 
     
 
-    function drawSquare(p1, p2, outward = true, color = "rgba(100,100,255,0.4)") {
+    function drawSquare(p1, p2, invertir = false, color = "rgba(100,100,255,0.4)") {
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
-      
+        
+      if (invertir==true) {
+         dx = -dx;
+         dy = -dy;
+       }
 
       const p3 = { x: p1.x +dy, y: p1.y -dx };
       const p4 = { x: p2.x +dy, y: p2.y -dx };
