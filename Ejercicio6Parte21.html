@@ -37,7 +37,8 @@
     Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
     <br>
     <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)" onmousemove="moverpunto(event)" onmouseup="nopunto(event)"></canvas>
-   
+   <div id="areacuadrado"></div>  <!Aquí se mostrarán los resultados>
+    
     <script>
     
   var c=document.getElementById("canvas");
@@ -100,7 +101,7 @@
       // Cuadrado en BC (hacia el otro lado de AC)
       drawSquare(B, C, false, "purple");
 
-
+var dd=document.getElementById('areacuadrado');
 dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y)
         dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x)
         dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2))
