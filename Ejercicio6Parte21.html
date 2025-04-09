@@ -101,40 +101,30 @@
       drawSquare(B, C, false, "purple");
 
 
- // Crear los puntos utilizando Algebra.js de forma apropiada
-var AAlgebra = new algebra.Expression(A.x);  // Usar A.x como una expresión
-var BAlgebra = new algebra.Expression(B.x);  // Usar B.x como una expresión
-var CAlgebra = new algebra.Expression(C.x);  // Usar C.x como una expresión
+// Crear las coordenadas de los puntos usando Algebra.js
+var AAlgebraX = new algebra.Fraction(A.x);  // Componente x de A
+var AAlgebraY = new algebra.Fraction(A.y);  // Componente y de A
 
-// Crear las componentes y para cada punto
-var AyAlgebra = new algebra.Expression(A.y); // Para el componente y de A
-var ByAlgebra = new algebra.Expression(B.y); // Para el componente y de B
-var CyAlgebra = new algebra.Expression(C.y); // Para el componente y de C
+var BAlgebraX = new algebra.Fraction(B.x);  // Componente x de B
+var BAlgebraY = new algebra.Fraction(B.y);  // Componente y de B
 
-// Calcular los vectores AB, AC, BC
-var ABx = BAlgebra.subtract(AAlgebra);  // Componente x de AB
-var ABy = ByAlgebra.subtract(AyAlgebra);  // Componente y de AB
+var CAlgebraX = new algebra.Fraction(C.x);  // Componente x de C
+var CAlgebraY = new algebra.Fraction(C.y);  // Componente y de C
 
-var ACx = CAlgebra.subtract(AAlgebra);  // Componente x de AC
-var ACy = CyAlgebra.subtract(AyAlgebra);  // Componente y de AC
+// Calcular las diferencias entre las coordenadas de los puntos
+var ABx = BAlgebraX.subtract(AAlgebraX);  // Diferencia en x entre A y B
+var ABy = BAlgebraY.subtract(AAlgebraY);  // Diferencia en y entre A y B
 
-var BCx = CAlgebra.subtract(BAlgebra);  // Componente x de BC
-var BCy = CyAlgebra.subtract(ByAlgebra);  // Componente y de BC
+var ACx = CAlgebraX.subtract(AAlgebraX);  // Diferencia en x entre A y C
+var ACy = CAlgebraY.subtract(AAlgebraY);  // Diferencia en y entre A y C
 
-// Extraer los valores numéricos de las componentes de los vectores
-var ABxNum = ABx.valueOf(); // Extraer el valor de ABx
-var AByNum = ABy.valueOf(); // Extraer el valor de ABy
+var BCx = CAlgebraX.subtract(BAlgebraX);  // Diferencia en x entre B y C
+var BCy = CAlgebraY.subtract(BAlgebraY);  // Diferencia en y entre B y C
 
-var ACxNum = ACx.valueOf(); // Extraer el valor de ACx
-var ACyNum = ACy.valueOf(); // Extraer el valor de ACy
-
-var BCxNum = BCx.valueOf(); // Extraer el valor de BCx
-var BCyNum = BCy.valueOf(); // Extraer el valor de BCy
-
-// Calcular las magnitudes de los vectores usando la raíz cuadrada
-var ladoAB = new algebra.Fraction(Math.sqrt(ABxNum * ABxNum + AByNum * AByNum));  // Magnitud de AB
-var ladoAC = new algebra.Fraction(Math.sqrt(ACxNum * ACxNum + ACyNum * ACyNum));  // Magnitud de AC
-var ladoBC = new algebra.Fraction(Math.sqrt(BCxNum * BCxNum + BCyNum * BCyNum));  // Magnitud de BC
+// Calcular las magnitudes (distancias) de los vectores AB, AC y BC
+var ladoAB = new algebra.Fraction(Math.sqrt(ABx.valueOf() * ABx.valueOf() + ABy.valueOf() * ABy.valueOf()));  // Magnitud de AB
+var ladoAC = new algebra.Fraction(Math.sqrt(ACx.valueOf() * ACx.valueOf() + ACy.valueOf() * ACy.valueOf()));  // Magnitud de AC
+var ladoBC = new algebra.Fraction(Math.sqrt(BCx.valueOf() * BCx.valueOf() + BCy.valueOf() * BCy.valueOf()));  // Magnitud de BC
 
 // Calcular áreas (cuadrados de las longitudes)
 var areaRojo = ladoAB.mul(ladoAB);  // Cuadrado de AB
@@ -151,6 +141,7 @@ document.getElementById("areas").innerHTML = `
         : "<span style='color:red;'>No se cumple exactamente.</span>"
     }
 `;
+
 
 
 
