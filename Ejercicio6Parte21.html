@@ -52,17 +52,17 @@
 
     
 
-    function drawSquare(p1, p2, invertir = false, color = "rgba(100,100,255,0.4)") {
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
+    function drawSquare(p1, p2, invertir = false, color) {
+      let dx = p2.x - p1.x;
+      let dy = p2.y - p1.y;
         
       if (invertir==true) {
          dx = -dx;
          dy = -dy;
        }
 
-      const p3 = { x: p1.x +dy, y: p1.y -dx };
-      const p4 = { x: p2.x +dy, y: p2.y -dx };
+      let p3 = { x: p1.x +dy, y: p1.y -dx };
+      let p4 = { x: p2.x +dy, y: p2.y -dx };
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -93,7 +93,7 @@
       ctx.fillText("C", C.x, C.y + 20);
 
       // Cuadrado en AB (hacia el otro lado de AC)
-      drawSquare(A, B, false, "rgba(255,100,100,0.4)");
+      drawSquare(A, B, false, "red");
       // Cuadrado en AC (hacia afuera, como está)
       drawSquare(A, C, true, "rgba(100,255,100,0.4)");
       // Cuadrado en BC (hacia el otro lado de AC)
