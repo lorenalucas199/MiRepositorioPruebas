@@ -1,51 +1,64 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Triángulo con cuadrados</title>
-  <style>
-    canvas {
-      border: 1px solid black;
-      display: block;
-      margin: auto;
+<html lang="es-ES">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matemáticas Dinámicas</title>
+<link rel="stylesheet" href="miestilo.css">
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          R: "{\\mathbb R}",
+          N: "{\\mathbb N}",
+          Z: "{\\mathbb Z}",
+          bold: ["{\\bf #1}",1]
+        }
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
     }
-  </style>
-</head>
-<body>
-  <canvas id="canvas" width="600" height="600"></canvas>
+</script>
+    
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
+<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>         
+<body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
+    <h1>Intersección de dos rectas</h1>
+    <h3>de Lorena Lucas Baños</h3>
+    Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
+    <br>
+    <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
+    
+    <script>
+    
+  var c=document.getElementById("canvas");
+        var ctx=c.getContext("2d");
+        var Fraction = algebra.Fraction;
+        var Expression = algebra.Expression;
+        var Equation = algebra.Equation;
 
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+    let A = { x: 300, y: 200 }; // Vértice del ángulo recto
+    let B = { x: 300, y: 200 - 100 }; // Movible en eje Y
+    let C = { x: 300 + 150, y: 200 }; // Movible en eje X
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    let A = { x: centerX, y: centerY }; // Vértice del ángulo recto
-    let B = { x: centerX, y: centerY - 100 }; // Movible en eje Y
-    let C = { x: centerX + 150, y: centerY }; // Movible en eje X
-
-    let draggingPoint = null;
+    
 
     function drawSquare(p1, p2, outward = true, color = "rgba(100,100,255,0.4)") {
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const ux = dx / length;
-      const uy = dy / length;
+      
 
-      let perpX = -uy * length;
-      let perpY = ux * length;
-
-      // Si queremos que vaya hacia el otro lado, invertimos la perpendicular
-      if (!outward) {
-        perpX = -perpX;
-        perpY = -perpY;
-      }
-
-      const p3 = { x: p1.x + perpX, y: p1.y + perpY };
-      const p4 = { x: p2.x + perpX, y: p2.y + perpY };
+      const p3 = { x: p1.x +dy, y: p1.y -dx };
+      const p4 = { x: p2.x +dy, y: p2.y -dx };
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -58,7 +71,7 @@
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, c.width, c.height);
 
       // Triángulo
       ctx.beginPath();
@@ -83,8 +96,10 @@
       drawSquare(B, C, false, "rgba(100,100,255,0.4)");
     }
 
-    canvas.addEventListener("mousedown", (e) => {
-      const rect = canvas.getBoundingClientRect();
+      let draggingPoint = null;
+
+    c.addEventListener("mousedown", (e) => {
+      const rect = c.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
@@ -95,9 +110,9 @@
       }
     });
 
-    canvas.addEventListener("mousemove", (e) => {
+    c.addEventListener("mousemove", (e) => {
       if (draggingPoint) {
-        const rect = canvas.getBoundingClientRect();
+        const rect = c.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
@@ -110,7 +125,7 @@
       }
     });
 
-    canvas.addEventListener("mouseup", () => {
+    c.addEventListener("mouseup", () => {
       draggingPoint = null;
     });
 
