@@ -102,24 +102,34 @@
 
 
  // Crear los puntos utilizando Algebra.js de forma apropiada
-var AAlgebra = new algebra.Expression([A.x, A.y]);  // Representar el punto A
-var BAlgebra = new algebra.Expression([B.x, B.y]);  // Representar el punto B
-var CAlgebra = new algebra.Expression([C.x, C.y]);  // Representar el punto C
+var AAlgebra = new algebra.Expression(A.x);  // Usar A.x como una expresión
+var BAlgebra = new algebra.Expression(B.x);  // Usar B.x como una expresión
+var CAlgebra = new algebra.Expression(C.x);  // Usar C.x como una expresión
 
-// Calcular los vectores AB, AC, BC (restas de las coordenadas)
-var AB = BAlgebra.subtract(AAlgebra);
-var AC = CAlgebra.subtract(AAlgebra);
-var BC = CAlgebra.subtract(BAlgebra);
+// Crear las componentes y para cada punto
+var AyAlgebra = new algebra.Expression(A.y); // Para el componente y de A
+var ByAlgebra = new algebra.Expression(B.y); // Para el componente y de B
+var CyAlgebra = new algebra.Expression(C.y); // Para el componente y de C
 
-// Usar algebra.Fraction para los cálculos
-var ladoAB = new algebra.Fraction(AB.magnitude());  // Convertir a fracción
-var ladoAC = new algebra.Fraction(AC.magnitude());  // Convertir a fracción
-var ladoBC = new algebra.Fraction(BC.magnitude());  // Convertir a fracción
+// Calcular los vectores AB, AC, BC
+var ABx = BAlgebra.subtract(AAlgebra);  // Componente x de AB
+var ABy = ByAlgebra.subtract(AyAlgebra);  // Componente y de AB
+
+var ACx = CAlgebra.subtract(AAlgebra);  // Componente x de AC
+var ACy = CyAlgebra.subtract(AyAlgebra);  // Componente y de AC
+
+var BCx = CAlgebra.subtract(BAlgebra);  // Componente x de BC
+var BCy = CyAlgebra.subtract(ByAlgebra);  // Componente y de BC
+
+// Usar algebra.Fraction para los cálculos de magnitudes
+var ladoAB = new algebra.Fraction(Math.sqrt(ABx.valueOf() * ABx.valueOf() + ABy.valueOf() * ABy.valueOf()));  // Magnitud de AB
+var ladoAC = new algebra.Fraction(Math.sqrt(ACx.valueOf() * ACx.valueOf() + ACy.valueOf() * ACy.valueOf()));  // Magnitud de AC
+var ladoBC = new algebra.Fraction(Math.sqrt(BCx.valueOf() * BCx.valueOf() + BCy.valueOf() * BCy.valueOf()));  // Magnitud de BC
 
 // Calcular áreas (cuadrados de las longitudes)
-var areaRojo = AB.magnitude().mul(AB.magnitude());  // Cuadrado de AB
-var areaVerde = AC.magnitude().mul(AC.magnitude());  // Cuadrado de AC
-var areaMorado = BC.magnitude().mul(BC.magnitude());  // Cuadrado de BC
+var areaRojo = ladoAB.mul(ladoAB);  // Cuadrado de AB
+var areaVerde = ladoAC.mul(ladoAC);  // Cuadrado de AC
+var areaMorado = ladoBC.mul(ladoBC);  // Cuadrado de BC
 
 // Mostrar resultados en fracciones o decimales
 document.getElementById("areas").innerHTML = `
@@ -131,6 +141,7 @@ document.getElementById("areas").innerHTML = `
         : "<span style='color:red;'>No se cumple exactamente.</span>"
     }
 `;
+
 
         
     }
