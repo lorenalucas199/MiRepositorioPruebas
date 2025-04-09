@@ -36,7 +36,7 @@
     <h3>de Lorena Lucas Baños</h3>
     Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
     <br>
-    <canvas id="canvas" width="1200" height="500" class="recuadro"  onclick="coordenadas(event)"></canvas>
+    <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)"></canvas>
     
     <script>
     
@@ -46,9 +46,9 @@
         var Expression = algebra.Expression;
         var Equation = algebra.Equation;
 
-    let A = { x: 300, y: 200 }; // Vértice del ángulo recto
-    let B = { x: 300, y: 200 - 100 }; // Movible en eje Y
-    let C = { x: 300 + 150, y: 200 }; // Movible en eje X
+    let A = { x: 400, y: 500 }; // Vértice del ángulo recto
+    let B = { x: 400, y: 500 - 100 }; // Movible en eje Y
+    let C = { x: 400 + 150, y: 500 }; // Movible en eje X
 
     
 
@@ -100,37 +100,40 @@
       drawSquare(B, C, false, "purple");
     }
 
-      let draggingPoint = null;
+      let moverpunto = null;
 
-    c.addEventListener("mousedown", (e) => {
-      const rect = c.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
 
-      if (Math.abs(mouseX - B.x) < 10 && Math.abs(mouseY - B.y) < 10) {
-        draggingPoint = "B";
-      } else if (Math.abs(mouseX - C.x) < 10 && Math.abs(mouseY - C.y) < 10) {
-        draggingPoint = "C";
+        
+function elegirpunto(event){
+   
+      var coordCanvas=cc.getBoundingClientRect();
+  var x=event.clientX-coordCanvas.x;
+  var y=event.clientY-coordCanvas.y;
+ //pulsar en el mismo pixel es muy dificil, asi que si se pincha CERCA del punto B o C:
+      if (Math.abs(x - B.x) < 10 && Math.abs(y - B.y) < 10) {
+        moverpunto = "B";
+      } else if (Math.abs(x - C.x) < 10 && Math.abs(y - C.y) < 10) {
+        moverpunto = "C";
       }
-    });
+    };
 
     c.addEventListener("mousemove", (e) => {
-      if (draggingPoint) {
-        const rect = c.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+      if (moverpunto) {
+          var coordCanvas=cc.getBoundingClientRect();
+  var x=event.clientX-coordCanvas.x;
+  var y=event.clientY-coordCanvas.y;
 
-        if (draggingPoint === "B") {
-          B.y = mouseY; // Solo en eje Y
-        } else if (draggingPoint === "C") {
-          C.x = mouseX; // Solo en eje X
+        if (moverpunto === "B") {
+          B.y = y; // Solo en eje Y
+        } else if (moverpunto === "C") {
+          C.x = x; // Solo en eje X
         }
         draw();
       }
     });
 
     c.addEventListener("mouseup", () => {
-      draggingPoint = null;
+      moverpunto = null;
     });
 
     draw();
