@@ -28,14 +28,21 @@
 
     let draggingPoint = null;
 
-    function drawSquare(p1, p2, color = "rgba(100,100,255,0.4)") {
+    function drawSquare(p1, p2, outward = true, color = "rgba(100,100,255,0.4)") {
       const dx = p2.x - p1.x;
       const dy = p2.y - p1.y;
       const length = Math.sqrt(dx * dx + dy * dy);
       const ux = dx / length;
       const uy = dy / length;
-      const perpX = -uy * length;
-      const perpY = ux * length;
+
+      let perpX = -uy * length;
+      let perpY = ux * length;
+
+      // Si queremos que vaya hacia el otro lado, invertimos la perpendicular
+      if (!outward) {
+        perpX = -perpX;
+        perpY = -perpY;
+      }
 
       const p3 = { x: p1.x + perpX, y: p1.y + perpY };
       const p4 = { x: p2.x + perpX, y: p2.y + perpY };
@@ -68,12 +75,12 @@
       ctx.fillText("B", B.x - 15, B.y);
       ctx.fillText("C", C.x, C.y + 20);
 
-      // Cuadrado en AB
-      drawSquare(A, B, "rgba(255,100,100,0.4)");
-      // Cuadrado en AC
-      drawSquare(A, C, "rgba(100,255,100,0.4)");
-      // Cuadrado en BC
-      drawSquare(B, C, "rgba(100,100,255,0.4)");
+      // Cuadrado en AB (hacia el otro lado de AC)
+      drawSquare(A, B, false, "rgba(255,100,100,0.4)");
+      // Cuadrado en AC (hacia afuera, como está)
+      drawSquare(A, C, true, "rgba(100,255,100,0.4)");
+      // Cuadrado en BC (hacia el otro lado de AC)
+      drawSquare(B, C, false, "rgba(100,100,255,0.4)");
     }
 
     canvas.addEventListener("mousedown", (e) => {
@@ -111,3 +118,4 @@
   </script>
 </body>
 </html>
+
