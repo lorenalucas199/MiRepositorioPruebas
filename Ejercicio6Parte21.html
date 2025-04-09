@@ -101,6 +101,12 @@
       drawSquare(B, C, false, "purple");
 
 
+dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y)
+        dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x)
+        dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2))
+        
+
+/*
 // Crear las coordenadas de los puntos usando Algebra.js
 var AAlgebraX = new algebra.Fraction(A.x);  // Componente x de A
 var AAlgebraY = new algebra.Fraction(A.y);  // Componente y de A
@@ -140,13 +146,19 @@ document.getElementById("areas").innerHTML = `
         ? "<span style='color:green;'>¡Se cumple el teorema de Pitágoras!</span>" 
         : "<span style='color:red;'>No se cumple exactamente.</span>"
     }
-`;
+`;*/
 
 
 
 
         
     }
+
+        function areacuadrado(lado){
+  var expr=algebra.parse("x^2");
+  var valor=expr.eval({x:lado});
+  var vv=valor.constants[0].valueOf();
+  return vv;
 
       let puntoelegido = null;
 
