@@ -101,36 +101,37 @@
       drawSquare(B, C, false, "purple");
 
 
-        // Crear los vectores utilizando Algebra.js
-    var AAlgebra = new algebra.Point(A.x, A.y);
-    var BAlgebra = new algebra.Point(B.x, B.y);
-    var CAlgebra = new algebra.Point(C.x, C.y);
+ // Crear los puntos utilizando Algebra.js de forma apropiada
+var AAlgebra = new algebra.Expression([A.x, A.y]);  // Representar el punto A
+var BAlgebra = new algebra.Expression([B.x, B.y]);  // Representar el punto B
+var CAlgebra = new algebra.Expression([C.x, C.y]);  // Representar el punto C
 
-    // Calcular los vectores AB, AC, BC
-    var AB = BAlgebra.subtract(AAlgebra);
-    var AC = CAlgebra.subtract(AAlgebra);
-    var BC = CAlgebra.subtract(BAlgebra);
+// Calcular los vectores AB, AC, BC (restas de las coordenadas)
+var AB = BAlgebra.subtract(AAlgebra);
+var AC = CAlgebra.subtract(AAlgebra);
+var BC = CAlgebra.subtract(BAlgebra);
 
-    // Usar algebra.Fraction para los cálculos
-    var ladoAB = new algebra.Fraction(AB.magnitude());  // Convertir a fracción
-    var ladoAC = new algebra.Fraction(AC.magnitude());  // Convertir a fracción
-    var ladoBC = new algebra.Fraction(BC.magnitude());  // Convertir a fracción
+// Usar algebra.Fraction para los cálculos
+var ladoAB = new algebra.Fraction(AB.magnitude());  // Convertir a fracción
+var ladoAC = new algebra.Fraction(AC.magnitude());  // Convertir a fracción
+var ladoBC = new algebra.Fraction(BC.magnitude());  // Convertir a fracción
 
-    // Calcular áreas
-    var areaRojo = AB.mul(AB);  // Cuadrado de AB
-    var areaVerde = AC.mul(AC);  // Cuadrado de AC
-    var areaMorado = BC.mul(BC);  // Cuadrado de BC
+// Calcular áreas (cuadrados de las longitudes)
+var areaRojo = AB.magnitude().mul(AB.magnitude());  // Cuadrado de AB
+var areaVerde = AC.magnitude().mul(AC.magnitude());  // Cuadrado de AC
+var areaMorado = BC.magnitude().mul(BC.magnitude());  // Cuadrado de BC
 
-    // Mostrar resultados en fracciones o decimales
-    document.getElementById("areas").innerHTML = `
-        Área cuadrado rojo (AB²): ${areaRojo.toString()} <br>
-        Área cuadrado verde (AC²): ${areaVerde.toString()} <br>
-        Área cuadrado morado (BC²): ${areaMorado.toString()} <br><br>
-        ${Math.abs(areaRojo.valueOf() + areaVerde.valueOf() - areaMorado.valueOf()) < 0.01 
-            ? "<span style='color:green;'>¡Se cumple el teorema de Pitágoras!</span>" 
-            : "<span style='color:red;'>No se cumple exactamente.</span>"
-        }
-    `;
+// Mostrar resultados en fracciones o decimales
+document.getElementById("areas").innerHTML = `
+    Área cuadrado rojo (AB²): ${areaRojo.toString()} <br>
+    Área cuadrado verde (AC²): ${areaVerde.toString()} <br>
+    Área cuadrado morado (BC²): ${areaMorado.toString()} <br><br>
+    ${Math.abs(areaRojo.valueOf() + areaVerde.valueOf() - areaMorado.valueOf()) < 0.01 
+        ? "<span style='color:green;'>¡Se cumple el teorema de Pitágoras!</span>" 
+        : "<span style='color:red;'>No se cumple exactamente.</span>"
+    }
+`;
+
         
     }
 
