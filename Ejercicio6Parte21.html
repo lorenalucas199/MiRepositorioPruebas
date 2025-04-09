@@ -106,7 +106,7 @@
         
 function elegirpunto(event){
    
-      var coordCanvas=cc.getBoundingClientRect();
+      var coordCanvas=c.getBoundingClientRect();
   var x=event.clientX-coordCanvas.x;
   var y=event.clientY-coordCanvas.y;
  //pulsar en el mismo pixel es muy dificil, asi que si se pincha CERCA del punto B o C:
@@ -121,7 +121,7 @@ function elegirpunto(event){
 
  
       if (puntoelegido) {
-          var coordCanvas=cc.getBoundingClientRect();
+          var coordCanvas=c.getBoundingClientRect();
   var x=event.clientX-coordCanvas.x;
   var y=event.clientY-coordCanvas.y;
 
