@@ -121,10 +121,20 @@ var ACy = CyAlgebra.subtract(AyAlgebra);  // Componente y de AC
 var BCx = CAlgebra.subtract(BAlgebra);  // Componente x de BC
 var BCy = CyAlgebra.subtract(ByAlgebra);  // Componente y de BC
 
-// Usar algebra.Fraction para los cálculos de magnitudes
-var ladoAB = new algebra.Fraction(Math.sqrt(ABx.valueOf() * ABx.valueOf() + ABy.valueOf() * ABy.valueOf()));  // Magnitud de AB
-var ladoAC = new algebra.Fraction(Math.sqrt(ACx.valueOf() * ACx.valueOf() + ACy.valueOf() * ACy.valueOf()));  // Magnitud de AC
-var ladoBC = new algebra.Fraction(Math.sqrt(BCx.valueOf() * BCx.valueOf() + BCy.valueOf() * BCy.valueOf()));  // Magnitud de BC
+// Extraer los valores numéricos de las componentes de los vectores
+var ABxNum = ABx.valueOf(); // Extraer el valor de ABx
+var AByNum = ABy.valueOf(); // Extraer el valor de ABy
+
+var ACxNum = ACx.valueOf(); // Extraer el valor de ACx
+var ACyNum = ACy.valueOf(); // Extraer el valor de ACy
+
+var BCxNum = BCx.valueOf(); // Extraer el valor de BCx
+var BCyNum = BCy.valueOf(); // Extraer el valor de BCy
+
+// Calcular las magnitudes de los vectores usando la raíz cuadrada
+var ladoAB = new algebra.Fraction(Math.sqrt(ABxNum * ABxNum + AByNum * AByNum));  // Magnitud de AB
+var ladoAC = new algebra.Fraction(Math.sqrt(ACxNum * ACxNum + ACyNum * ACyNum));  // Magnitud de AC
+var ladoBC = new algebra.Fraction(Math.sqrt(BCxNum * BCxNum + BCyNum * BCyNum));  // Magnitud de BC
 
 // Calcular áreas (cuadrados de las longitudes)
 var areaRojo = ladoAB.mul(ladoAB);  // Cuadrado de AB
@@ -141,6 +151,7 @@ document.getElementById("areas").innerHTML = `
         : "<span style='color:red;'>No se cumple exactamente.</span>"
     }
 `;
+
 
 
         
