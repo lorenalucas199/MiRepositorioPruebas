@@ -36,8 +36,8 @@
     <h3>de Lorena Lucas Baños</h3>
     Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
     <br>
-    <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)"></canvas>
-    
+    <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)" onmousemove="moverpunto(event)" onmouseup="nopunto(event)"></canvas>
+   
     <script>
     
   var c=document.getElementById("canvas");
@@ -46,9 +46,9 @@
         var Expression = algebra.Expression;
         var Equation = algebra.Equation;
 
-    let A = { x: 400, y: 500 }; // Vértice del ángulo recto
-    let B = { x: 400, y: 500 - 100 }; // Movible en eje Y
-    let C = { x: 400 + 150, y: 500 }; // Movible en eje X
+    let A = { x: 400, y: 300 }; // Vértice del ángulo recto
+    let B = { x: 400, y: 300 - 100 }; // Movible en eje Y
+    let C = { x: 400 + 150, y: 300 }; // Movible en eje X
 
     
 
@@ -100,7 +100,7 @@
       drawSquare(B, C, false, "purple");
     }
 
-      let moverpunto = null;
+      let puntoelegido = null;
 
 
         
@@ -111,30 +111,33 @@ function elegirpunto(event){
   var y=event.clientY-coordCanvas.y;
  //pulsar en el mismo pixel es muy dificil, asi que si se pincha CERCA del punto B o C:
       if (Math.abs(x - B.x) < 10 && Math.abs(y - B.y) < 10) {
-        moverpunto = "B";
+        puntoelegido = "B";
       } else if (Math.abs(x - C.x) < 10 && Math.abs(y - C.y) < 10) {
-        moverpunto = "C";
+        puntoelegido = "C";
       }
     };
 
-    c.addEventListener("mousemove", (e) => {
-      if (moverpunto) {
+        function moverpunto(event){
+
+ 
+      if (puntoelegido) {
           var coordCanvas=cc.getBoundingClientRect();
   var x=event.clientX-coordCanvas.x;
   var y=event.clientY-coordCanvas.y;
 
-        if (moverpunto === "B") {
+        if (puntoelegido === "B") {
           B.y = y; // Solo en eje Y
-        } else if (moverpunto === "C") {
+        } else if (puntoelegido === "C") {
           C.x = x; // Solo en eje X
         }
         draw();
       }
-    });
+    };
 
-    c.addEventListener("mouseup", () => {
-      moverpunto = null;
-    });
+        function nopunto(event){
+    
+      puntoelegido = null;
+    };
 
     draw();
   </script>
