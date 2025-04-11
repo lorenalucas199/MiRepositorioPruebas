@@ -77,11 +77,13 @@ console.log(typeof intersec.y); //COMPROBACIÓN
             if(puntos.length==5){ //cuando haya cinco, comenzar con una nueva intersección de rectas
                 puntos=[puntos[4]]; //vaciar la lista y dejar solo este último punto
                 ctx.clearRect(0,0,c.width,c.height); //borrar todo el dibujo
+                dibujarPunto(puntos[0]);
             }
         }
 
         
         function dibujarPunto(x,y){
+            ctx.fillStyle="black"
             ctx.beginPath();
             ctx.arc(x,y, 4, 0, 2*Math.PI);
             ctx.fill();
