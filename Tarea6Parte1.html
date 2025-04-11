@@ -88,9 +88,12 @@ console.log(typeof intersec.y); //COMPROBACIÓN
         }
 
         function dibujarRecta(p1,p2) {
+            let r= ecuacionRecta(p1,p2);
             ctx.beginPath();
-            ctx.moveTo(p1.x,p1.y);
-            ctx.lineTo(p2.x,p2.y);
+            ctx.moveTo(0,r.m*0+r.b);
+            //ctx.moveTo(p1.x,p1.y);
+            //ctx.lineTo(p2.x,p2.y);
+            ctx.lineTo(c.width,r.m*c.width+r.b);
             ctx.stroke();
         }
 
