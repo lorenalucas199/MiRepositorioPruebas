@@ -114,11 +114,11 @@ console.log(typeof intersec.y); //COMPROBACIÓN
           let valorx=(r2.b-r1.b)/(r1.m-r2.m);
           
           //Vamos a usar primero la librería math para obtener el numerador y el denominador del número decimal
-            let rm1=new Fraction(r1.m);
+            //let rm1=new Fraction(r1.m);
             //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
-            let m1=new Fraction2(rm1.n,rm1.d);
-            let rb1=new Fraction(r1.b);
-            let b1=new Fraction2(rb1.n,rb1.d);
+            //let m1=new Fraction2(rm1.n,rm1.d);
+            //let rb1=new Fraction(r1.b);
+            //let b1=new Fraction2(rb1.n,rb1.d);
             //var expr1=new Expression("x");
             //expr1=expr1.multiply(m1);
             //expr1=expr1.add(b1);
@@ -130,7 +130,7 @@ console.log(typeof intersec.y); //COMPROBACIÓN
           //var yval = expr1.eval({x: xval});
            //let valory=yval.number/yval.denom;
           //var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
-            let valory = m1*valorx+b1;
+            let valory = r1.m*valorx+r1.b;
           return {x:valorx,y:valory};
             
            
