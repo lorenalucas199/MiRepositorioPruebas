@@ -129,7 +129,10 @@ console.log(b1); //COMPROBACIÓN
             expr1=expr1.multiply(m1);
             expr1=expr1.add(b1);
 
-          var valory = expr1.eval({x: valorx});
+            let fx = new Fraction(valorx);
+            let xval = new Fraction2(fx.n, fx.d);
+
+          var valory = expr1.eval({x: xval});
           //var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
           return {x:valorx,y:valory};
             
