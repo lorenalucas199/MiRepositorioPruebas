@@ -128,13 +128,16 @@ console.log(b1); //COMPROBACIÓN
             var expr1=new Expression("x");
             expr1=expr1.multiply(m1);
             expr1=expr1.add(b1);
+            
+            let yval = expr1.eval({ x: xval });
+    let valory = yval.toDecimal(); // ESTE ES EL CAMBIO CLAVE
 
-            let fx = new Fraction(valorx);
-            let xval = new Fraction2(fx.n, fx.d);
+           //let fx = new Fraction(valorx);
+            //let xval = new Fraction2(fx.n, fx.d);
 
-          var yval = expr1.eval({x: xval});
+          //var yval = expr1.eval({x: xval});
             //let valory=yval.number/yval.denom;
-          var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
+          //var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
           return {x:valorx,y:valory};
             
             /*var expr1=algebra.parse("r1.m*x-r1.b"); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
