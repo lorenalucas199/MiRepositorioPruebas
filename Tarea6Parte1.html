@@ -133,8 +133,8 @@ console.log(b1); //COMPROBACIÓN
             let xval = new Fraction2(fx.n, fx.d);
 
           var yval = expr1.eval({x: xval});
-            let valory=yval.number/yval.denom;
-          //var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
+            //let valory=yval.number/yval.denom;
+          var valory=(m1.numer/m1.denom)*valorx+(b1.numer/b1.denom);
           return {x:valorx,y:valory};
             
             /*var expr1=algebra.parse("r1.m*x-r1.b"); //error porque creo que algebra.parse coge la ecuacion literal sin evaluar r1.m y r1.b
