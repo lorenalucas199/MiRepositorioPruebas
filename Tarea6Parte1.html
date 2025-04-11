@@ -75,9 +75,9 @@ console.log(typeof intersec.y); //COMPROBACIÓN
             }
             
             if(puntos.length==5){ //cuando haya cinco, comenzar con una nueva intersección de rectas
+                ctx.clearRect(0,0,c.width,c.height); //borrar todo el dibujo
                 dibujarPunto(puntos[4]);
                 puntos=[puntos[4]]; //vaciar la lista y dejar solo este último punto
-                ctx.clearRect(0,0,c.width,c.height); //borrar todo el dibujo
             }
         }
 
