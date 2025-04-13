@@ -101,11 +101,6 @@
       // Cuadrado en BC (hacia el otro lado de AC)
       drawSquare(B, C, false, "purple");
 
-        
-var dd=document.getElementById('areacuadrado');
-dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y);
-        dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x);
-        dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2));
                 
     }
 
@@ -156,6 +151,14 @@ function elegirpunto(event){
 
     draw();
   </script>
+
+    <script>
+    
+    var dd=document.getElementById('areacuadrado');
+    dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y);
+        dd.innerText="El cuadrado verde tiene area"+areacuadrado(C.x-A.x);
+        dd.innerText="El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)^2+(C.x-A.x)^2));
+    </script>
 </body>
 </html>
 
