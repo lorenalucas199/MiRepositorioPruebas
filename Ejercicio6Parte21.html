@@ -30,8 +30,9 @@
 </script>
     
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
-<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.min.js"></script>
+<script src="https://algebra.js.org/javascripts/algebra-0.2.6.min.js"></script>
+
 
 
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
@@ -163,7 +164,7 @@ function elegirpunto(event){
 console.log(hipot); //COMPROBACIÓN
 console.log(typeof hipot);
    //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
-       hipot= Fraction(hipot.n,hipot.d);
+       hipot= new algebra.Fraction(hipot.n,hipot.d);
 console.log(hipot); //COMPROBACIÓN
 console.log(typeof hipot);
      
