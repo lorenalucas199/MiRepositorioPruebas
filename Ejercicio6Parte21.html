@@ -36,9 +36,12 @@
 
 
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
-    <h1>Intersección de dos rectas</h1>
+    <h1>Teorema de Pitágoras</h1>
     <h3>de Lorena Lucas Baños</h3>
-    Define dos rectas a partir de tus clicks en el siguiente espacio. A continuación, se mostrará el punto de intersección entre ambas:
+    A partir del siguiente triángulo rectángulo ABC, mueve los vértices B y C para dibujar cualquier triángulo rectángulo que quieras. 
+    Podrás comprobar que los $píxeles^2$ (área) que ocupa el cuadrado del lado AB junto a los que ocupa el cuadrado del lado AC es igual a los $píxeles^2$ que llena el cuadrado de lado BC. Es decir que se cummple:
+    <br> $AB^2+AC^2=BC^2$, o equivalentemente como conocemos: $cateto_1^2+cateto_2^2=hipotenusa^2$.
+    <br>
     <br>
     <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)" onmousemove="moverpunto(event)" onmouseup="nopunto(event)"></canvas>
    <div id="areacuadrado"></div>  <!Aquí se mostrarán los resultados>
@@ -171,9 +174,10 @@ console.log(typeof hipot);
      
             
     var dd=document.getElementById('areacuadrado');
-    dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y)+"\n" +
-    "El cuadrado verde tiene area"+areacuadrado(C.x-A.x)+"\n" +
-        "El cuadrado rojo tiene area"+areacuadrado(hipot);
+    dd.innerText="El cuadrado rojo tiene area "+areacuadrado(A.y-B.y)+". "+"\n" +
+    "El cuadrado verde tiene area "+areacuadrado(C.x-A.x)+". "+"\n" +
+        "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
+        "Podemos comprobar que :" +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."
   </script>
 
 </body>
