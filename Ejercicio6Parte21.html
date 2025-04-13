@@ -103,6 +103,7 @@
       ctx.fillText("A", A.x - 15, A.y + 15);
       ctx.fillText("B", B.x - 15, B.y);
       ctx.fillText("C", C.x, C.y + 20);
+       
 
       // Cuadrado en AB (hacia el otro lado de AC)
       drawSquare(A, B, false, "red");
@@ -123,8 +124,20 @@
     dd.innerText="El cuadrado rojo tiene area "+areacuadrado(A.y-B.y)+". "+"\n" +
     "El cuadrado verde tiene area "+areacuadrado(C.x-A.x)+". "+"\n" +
         "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
-        "Podemos comprobar que: " +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."    
+        "Podemos comprobar que: " +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras." 
+
+        ctx.fillText(areacuadrado(A.y-B.y), B-(A.y+B.y)/2, B+(A.y-B.y)/2);
+        ctx.fillText(areacuadrado(C.x-A.x), A+(C.x-A.x)/2, A+((C.x-A.x)/2);
+
+// Centro del cuadrado morado
+let centroX = (B.x + C.x) / 2 -((C.y - B.y) / 2) ;
+let centroY = (B.y + C.y) / 2 + ( (C.x - B.x)/ 2) ;
+        ctx.fillText(areacuadrado(hipot), centroX, centroY);
+        
+    
+    
     }
+        
 
         function areacuadrado(lado){
   var expr=algebra.parse("x^2");
