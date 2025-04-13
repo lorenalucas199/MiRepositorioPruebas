@@ -126,13 +126,13 @@
         "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
         "Podemos comprobar que: " +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras." 
 
-        ctx.fillText(areacuadrado(A.y-B.y), (A.y+B.y)/2, (A.y+B.y)/2);
+        /*ctx.fillText(areacuadrado(A.y-B.y), (A.y+B.y)/2, (A.y+B.y)/2);
         ctx.fillText(areacuadrado(C.x-A.x), (C.x+A.x)/2, (C.x+A.x)/2);
 
 // Centro del cuadrado morado
 let centroX = (B.x + C.x) / 2 -((C.y - B.y) / 2) ;
 let centroY = (B.y + C.y) / 2 + ( (C.x - B.x)/ 2) ;
-        ctx.fillText(areacuadrado(hipot), centroX, centroY);
+        ctx.fillText(areacuadrado(hipot), centroX, centroY);*/
         
     
     
@@ -171,10 +171,14 @@ function elegirpunto(event){
   var x=event.clientX-coordCanvas.x;
   var y=event.clientY-coordCanvas.y;
 
-        if (puntoelegido === "B") {
+        if (puntoelegido == "B") {
+            if (y <= A.y - 1) {
           B.y = y; // Solo en eje Y
-        } else if (puntoelegido === "C") {
+            }
+        } else if (puntoelegido == "C") {
+            if (x >= A.x + 1) {
           C.x = x; // Solo en eje X
+            }
         }
         draw();
       }
