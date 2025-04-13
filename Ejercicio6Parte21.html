@@ -157,7 +157,12 @@ function elegirpunto(event){
   var x=event.clientX-coordCanvas.x;
   var y=event.clientY-coordCanvas.y;
  //pulsar en el mismo pixel es muy dificil, asi que si se pincha CERCA del punto B o C:
-    
+     if (Math.abs(x - B.x) < 10 && Math.abs(y - B.y) < 10) {
+        puntoelegido = "B";
+      } else if (Math.abs(x - C.x) < 10 && Math.abs(y - C.y) < 10) {
+        puntoelegido = "C";
+      }
+    }; 
 }
         function moverpunto(event){
 
@@ -168,13 +173,13 @@ function elegirpunto(event){
   var y=event.clientY-coordCanvas.y;
 
         if (puntoelegido == "B") {
-            if (y <= (A.y - 1)) {
+            
           B.y = y; // Solo en eje Y
-            }
+            
         } else if (puntoelegido == "C") {
-            if (x >= (A.x + 1)) {
+            
           C.x = x; // Solo en eje X
-            }
+            
         }
         draw();
       }
