@@ -38,9 +38,9 @@
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Teorema de Pitágoras</h1>
     <h3>de Lorena Lucas Baños</h3>
-    A partir del siguiente triángulo rectángulo ABC, mueve los vértices B y C para dibujar cualquier triángulo rectángulo que quieras. 
-    Podrás comprobar que los $píxeles^2$ (área) que ocupa el cuadrado del lado AB junto a los que ocupa el cuadrado del lado AC es igual a los $píxeles^2$ que llena el cuadrado de lado BC. Es decir que se cummple:
-    <br> $AB^2+AC^2=BC^2$, o equivalentemente como conocemos: $cateto_1^2+cateto_2^2=hipotenusa^2$.
+    A partir del siguiente triángulo rectángulo ABC, mueve los vértices B y C para dibujar cualquier triángulo rectángulo. 
+    Podrás comprobar que los $píxeles^2$ (es decir, el área) que ocupa el cuadrado de lado AB junto a los que ocupa el cuadrado de lado AC es igual a los $píxeles^2$ que llena el cuadrado de lado BC. Es decir que se cumple:
+    <br> $AB^2+AC^2=BC^2$; <br>o equivalentemente: $cateto_1^2+cateto_2^2=hipotenusa^2$.
     <br>
     <br>
     <canvas id="canvas" width="1000" height="500" class="recuadro"   onmousedown="elegirpunto(event)" onmousemove="moverpunto(event)" onmouseup="nopunto(event)"></canvas>
@@ -111,7 +111,23 @@
       // Cuadrado en BC (hacia el otro lado de AC)
       drawSquare(B, C, false, "purple");
 
-                
+        // Actualizar valores y mostrar resultados
+
+  let hipotenusa = Math.sqrt(cateto1 ** 2 + cateto2 ** 2);
+  
+  // Convertir a fracción con math.js y luego a algebra.js
+  let frac = math.fraction(hipotenusa);
+  let hipot = new algebra.Fraction(frac.n, frac.d);
+
+  let area1 = areacuadrado(cateto1);
+  let area2 = areacuadrado(cateto2);
+  let area3 = areacuadrado(hipot);
+
+            var dd=document.getElementById('areacuadrado');
+    dd.innerText="El cuadrado rojo tiene area "+areacuadrado(A.y-B.y)+". "+"\n" +
+    "El cuadrado verde tiene area "+areacuadrado(C.x-A.x)+". "+"\n" +
+        "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
+        "Podemos comprobar que: " +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."    
     }
 
         function areacuadrado(lado){
@@ -162,22 +178,10 @@ function elegirpunto(event){
 
     draw();
 
-        var hipotenusa=Math.sqrt((A.y-B.y)**2+(C.x-A.x)**2);
-        //Vamos a usar primero la librería math para obtener el numerador y el denominador del número decimal
-     let hipot=math.fraction(hipotenusa);
-console.log(hipot); //COMPROBACIÓN
-console.log(typeof hipot);
-   //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
-       hipot= new algebra.Fraction(hipot.n,hipot.d);
-console.log(hipot); //COMPROBACIÓN
-console.log(typeof hipot);
+    
      
             
-    var dd=document.getElementById('areacuadrado');
-    dd.innerText="El cuadrado rojo tiene area "+areacuadrado(A.y-B.y)+". "+"\n" +
-    "El cuadrado verde tiene area "+areacuadrado(C.x-A.x)+". "+"\n" +
-        "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
-        "Podemos comprobar que :" +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."
+    
   </script>
 
 </body>
