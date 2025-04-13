@@ -30,7 +30,8 @@
 </script>
     
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
-<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>         
+<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.js"></script>
 <body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
     <h1>Intersección de dos rectas</h1>
     <h3>de Lorena Lucas Baños</h3>
@@ -40,6 +41,8 @@
    <div id="areacuadrado"></div>  <!Aquí se mostrarán los resultados>
     
     <script>
+         var Fraction = math.fraction;
+        var Fraction2 = algebra.Fraction;
     
   var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
@@ -151,11 +154,17 @@ function elegirpunto(event){
     };
 
     draw();
+
+        //Vamos a usar primero la librería math para obtener el numerador y el denominador del número decimal
+     let hipot=new Fraction(Math.sqrt((A.y-B.y)**2+(C.x-A.x)**2));
+   //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
+       hipot= Fraction2(hipot.n,hipot.d);
+     
             
     var dd=document.getElementById('areacuadrado');
     dd.innerText="El cuadrado rojo tiene area"+areacuadrado(A.y-B.y)+
     +"El cuadrado verde tiene area"+areacuadrado(C.x-A.x)+
-        +"El cuadrado rojo tiene area"+areacuadrado(Math.sqrt((A.y-B.y)**2+(C.x-A.x)**2));
+        +"El cuadrado rojo tiene area"+areacuadrado(hipot);
   </script>
 
 </body>
