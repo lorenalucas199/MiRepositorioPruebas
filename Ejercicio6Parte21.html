@@ -42,8 +42,8 @@
    <div id="areacuadrado"></div>  <!Aquí se mostrarán los resultados>
     
     <script>
-         var Fraction = math.fraction;
-        var Fraction2 = algebra.Fraction;
+      
+        var Fraction = algebra.Fraction;
     
   var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
@@ -158,9 +158,9 @@ function elegirpunto(event){
 
         var hipotenusa=Math.sqrt((A.y-B.y)**2+(C.x-A.x)**2);
         //Vamos a usar primero la librería math para obtener el numerador y el denominador del número decimal
-     let hipot=new Fraction(hipotenusa);
+     let hipot=math.fraction(hipotenusa);
    //Y ahora vamos a definir la fracción con la librería algebra, para continuar trabajando con ella
-       hipot= Fraction2(hipot.n,hipot.d);
+       hipot= Fraction(hipot.n,hipot.d);
      
             
     var dd=document.getElementById('areacuadrado');
