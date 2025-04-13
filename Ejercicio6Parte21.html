@@ -114,7 +114,7 @@
   var expr=algebra.parse("x^2");
   var valor=expr.eval({x:lado});
   var vv=valor.constants[0].valueOf();
-  return vv;
+  return Math.round(vv);
         }
 
       let puntoelegido = null;
