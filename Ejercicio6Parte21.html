@@ -173,11 +173,11 @@ function elegirpunto(event){
   var y=event.clientY-coordCanvas.y;
 
         if (puntoelegido == "B") {
-            if (y <= A.y - 1) {
+            if (y <= (A.y - 1)) {
           B.y = y; // Solo en eje Y
             }
         } else if (puntoelegido == "C") {
-            if (x >= A.x + 1) {
+            if (x >= (A.x + 1)) {
           C.x = x; // Solo en eje X
             }
         }
