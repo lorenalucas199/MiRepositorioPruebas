@@ -98,6 +98,21 @@
       ctx.moveTo(transformarX(0), 0);
       ctx.lineTo(transformarX(0), c.height);
       ctx.stroke();
+        // Dibujar números en el eje X
+    ctx.fillStyle = "black";
+    ctx.font = "12px Arial";
+    for (let x = -10; x <= 10; x++) {
+        let px = transformarX(x);
+        ctx.fillText(x, px + 2, transformarY(0) - 5);
+    }
+
+    // Dibujar números en el eje Y
+    for (let y = -5; y <= 5; y++) {
+        if (y !== 0) {
+            let py = transformarY(y);
+            ctx.fillText(y, transformarX(0) + 5, py + 3);
+        }
+    }
     }
 
     function dibujarFuncion(f){
