@@ -126,8 +126,8 @@
     function comprobarContinuidad(f, a){
       let mensaje = document.getElementById("mensajeContinuidad");
 
-      const izquierda = f(a - 0.001);
-      const derecha = f(a + 0.001);
+      const izquierda = f(a - 0.00001);
+      const derecha = f(a + 0.00001);
       const valor = f(a);
 
       let tolerancia = 0.01;
