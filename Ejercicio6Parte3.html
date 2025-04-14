@@ -68,7 +68,7 @@
     function graficar(event){
         var coordCanvas=c.getBoundingClientRect();
       var punto=event.clientX-coordCanvas.x;
-        punto=transformarX(punto);
+        punto=convertirX(punto);
         
       ctx.clearRect(0, 0, c.width, c.height);
       dibujarEjes();
