@@ -115,21 +115,27 @@
         // Actualizar valores y mostrar resultados
 
   let hipotenusa = Math.sqrt((A.y - B.y) ** 2 + (C.x - A.x) ** 2);
+let cateto1=A.y-B.y;
+        let cateto2=C.x-A.x;
   
   // Convertir a fracción con math.js y luego a algebra.js
   let frac = math.fraction(hipotenusa);
   let hipot = new algebra.Fraction(frac.n, frac.d);
+        let frac1=math.fraction(cateto1);
+  let cat1 = new algebra.Fraction(frac1.n, frac1.d);
+        let frac2=math.fraction(cateto2);
+  let cat2 = new algebra.Fraction(frac2.n, frac2.d);
 
-console.log(areacuadrado(A.y-B.y),areacuadrado(C.x-A.x),areacuadrado(hipot)); //COMPROBACIÓN
-console.log(typeof areacuadrado(areacuadrado(A.y-B.y)));//COMPROBACIÓN
-console.log(typeof areacuadrado(areacuadrado(C.x-A.x)));//COMPROBACIÓN
+console.log(areacuadrado(cat1),areacuadrado(cat2),areacuadrado(hipot)); //COMPROBACIÓN
+console.log(typeof areacuadrado(areacuadrado(cat1)));//COMPROBACIÓN
+console.log(typeof areacuadrado(areacuadrado(cat2)));//COMPROBACIÓN
 console.log(typeof areacuadrado(hipot));//COMPROBACIÓN
         var dd=document.getElementById('areacuadrado');
-     dd.innerText="El cuadrado rojo tiene area "+areacuadrado(A.y-B.y)+". "+"\n" +
-     "El cuadrado verde tiene area "+areacuadrado(C.x-A.x)+". "+"\n" +
+     dd.innerText="El cuadrado rojo tiene area "+areacuadrado(cat1)+". "+"\n" +
+     "El cuadrado verde tiene area "+areacuadrado(cat2)+". "+"\n" +
          "El cuadrado rojo tiene area "+areacuadrado(hipot)+". "+"\n" +"\n"+
-         "Podemos comprobar que :" +areacuadrado(A.y-B.y)+ " + " +areacuadrado(C.x-A.x)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."
-            var dd=document.getElementById('areacuadrado');
+         "Podemos comprobar que :" +areacuadrado(cat1)+ " + " +areacuadrado(cat2)+ " = "+areacuadrado(hipot)+", cumpliéndose así el Teorema de Pitágoras."
+          //  var dd=document.getElementById('areacuadrado');
    
         /*ctx.fillText(areacuadrado(A.y-B.y), (A.y+B.y)/2, (A.y+B.y)/2);
         ctx.fillText(areacuadrado(C.x-A.x), (C.x+A.x)/2, (C.x+A.x)/2);
