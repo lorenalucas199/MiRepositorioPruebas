@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <html lang="es-ES">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Concepto de continuidad</title>
-  <link rel="stylesheet" href="miestilo.css" />
-  
-  <!-- MathJax para mostrar matemáticas -->
-  <script type="text/x-mathjax-config">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matemáticas Dinámicas</title>
+<link rel="stylesheet" href="miestilo.css">
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-      tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
-      TeX: {
-        Macros: {
-          R: "{\\mathbb R}"
-        },
-        equationNumbers: { autoNumber: "AMS" }
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
       }
     });
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML" async></script>
-
-  <!-- Algebra.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebra.js/0.2.6/algebra.min.js"></script>
-
-  <style>
-    body {
-      font-family: 'Rubik', sans-serif;
-      background: linear-gradient(to bottom, #FF7F50, #FFDAB9);
-      text-align: center;
-      padding: 20px;
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          R: "{\\mathbb R}",
+          N: "{\\mathbb N}",
+          Z: "{\\mathbb Z}",
+          bold: ["{\\bf #1}",1]
+        }
+      }
+    });
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "color.js"]
     }
-    canvas {
-      border: 1px solid black;
-      margin-top: 20px;
-    }
-  </style>
-</head>
+</script>
+    
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML' async></script>
+<script src='https://algebra.js.org/javascripts/algebra-0.2.6.min.js' ></script>     
 
-<body>
-  <h1>¿Qué es la continuidad?</h1>
-  <p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.js"></script>
+    
+<body style="font-family:'Rubik', sans-serif; font-size:18; background:linear-gradient(to bottom, #FF7F50, #FFDAB9); height:100vh; text-align:center;">
+    <h1>¿Qué es la continuidad de una función?</h1>
+    <h3>de Lorena Lucas Baños</h3>
     Una función $f(x)$ es <strong>continua en un punto $x=a$</strong> si:
     $$\lim_{x \\to a^-} f(x) = \lim_{x \\to a^+} f(x) = f(a)$$
     Es decir, no hay "saltos" ni "agujeros" en la gráfica.
-  </p>
-
-  <h3>Escribe una función $f(x)$ (en JavaScript):</h3>
+    <br>
+    <h2>Escribe una función $f(x)$ (en JavaScript):</h2>
   <input type="text" id="funcionintro" value="(x < 1) ? x : x+1">
+  <h2>Y en qué punto quieres comprobar que sea continua: $x=$</h2>
+  <input type="text" id="puntocont" value="1">
   <br><br>
   <button onclick="graficar()">Graficar</button>
   <button onclick="zoomIn()"> + </button>
   <button onclick="zoomOut()"> - </button>
   <br><br>
+    <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
+    
+    <script> //Vamos a definir lo que se realiza en el interior del canvas:
+
+    
+
+
 
   <canvas id="canvas" width="600" height="400"></canvas>
   <p id="mensajeContinuidad"></p>
@@ -79,9 +84,10 @@
         alert("Error en la función. Asegúrate de escribir código JavaScript válido.");
         return;
       }
+      let punto = document.getElementById("puntocont").value;
 
       dibujarFuncion(f);
-      comprobarContinuidad(f, 1); // comprobamos en x = 1
+      comprobarContinuidad(f, punto); 
     }
 
     function dibujarEjes(){
