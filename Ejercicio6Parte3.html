@@ -66,10 +66,7 @@
     function derivada(f, x, h=0.001){ return (f(x+h) - f(x))/h; }
 
     function graficar(event){
-        var coordCanvas=c.getBoundingClientRect();
-      var punto=event.clientX-coordCanvas.x;
-        punto=convertirX(punto);
-        
+            
       ctx.clearRect(0, 0, c.width, c.height);
       dibujarEjes();
 
@@ -81,6 +78,19 @@
         alert("Error en la función. Asegúrate de escribir código JavaScript válido.");
         return;
       }
+        let punto;
+
+    if (event) {
+        // Si se pasa un evento (ratón), usar la posición del ratón
+        var coordCanvas = c.getBoundingClientRect();
+        punto = convertirX(event.clientX - coordCanvas.left);
+    } else {
+        // Si no hay evento (click en botón), usar el valor del input
+        punto = parseFloat(document.getElementById("puntocont").value);
+    }
+
+    // Redondear a 2 decimales
+    punto = Math.round(punto * 100) / 100;
 
     dibujarPunto(f,punto);
       dibujarFuncion(f);
