@@ -50,18 +50,11 @@
   <button onclick="zoomIn()"> + </button>
   <button onclick="zoomOut()"> - </button>
   <br><br>
-    <canvas id="canvas" width="600" height="400" class="recuadro"  onclick="coordenadas(event)"></canvas>
+    <canvas id="canvas" width="600" height="400" class="recuadro"></canvas>
     
-    <script> //Vamos a definir lo que se realiza en el interior del canvas:
+ <p id="mensajeContinuidad"></p>
+<script> //Vamos a definir lo que se realiza en el interior del canvas:
 
-    
-
-
-
-  <canvas id="canvas" width="600" height="400"></canvas>
-  <p id="mensajeContinuidad"></p>
-
-  <script>
     var c = document.getElementById("canvas");
     var ctx = c.getContext("2d");
     let zoom = 40;
