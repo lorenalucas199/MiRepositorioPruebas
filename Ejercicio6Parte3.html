@@ -1,77 +1,139 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-ES">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matemáticas con Canvas y Algebra.js</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrapi/1.0.3/algebra.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        canvas {
-            border: 1px solid black;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Concepto de continuidad</title>
+  <link rel="stylesheet" href="miestilo.css" />
+  
+  <!-- MathJax para mostrar matemáticas -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+      TeX: {
+        Macros: {
+          R: "{\\mathbb R}"
+        },
+        equationNumbers: { autoNumber: "AMS" }
+      }
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML" async></script>
+
+  <!-- Algebra.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebra.js/0.2.6/algebra.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(to bottom, #FF7F50, #FFDAB9);
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid black;
+      margin-top: 20px;
+    }
+  </style>
 </head>
+
 <body>
+  <h1>¿Qué es la continuidad?</h1>
+  <p>
+    Una función $f(x)$ es <strong>continua en un punto $x=a$</strong> si:
+    $$\lim_{x \\to a^-} f(x) = \lim_{x \\to a^+} f(x) = f(a)$$
+    Es decir, no hay "saltos" ni "agujeros" en la gráfica.
+  </p>
 
-    <h1>Explorando una Parabólica con Canvas y Algebra.js</h1>
-    <p>Esta página muestra cómo dibujar una parábola usando un canvas y calcular sus intersecciones con el eje \(x\) utilizando Algebra.js.</p>
+  <h3>Escribe una función $f(x)$ (en JavaScript):</h3>
+  <input type="text" id="funcionintro" value="(x < 1) ? x : x+1">
+  <br><br>
+  <button onclick="graficar()">Graficar</button>
+  <button onclick="zoomIn()"> + </button>
+  <button onclick="zoomOut()"> - </button>
+  <br><br>
 
-    <canvas id="mathCanvas" width="600" height="400"></canvas>
+  <canvas id="canvas" width="600" height="400"></canvas>
+  <p id="mensajeContinuidad"></p>
 
-    <script>
-        // Crear el objeto de canvas
-        const canvas = document.getElementById('mathCanvas');
-        const ctx = canvas.getContext('2d');
+  <script>
+    var c = document.getElementById("canvas");
+    var ctx = c.getContext("2d");
+    let zoom = 40;
 
-        // Definir la ecuación de la parábola: y = x^2 - 4
-        const parabola = new Algebra.Expression("x^2 - 4");
+    function transformarX(x){ return c.width/2 + x*zoom; }
+    function transformarY(y){ return c.height/2 - y*zoom; }
+    function convertirX(px){ return (px - c.width/2)/zoom; }
 
-        // Función para dibujar la parábola en el canvas
-        function drawParabola() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height - parabola.eval({x: 0}) * 20);
+    function derivada(f, x, h=0.001){ return (f(x+h) - f(x))/h; }
 
-            for (let x = -canvas.width / 2; x < canvas.width / 2; x++) {
-                let y = parabola.eval({x: x / 20});
-                ctx.lineTo(x + canvas.width / 2, canvas.height - y * 20);
-            }
+    function graficar(){
+      ctx.clearRect(0, 0, c.width, c.height);
+      dibujarEjes();
 
-            ctx.strokeStyle = 'blue';
-            ctx.stroke();
+      const expr = document.getElementById("funcionintro").value;
+      let f;
+      try {
+        f = new Function("x", "return " + expr);
+      } catch {
+        alert("Error en la función. Asegúrate de escribir código JavaScript válido.");
+        return;
+      }
+
+      dibujarFuncion(f);
+      comprobarContinuidad(f, 1); // comprobamos en x = 1
+    }
+
+    function dibujarEjes(){
+      ctx.strokeStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(0, transformarY(0));
+      ctx.lineTo(c.width, transformarY(0));
+      ctx.moveTo(transformarX(0), 0);
+      ctx.lineTo(transformarX(0), c.height);
+      ctx.stroke();
+    }
+
+    function dibujarFuncion(f){
+      ctx.strokeStyle = "blue";
+      ctx.beginPath();
+      let inicio = convertirX(0);
+      for(let x = inicio; x < convertirX(c.width); x += 0.05){
+        let y = f(x);
+        if (!isNaN(y) && isFinite(y)) {
+          ctx.lineTo(transformarX(x), transformarY(y));
+        } else {
+          ctx.moveTo(transformarX(x), transformarY(0));
         }
+      }
+      ctx.stroke();
+    }
 
-        // Calcular las intersecciones con el eje X
-        function calculateIntersections() {
-            const roots = parabola.solve("x");
-            return roots;
-        }
+    function comprobarContinuidad(f, a){
+      let mensaje = document.getElementById("mensajeContinuidad");
 
-        // Dibujar las intersecciones
-        function drawIntersections() {
-            const roots = calculateIntersections();
-            ctx.fillStyle = 'red';
-            roots.forEach(root => {
-                let x = root.eval({});
-                ctx.beginPath();
-                ctx.arc(x * 20 + canvas.width / 2, canvas.height, 5, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-        }
+      const izquierda = f(a - 0.001);
+      const derecha = f(a + 0.001);
+      const valor = f(a);
 
-        // Dibujar la parábola y sus intersecciones
-        function render() {
-            drawParabola();
-            drawIntersections();
-        }
+      let tolerancia = 0.01;
+      let continua = Math.abs(izquierda - derecha) < tolerancia && Math.abs(valor - izquierda) < tolerancia;
 
-        render();
-    </script>
+      if (continua) {
+        mensaje.innerHTML = `<strong>La función es continua en x = ${a}</strong>`;
+        mensaje.style.color = "green";
+      } else {
+        mensaje.innerHTML = `<strong>La función NO es continua en x = ${a}</strong><br>
+        \\( \\lim_{x \\to ${a}^-} f(x) = ${izquierda.toFixed(2)} \\), 
+        \\( \\lim_{x \\to ${a}^+} f(x) = ${derecha.toFixed(2)} \\), 
+        \\( f(${a}) = ${valor.toFixed(2)} \\)`;
+        mensaje.style.color = "red";
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, mensaje]);
+      }
+    }
 
+    function zoomIn(){ zoom *= 1.2; graficar(); }
+    function zoomOut(){ zoom /= 1.2; graficar(); }
+  </script>
 </body>
 </html>
