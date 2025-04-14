@@ -42,7 +42,7 @@
     Es decir, no hay "saltos" ni "agujeros" en la gráfica.
     <br>
     Escribe una función $f(x)$ (en JavaScript):
-  <input type="text" id="funcionintro" value="(x < 1) ? x : x+1"><br>
+  <input type="text" id="funcionintro" value="x**2"><br>
   Y en qué punto quieres comprobar que sea continua: $x=$
   <input type="text" id="puntocont" value="1">
   <br><br>
@@ -77,7 +77,7 @@
         alert("Error en la función. Asegúrate de escribir código JavaScript válido.");
         return;
       }
-      let punto = document.getElementById("puntocont").value;
+      let punto = eval(document.getElementById("puntocont").value);
 
       dibujarFuncion(f);
       comprobarContinuidad(f, punto); 
