@@ -50,7 +50,7 @@
   <button onclick="zoomIn()"> + </button>
   <button onclick="zoomOut()"> - </button>
   <br><br>
-    <canvas id="canvas" width="600" height="400" class="recuadro"></canvas> //onmousemove='graficar(event)'
+    <canvas id="canvas" width="600" height="400" class="recuadro" onmousemove="graficar(event)"></canvas> 
     
  <p id="mensajeContinuidad"></p>
 <script> //Vamos a definir lo que se realiza en el interior del canvas:
@@ -65,7 +65,10 @@
 
     function derivada(f, x, h=0.001){ return (f(x+h) - f(x))/h; }
 
-    function graficar(){
+    function graficar(event){
+        var coordCanvas=c.getBoundingClientRect();
+      var punto=event.clientX-coordCanvas.x;
+        
       ctx.clearRect(0, 0, c.width, c.height);
       dibujarEjes();
 
@@ -77,11 +80,13 @@
         alert("Error en la función. Asegúrate de escribir código JavaScript válido.");
         return;
       }
-      let punto = eval(document.getElementById("puntocont").value);
 
+    dibujarPunto(f,punto);
       dibujarFuncion(f);
       comprobarContinuidad(f, punto); 
     }
+    
+    
 
     function dibujarEjes(){
       ctx.strokeStyle = "black";
@@ -107,6 +112,15 @@
         }
     }
     }
+
+    function dibujarPunto(f, x) {
+  let y = f(x);
+    ctx.beginPath();
+    ctx.arc(transformarX(x), transformarY(y), 5, 0, 2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+  
+}
 
     function dibujarFuncion(f){
       ctx.strokeStyle = "blue";
